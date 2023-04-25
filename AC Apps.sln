@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC Daily Races", "AC Daily 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC Career Mode", "AC Career Mode\AC Career Mode.csproj", "{FAAC8BF9-91F7-4994-BF91-92FA7F71166C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoLibrary", "DemoLibrary\DemoLibrary.csproj", "{148083A6-7011-4A54-9189-7A1534E42581}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FAAC8BF9-91F7-4994-BF91-92FA7F71166C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAAC8BF9-91F7-4994-BF91-92FA7F71166C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAAC8BF9-91F7-4994-BF91-92FA7F71166C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148083A6-7011-4A54-9189-7A1534E42581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148083A6-7011-4A54-9189-7A1534E42581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148083A6-7011-4A54-9189-7A1534E42581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148083A6-7011-4A54-9189-7A1534E42581}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
