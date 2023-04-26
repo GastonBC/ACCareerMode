@@ -24,11 +24,11 @@ namespace AC_Career_Mode
 
         const string SavedTracks = "Tracks.bin";
         const string SavedCars = "Cars.bin";
-
+        Player Profile = null;
 
         public MainWindow(Player profile)
         {
-
+            Profile = profile;
             /// Race track exceptions
             string[] InvalidTracks = { "drag", "drift", "indoor karting", "yatabe" };
 
@@ -133,6 +133,34 @@ namespace AC_Career_Mode
 
         private void b_goracing_Click(object sender, RoutedEventArgs e)
         {
+            this.Hide();
+            Race race = lb_RaceLst.SelectedItem as Race;
+            FinishedRace race_dialog = new(race);
+            race_dialog.ShowDialog();
+
+            if (race_dialog.Result != null)
+            {
+                // Add statistics to player
+                Profile.Money += (int)race_dialog.Result.PrizeAwarded;
+                Profile.Races++;
+                Profile.KmsDriven += (int)race_dialog.Result.KmsDriven;
+                
+                if (race_dialog.Result.Position <= 3)
+                {
+                    Profile.RacePodiums++;
+                    if (race_dialog.Result.Position == 1)
+                    {
+                        Profile.RaceWins++;
+                    }
+                }
+            }
+
+            SqliteDataAccess.UpdatePlayer(Profile);
+
+            tbl_ProfileDescription.Text = $"Name: {Profile.Name}\n" +
+                                $"Money: {Profile.Money}\n" +
+                                $"Kilometers Driven: {Profile.KmsDriven}\n";
+            this.ShowDialog();
 
         }
 

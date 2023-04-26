@@ -5,20 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AC_Career_Mode"
         mc:Ignorable="d"
-        Title="FinishedRace" Height="106" Width="270">
+        Title="FinishedRace" Height="290" Width="280" MinHeight="290" MinWidth="280">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
             <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
-        <Label Content="Position:"/>
-        <TextBox Grid.Column="1" TextWrapping="Wrap" Text="TextBox"/>
-        <Button Content="Finished" Grid.Row="1"/>
-        <Button Content="Cancel" Grid.Column="1" Grid.Row="1"/>
+
+        <Label x:Name="label_racedescr" Content="Race description" Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" />
+        <StackPanel Grid.Row="2" Grid.RowSpan="1" >
+
+            <Label Content="Position:" Height="25" />
+            <Label Content="Laps:" Height="25" />
+            <Button x:Name="b_finished" IsEnabled="False" Content="Finished" Click="b_race_finish" Height="30"/>
+
+
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2" Grid.RowSpan="1">
+            <TextBox x:Name="tb_position" TextWrapping="Wrap" Height="25" TextChanged="pos_txt_changed"/>
+            <TextBox x:Name="tb_laps" TextWrapping="Wrap" Height="25" TextChanged="laps_txt_changed"/>
+            <Button x:Name="b_cancel" Content="Cancel" Grid.Column="1" Grid.Row="1" Click="b_cancel_Click" Height="30"/>
+        </StackPanel>
+
+
 
     </Grid>
 </Window>

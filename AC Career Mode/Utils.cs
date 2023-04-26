@@ -15,7 +15,10 @@ namespace AC_Career_Mode
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
 
-
+        internal static int RoundTen(double i)
+        {
+            return ((int)Math.Round(i / 10.0)) * 10;
+        }
         internal static ImageSource? RetriveImage(string imagePath)
         {
 

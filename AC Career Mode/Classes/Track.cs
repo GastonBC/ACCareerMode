@@ -8,7 +8,7 @@ using System.Linq;
 namespace AC_Career_Mode
 {
     [Serializable]
-    internal class Track
+    public class Track
     {
         public string Name { get; set; }
         public string Description { get; set; }

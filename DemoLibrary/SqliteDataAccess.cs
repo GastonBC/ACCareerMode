@@ -14,7 +14,7 @@ namespace DemoLibrary
     {
         public static List<Player> LoadPlayers()
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var output = cnn.Query<Player>("select * from Player", new DynamicParameters());
                 return output.ToList();
@@ -23,20 +23,41 @@ namespace DemoLibrary
 
         public static void SavePlayer(Player pName)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 cnn.Execute("insert into Player (Name) values (@Name)", pName);
             }
         }
 
-        public Player LoadPlayer(int Id)
+        public static Player LoadPlayer(int Id)
         {
 
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 Player output = cnn.QueryFirst<Player>($"select * from Player where Id={Id}", new DynamicParameters());
                 return output;
             }
+        }
+
+        public static Player UpdatePlayer(Player player)
+        {
+            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Open();
+                string update_record = ($"UPDATE Player SET " +
+                    $"Money='{player.Money}', " +
+                    $"Loans='{player.Loans}', " +
+                    $"Races='{player.Races}', " +
+                    $"RaceWins='{player.RaceWins}', " +
+                    $"RacePodiums='{player.RacePodiums}', " +
+                    $"KmsDriven='{player.KmsDriven}' " +
+                    $"WHERE Id='{player.Id}'");
+
+                SQLiteCommand command = new(update_record, cnn);
+                command.ExecuteNonQuery();
+                cnn.Close();
+            }
+            return LoadPlayer(player.Id);
         }
 
         private static string LoadConnectionString(string id = "Default")

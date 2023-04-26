@@ -5,12 +5,13 @@ using System.Linq;
 
 namespace AC_Career_Mode
 {
-    internal class Race
+    public class Race
     {
         public int Laps { get; set; }
         public Car Car { get; set; }
         public string DisplayName { get; set; }
         public Track Track { get; set; }
+        public int Prize { get; set; }
         public RaceType RaceType { get; set; }
         public int Seed { get; set; }
         public string Description { get; set; }
@@ -173,14 +174,18 @@ namespace AC_Career_Mode
             #endregion
 
             DisplayName = Car.Name + " - " + Track.Name;
+            TotalLength = Math.Round(Track.LengthKm * Laps, 1);
+            Prize = Utils.RoundTen(TotalLength) * 100;
 
             Description = Track.Name + "\n" +
                           "Track Length: " + Math.Round(Track.LengthKm, 1) + " km" + "\n" +
                           Car.Name + "\n" +
                           "Laps: " + Laps.ToString() + "\n" +
-                          "Race Lenght: " + Math.Round(Track.LengthKm * Laps, 1) + " km" + "\n" +
+                          "Race Lenght: " + TotalLength + " km" + "\n" +
                           "Top Speed: " + Car.TopSpeed + "\n" +
-                          "Race Time: " + Math.Round(RaceTime.TotalMinutes) + " minutes" + "\n";
+                          "Race Time: " + Math.Round(RaceTime.TotalMinutes) + " minutes" + "\n" +
+                          "Prize: " + Prize;
+
         }
 
 

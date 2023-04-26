@@ -1,6 +1,6 @@
 ﻿namespace AC_Career_Mode
 {
-    internal enum RaceGroup
+    public enum RaceGroup
     {
         GT,
         F1,
