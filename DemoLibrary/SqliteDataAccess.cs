@@ -32,14 +32,19 @@ namespace DemoLibrary
 
         public static Player LoadPlayer(int Id)
         {
-
-
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 Player output = cnn.QueryFirst<Player>($"select * from Player where Id={Id}", new DynamicParameters());
                 return output;
             }
-
+        }
+        public static Car LoadCar(int Id)
+        {
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
+            {
+                Car output = cnn.QueryFirst<Car>($"select * from Car where Id={Id}", new DynamicParameters());
+                return output;
+            }
         }
 
         public static Player UpdatePlayer(Player player)
@@ -66,6 +71,33 @@ namespace DemoLibrary
         private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+        }
+
+
+        public static List<Car> GetPlayerCars(Player profile)
+        {
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
+            {
+                IEnumerable<Car>? output = cnn.Query<Car>($"select * from Car where Owner={profile.Id}", new DynamicParameters());
+
+                return output.ToList();
+            }
+        }
+
+        public static Car UpdateCar(Car car)
+        {
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
+            {
+                cnn.Open();
+                string update_record = ($"UPDATE Player SET " +
+                    $"Mileage='{car.Mileage}', " +
+                    $"WHERE Id='{car.Id}'");
+
+                SQLiteCommand command = new(update_record, cnn);
+                command.ExecuteNonQuery();
+                cnn.Close();
+            }
+            return LoadCar(car.Id);
         }
     }
 }

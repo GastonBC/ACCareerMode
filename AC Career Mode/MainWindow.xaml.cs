@@ -96,10 +96,10 @@ namespace AC_Career_Mode
             for (int i = 0; i < 25; i++)
             {
                 Array race_groups = Enum.GetValues(typeof(RaceGroup));
-                Array race_types = Enum.GetValues(typeof(RaceType));
+                Array race_types = Enum.GetValues(typeof(RaceLength));
 
                 RaceGroup random_race_group = (RaceGroup)race_groups.GetValue(random.Next(race_groups.Length));
-                RaceType random_race_type = (RaceType)race_types.GetValue(random.Next(race_types.Length));
+                RaceLength random_race_type = (RaceLength)race_types.GetValue(random.Next(race_types.Length));
 
 
                 Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group);
@@ -110,18 +110,16 @@ namespace AC_Career_Mode
             UpdateDialogUserDetails();
             WireUpRaceList();
             #endregion
-
-            #region Profile Tab
-
-            // CODE
-
-
-            #endregion
         }
 
 
+        #region Profile Tab
 
-        
+        // CODE
+
+
+        #endregion
+
 
 
         #region RACE TAB
@@ -129,7 +127,11 @@ namespace AC_Career_Mode
         {
             b_goracing.IsEnabled = true;
             Race rc = lv_RaceLst.SelectedItem as Race;
-            tb_RaceDetails.Text = rc.Description;
+
+            track_background.Source = Utils.RetriveImage(rc.Track.PreviewPath);
+            track_preview.Source = Utils.RetriveImage(rc.Track.OutlinePath);
+
+            car_preview.Source = Utils.RetriveImage(rc.Car.Preview);
 
         }
 
@@ -172,7 +174,17 @@ namespace AC_Career_Mode
 
         #endregion
 
+        
 
+
+        #region MARKET TAB
+        private void market_selection_changed(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region OTHER
         private void UpdateDialogUserDetails()
         {
             Profile = SqliteDataAccess.LoadPlayer(Profile.Id);
@@ -209,6 +221,6 @@ namespace AC_Career_Mode
             AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
             lv_RaceLst.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
         }
-
+        #endregion
     }
 }

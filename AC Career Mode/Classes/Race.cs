@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DemoLibrary;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace AC_Career_Mode
         public string DisplayName { get; set; }
         public Track Track { get; set; }
         public uint Prize { get; set; }
-        public RaceType RaceType { get; set; }
+        public RaceLength RaceType { get; set; }
         public int Seed { get; set; }
         public string Description { get; set; }
         public double TotalLength { get; set; }
@@ -24,7 +25,7 @@ namespace AC_Career_Mode
         ///  Race length is determined first by the 70% the top speed of the car. To make the race short in time
         ///  If car has no top speed attribute, it's a random between a distance in kms and a factor between 60% and 100%
         ///  Seed changes with the day
-        public Race(RaceType raceType, List<Track> tracks, List<Car> cars, RaceGroup group)
+        public Race(RaceLength raceType, List<Track> tracks, List<Car> cars, RaceGroup group)
         {
             string date = DateTime.Today.ToString();
 
@@ -133,26 +134,26 @@ namespace AC_Career_Mode
 
             int factor_seed = Seed + (int)RaceType;
 
-            if (RaceType == RaceType.Short)
+            if (RaceType == RaceLength.Short)
             {
                 Laps = (uint)TotalLaps(0.15, 30, factor_seed);
             }
-            else if (RaceType == RaceType.Medium)
+            else if (RaceType == RaceLength.Medium)
             {
                 Laps = (uint)TotalLaps(0.50, 70, factor_seed);
             }
 
-            else if (RaceType == RaceType.Long)
+            else if (RaceType == RaceLength.Long)
             {
                 Laps = (uint)TotalLaps(1.00, 150, factor_seed);
             }
-            else if (RaceType == RaceType.Endurance)
+            else if (RaceType == RaceLength.Endurance)
             {
                 Laps = (uint)TotalLaps(2.00, 350, factor_seed);
             }
             else
             {
-                throw (new Exception("Need a RaceType"));
+                throw (new Exception("Need a RaceLength"));
             }
 
 
@@ -175,7 +176,7 @@ namespace AC_Career_Mode
 
             DisplayName = Car.Name + " - " + Track.Name;
             TotalLength = Math.Round(Track.LengthKm * Laps, 1);
-            Prize = Utils.RoundTen(TotalLength) * 100;
+            Prize = Utils.RoundTen(TotalLength) * 300;
 
             Description = Track.Name + "\n" +
                           "Track Length: " + Math.Round(Track.LengthKm, 1) + " km" + "\n" +

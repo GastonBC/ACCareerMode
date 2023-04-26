@@ -1,6 +1,6 @@
 ﻿namespace AC_Career_Mode
 {
-    public enum RaceType
+    public enum RaceLength
     {
         Short = 0,
         Medium = 1,

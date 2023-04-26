@@ -5,11 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace AC_Career_Mode
+namespace DemoLibrary
 {
     [Serializable]
     public class Car
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Year { get; set; }
@@ -19,6 +20,7 @@ namespace AC_Career_Mode
         public string Preview { get; set; }
         public int TopSpeed { get; set; }
         public Dictionary<string, string> Specs { get; set; }
+        public uint Mileage { get; set; }
 
 
         public static Car LoadCarJson(string json_path)
