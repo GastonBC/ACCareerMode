@@ -7,7 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="488" Width="423">
     <Grid>
-        <TabControl>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="1" Grid.ColumnSpan="4">
             <TabItem Header="Race">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -21,7 +31,7 @@
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <ListBox x:Name="lb_RaceLst" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,6,5,10" SelectionChanged="selection_changed"/>
-                    <TextBox x:Name="tb_RaceDetails" Grid.Column="1"  Grid.Row="2" TextWrapping="Wrap" Text="TextBox" Margin="5,6,0,10" />
+                    <TextBox x:Name="tb_RaceDetails" Grid.Column="1"  Grid.Row="2" TextWrapping="Wrap"  Margin="5,6,0,10" />
                     <Button x:Name="b_goracing" IsEnabled="False" Content="Race!" Grid.Row="3" Grid.ColumnSpan="2" Click="b_goracing_Click"/>
                 </Grid>
 
@@ -34,5 +44,9 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Label x:Name="toplabel_User" Content="Gas" />
+        <Label x:Name="toplabel_Money" Content="$10.000" Grid.Column="1" />
+        <Label x:Name="toplabel_Wins" Content="🏆 11" Grid.Column="2" />
+        <Label x:Name="toplabel_Races" Content="Races: 25" Grid.Column="3" />
     </Grid>
 </Window>

@@ -95,6 +95,7 @@ namespace AC_Career_Mode
                 Race Race = new(RaceType.Short, AvailableTracks, AvailableCars, random_race_group);
 
                 races.Add(Race);
+                UpdateDialogUserDetails();
                 WireUpRaceList();
             }
 
@@ -102,10 +103,7 @@ namespace AC_Career_Mode
 
             #region Profile Tab
 
-            tbl_ProfileDescription.Text = $"Name: {profile.Name}\n" +
-                                            $"Money: {profile.Money}\n" +
-                                            $"Kilometers Driven: {profile.KmsDriven}\n";
-
+            // CODE
 
 
             #endregion
@@ -141,9 +139,9 @@ namespace AC_Career_Mode
             if (race_dialog.Result != null)
             {
                 // Add statistics to player
-                Profile.Money += (int)race_dialog.Result.PrizeAwarded;
+                Profile.Money += race_dialog.Result.PrizeAwarded;
                 Profile.Races++;
-                Profile.KmsDriven += (int)race_dialog.Result.KmsDriven;
+                Profile.KmsDriven += Convert.ToInt32(race_dialog.Result.KmsDriven);
                 
                 if (race_dialog.Result.Position <= 3)
                 {
@@ -153,19 +151,35 @@ namespace AC_Career_Mode
                         Profile.RaceWins++;
                     }
                 }
+                SqliteDataAccess.UpdatePlayer(Profile);
+                UpdateDialogUserDetails();
             }
 
-            SqliteDataAccess.UpdatePlayer(Profile);
-
-            tbl_ProfileDescription.Text = $"Name: {Profile.Name}\n" +
-                                $"Money: {Profile.Money}\n" +
-                                $"Kilometers Driven: {Profile.KmsDriven}\n";
+            
             this.ShowDialog();
+
 
         }
 
         #endregion
 
+
+        private void UpdateDialogUserDetails()
+        {
+            Profile = SqliteDataAccess.LoadPlayer(Profile.Id);
+            toplabel_User.Content = Profile.Name;
+            toplabel_Money.Content = Profile.Money;
+            toplabel_Wins.Content = Profile.RaceWins;
+            toplabel_Races.Content = Profile.Races;
+
+
+            tbl_ProfileDescription.Text = $"Name: {Profile.Name}\n" +
+                                          $"Money: {Profile.Money}\n" +
+                                          $"Race Wins: {Profile.RacePodiums}\n" +
+                                          $"Loans: {Profile.Loans}\n" +
+                                          $"Race Podiums: {Profile.RacePodiums}\n" +
+                                          $"Kilometers Driven: {Profile.KmsDriven}\n";
+        }
 
     }
 }
