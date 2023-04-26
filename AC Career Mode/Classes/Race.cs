@@ -9,6 +9,7 @@ namespace AC_Career_Mode
     {
         public int Laps { get; set; }
         public Car Car { get; set; }
+        public string DisplayName { get; set; }
         public Track Track { get; set; }
         public RaceType RaceType { get; set; }
         public int Seed { get; set; }
@@ -170,6 +171,8 @@ namespace AC_Career_Mode
 
 
             #endregion
+
+            DisplayName = Car.Name + " - " + Track.Name;
 
             Description = Track.Name + "\n" +
                           "Track Length: " + Math.Round(Track.LengthKm, 1) + " km" + "\n" +

@@ -11,7 +11,7 @@ namespace AC_Career_Mode
 
         internal static double GetRandomNumber(double minimum, double maximum, int Seed)
         {
-            Random random = new Random(Seed);
+            Random random = new(Seed);
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
 

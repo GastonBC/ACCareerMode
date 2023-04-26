@@ -1,4 +1,5 @@
 ﻿
+using DemoLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,14 +18,15 @@ namespace AC_Career_Mode
     {
         const string TRACKS_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\content\tracks";
         const string CARS_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\content\cars";
-        List<Track> AvailableTracks = new List<Track>();
-        List<Car> AvailableCars = new List<Car>();
+        List<Track> AvailableTracks = new();
+        List<Car> AvailableCars = new();
+        List<Race> races = new();
 
         const string SavedTracks = "Tracks.bin";
         const string SavedCars = "Cars.bin";
 
 
-        public MainWindow()
+        public MainWindow(Player profile)
         {
 
             /// Race track exceptions
@@ -81,7 +83,61 @@ namespace AC_Career_Mode
                 Utils.Serialize(AvailableCars, SavedCars);
             }
 
-            lb_cars.ItemsSource = AvailableCars;
+
+            #region Race Tab
+            Random random = new();
+            for (int i = 0; i < 5; i++)
+            {
+                Array race_types = Enum.GetValues(typeof(RaceGroup));
+
+                RaceGroup random_race_group = (RaceGroup)race_types.GetValue(random.Next(race_types.Length));
+
+                Race Race = new(RaceType.Short, AvailableTracks, AvailableCars, random_race_group);
+
+                races.Add(Race);
+                WireUpRaceList();
+            }
+
+            #endregion
+
+            #region Profile Tab
+
+            tbl_ProfileDescription.Text = $"Name: {profile.Name}\n" +
+                                            $"Money: {profile.Money}\n" +
+                                            $"Kilometers Driven: {profile.KmsDriven}\n";
+
+
+
+            #endregion
         }
+
+
+
+        private void WireUpRaceList()
+        {
+            lb_RaceLst.ItemsSource = null;
+            lb_RaceLst.ItemsSource = races;
+            lb_RaceLst.DisplayMemberPath = "DisplayName";
+
+        }
+
+
+        #region RACE TAB
+        private void selection_changed(object sender, SelectionChangedEventArgs e)
+        {
+            b_goracing.IsEnabled = true;
+            Race rc = lb_RaceLst.SelectedItem as Race;
+            tb_RaceDetails.Text = rc.Description;
+
+        }
+
+        private void b_goracing_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+
     }
 }

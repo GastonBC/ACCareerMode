@@ -23,14 +23,14 @@ namespace AC_Career_Mode
 
         public static Car LoadCarJson(string json_path)
         {
-            Car car = new Car();
+            Car car = new();
 
             // Json fills most of the parameters
-            using (StreamReader r = new StreamReader(json_path))
+            using (StreamReader r = new(json_path))
             {
                 string json = r.ReadToEnd();
                 car = JsonConvert.DeserializeObject<Car>(json);
-                JsonSerializerSettings settings = new JsonSerializerSettings();
+                JsonSerializerSettings settings = new();
             }
 
             // Link any car preview

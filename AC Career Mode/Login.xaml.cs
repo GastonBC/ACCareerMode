@@ -20,7 +20,7 @@ namespace AC_Career_Mode
     /// </summary>
     public partial class Login : Window
     {
-        List<Player> players = new List<Player>();
+        List<Player> players = new();
         public Login()
         {
             InitializeComponent();
@@ -35,9 +35,8 @@ namespace AC_Career_Mode
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Player p = new Player();
+            Player p = new();
             p.Name = tb_Name.Text;
-            p.Money = 10000;
 
             SqliteDataAccess.SavePlayer(p);
 
@@ -55,6 +54,16 @@ namespace AC_Career_Mode
             lb_Players.ItemsSource = null;
             lb_Players.ItemsSource = players;
             lb_Players.DisplayMemberPath = "Name";
+
+        }
+
+        private void double_click_player(object sender, MouseButtonEventArgs e)
+        {
+            Player profile = lb_Players.SelectedItem as Player;
+            MainWindow wn = new(profile);
+            this.Close();
+            
+            wn.Show();
 
         }
     }

@@ -19,14 +19,23 @@ namespace DemoLibrary
                 var output = cnn.Query<Player>("select * from Player", new DynamicParameters());
                 return output.ToList();
             }
-
         }
 
         public static void SavePlayer(Player pName)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("insert into Player (Name, Money) values (@Name, @Money)", pName);
+                cnn.Execute("insert into Player (Name) values (@Name)", pName);
+            }
+        }
+
+        public Player LoadPlayer(int Id)
+        {
+
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                Player output = cnn.QueryFirst<Player>($"select * from Player where Id={Id}", new DynamicParameters());
+                return output;
             }
         }
 

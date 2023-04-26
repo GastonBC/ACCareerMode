@@ -6,15 +6,33 @@
         xmlns:local="clr-namespace:AC_Career_Mode"
         mc:Ignorable="d"
         Title="MainWindow" Height="488" Width="423">
-    <Grid Margin="0,0,10,12">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="119*"/>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="296*"/>
-            <ColumnDefinition Width="10"/>
-        </Grid.ColumnDefinitions>
-        <ListBox x:Name="lb_cars" Grid.Column="3" DisplayMemberPath="Name"/>
+    <Grid>
+        <TabControl>
+            <TabItem Header="Race">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="185*"/>
+                        <ColumnDefinition Width="232*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="lb_RaceLst" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,6,5,10" SelectionChanged="selection_changed"/>
+                    <TextBox x:Name="tb_RaceDetails" Grid.Column="1"  Grid.Row="2" TextWrapping="Wrap" Text="TextBox" Margin="5,6,0,10" />
+                    <Button x:Name="b_goracing" IsEnabled="False" Content="Race!" Grid.Row="3" Grid.ColumnSpan="2" Click="b_goracing_Click"/>
+                </Grid>
 
+            </TabItem>
+            <TabItem Header="Bank" />
+            <TabItem Header="Profile">
+                <Grid>
+                    <TextBlock x:Name="tbl_ProfileDescription" TextWrapping="Wrap" Text="TextBlock" />
+
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
