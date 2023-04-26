@@ -21,8 +21,8 @@
             <TabItem Header="Race">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="185*"/>
-                        <ColumnDefinition Width="232*"/>
+                        <ColumnDefinition Width="331*"/>
+                        <ColumnDefinition Width="86*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -30,9 +30,34 @@
                         <RowDefinition/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <ListBox x:Name="lb_RaceLst" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,6,5,10" SelectionChanged="selection_changed"/>
+
+                    <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,6,5,10" SelectionChanged="selection_changed" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Car.Name}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Car" Click="ColHeader_Click">Car</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Track.Name}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Track" Click="ColHeader_Click">Track</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="120" DisplayMemberBinding="{Binding Prize}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Prize" Click="ColHeader_Click">Prize</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <!--<ListBox x:Name="lb_RaceLst" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,6,5,10" SelectionChanged="selection_changed"/>-->
                     <TextBox x:Name="tb_RaceDetails" Grid.Column="1"  Grid.Row="2" TextWrapping="Wrap"  Margin="5,6,0,10" />
-                    <Button x:Name="b_goracing" IsEnabled="False" Content="Race!" Grid.Row="3" Grid.ColumnSpan="2" Click="b_goracing_Click"/>
+                    <Button x:Name="b_goracing" IsEnabled="False" Content="Race!" Grid.Row="2" Grid.ColumnSpan="2" Click="b_goracing_Click" Margin="0,319,0,0" Grid.RowSpan="2"/>
                 </Grid>
 
             </TabItem>

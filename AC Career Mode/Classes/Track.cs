@@ -25,14 +25,14 @@ namespace AC_Career_Mode
 
         public static Track LoadTrackJson(string json_path)
         {
-            Track track = new Track();
+            Track track = new();
 
             // Json file fills most of the parameters
-            using (StreamReader r = new StreamReader(json_path))
+            using (StreamReader r = new(json_path))
             {
                 string json = r.ReadToEnd();
                 track = JsonConvert.DeserializeObject<Track>(json);
-                JsonSerializerSettings settings = new JsonSerializerSettings();
+                JsonSerializerSettings settings = new();
             }
 
             // Link outline and race preview images
@@ -46,7 +46,7 @@ namespace AC_Career_Mode
 
             // Try to get it's length for race distance calculations
             // A lot of tracks are badly formatted
-            string lengthM = new string(track.Length.Where(char.IsDigit).ToArray());
+            string lengthM = new(track.Length.Where(char.IsDigit).ToArray());
 
             double length_m;
 

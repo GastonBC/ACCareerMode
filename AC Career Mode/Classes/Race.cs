@@ -7,11 +7,11 @@ namespace AC_Career_Mode
 {
     public class Race
     {
-        public int Laps { get; set; }
+        public uint Laps { get; set; }
         public Car Car { get; set; }
         public string DisplayName { get; set; }
         public Track Track { get; set; }
-        public int Prize { get; set; }
+        public uint Prize { get; set; }
         public RaceType RaceType { get; set; }
         public int Seed { get; set; }
         public string Description { get; set; }
@@ -41,7 +41,7 @@ namespace AC_Career_Mode
 
 #if DEBUG
 //  Different seeds for testing
-            Random random = new Random();
+            Random random = new();
 #endif
 #if RELEASE
             Random random = new Random(Seed);
@@ -135,20 +135,20 @@ namespace AC_Career_Mode
 
             if (RaceType == RaceType.Short)
             {
-                Laps = TotalLaps(0.15, 30, factor_seed);
+                Laps = (uint)TotalLaps(0.15, 30, factor_seed);
             }
             else if (RaceType == RaceType.Medium)
             {
-                Laps = TotalLaps(0.50, 70, factor_seed);
+                Laps = (uint)TotalLaps(0.50, 70, factor_seed);
             }
 
             else if (RaceType == RaceType.Long)
             {
-                Laps = TotalLaps(1.00, 150, factor_seed);
+                Laps = (uint)TotalLaps(1.00, 150, factor_seed);
             }
             else if (RaceType == RaceType.Endurance)
             {
-                Laps = TotalLaps(2.00, 350, factor_seed);
+                Laps = (uint)TotalLaps(2.00, 350, factor_seed);
             }
             else
             {

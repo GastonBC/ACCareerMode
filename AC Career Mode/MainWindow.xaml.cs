@@ -2,20 +2,27 @@
 using DemoLibrary;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Documents;
 
 namespace AC_Career_Mode
 {
+
+#pragma warning disable CS8605 // Unboxing a possibly null value.
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private GridViewColumnHeader listViewSortCol;
+        private SortAdorner listViewSortAdorner;
+
         const string TRACKS_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\content\tracks";
         const string CARS_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\content\cars";
         List<Track> AvailableTracks = new();
@@ -24,7 +31,7 @@ namespace AC_Career_Mode
 
         const string SavedTracks = "Tracks.bin";
         const string SavedCars = "Cars.bin";
-        Player Profile = null;
+        Player Profile;
 
         public MainWindow(Player profile)
         {
@@ -86,19 +93,22 @@ namespace AC_Career_Mode
 
             #region Race Tab
             Random random = new();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 25; i++)
             {
-                Array race_types = Enum.GetValues(typeof(RaceGroup));
+                Array race_groups = Enum.GetValues(typeof(RaceGroup));
+                Array race_types = Enum.GetValues(typeof(RaceType));
 
-                RaceGroup random_race_group = (RaceGroup)race_types.GetValue(random.Next(race_types.Length));
+                RaceGroup random_race_group = (RaceGroup)race_groups.GetValue(random.Next(race_groups.Length));
+                RaceType random_race_type = (RaceType)race_types.GetValue(random.Next(race_types.Length));
 
-                Race Race = new(RaceType.Short, AvailableTracks, AvailableCars, random_race_group);
+
+                Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group);
 
                 races.Add(Race);
-                UpdateDialogUserDetails();
-                WireUpRaceList();
-            }
 
+            }
+            UpdateDialogUserDetails();
+            WireUpRaceList();
             #endregion
 
             #region Profile Tab
@@ -111,20 +121,14 @@ namespace AC_Career_Mode
 
 
 
-        private void WireUpRaceList()
-        {
-            lb_RaceLst.ItemsSource = null;
-            lb_RaceLst.ItemsSource = races;
-            lb_RaceLst.DisplayMemberPath = "DisplayName";
-
-        }
+        
 
 
         #region RACE TAB
         private void selection_changed(object sender, SelectionChangedEventArgs e)
         {
             b_goracing.IsEnabled = true;
-            Race rc = lb_RaceLst.SelectedItem as Race;
+            Race rc = lv_RaceLst.SelectedItem as Race;
             tb_RaceDetails.Text = rc.Description;
 
         }
@@ -132,14 +136,14 @@ namespace AC_Career_Mode
         private void b_goracing_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            Race race = lb_RaceLst.SelectedItem as Race;
+            Race race = lv_RaceLst.SelectedItem as Race;
             FinishedRace race_dialog = new(race);
             race_dialog.ShowDialog();
 
             if (race_dialog.Result != null)
             {
                 // Add statistics to player
-                Profile.Money += race_dialog.Result.PrizeAwarded;
+                Profile.Money += (int)race_dialog.Result.PrizeAwarded;
                 Profile.Races++;
                 Profile.KmsDriven += Convert.ToInt32(race_dialog.Result.KmsDriven);
                 
@@ -157,8 +161,13 @@ namespace AC_Career_Mode
 
             
             this.ShowDialog();
+        }
 
-
+        private void WireUpRaceList()
+        {
+            lv_RaceLst.ItemsSource = null;
+            lv_RaceLst.ItemsSource = races;
+            lv_RaceLst.DisplayMemberPath = "DisplayName";
         }
 
         #endregion
@@ -168,9 +177,9 @@ namespace AC_Career_Mode
         {
             Profile = SqliteDataAccess.LoadPlayer(Profile.Id);
             toplabel_User.Content = Profile.Name;
-            toplabel_Money.Content = Profile.Money;
-            toplabel_Wins.Content = Profile.RaceWins;
-            toplabel_Races.Content = Profile.Races;
+            toplabel_Money.Content = $"${Profile.Money}";
+            toplabel_Wins.Content = $"🏆 {Profile.RaceWins}";
+            toplabel_Races.Content = $"Races: {Profile.Races}";
 
 
             tbl_ProfileDescription.Text = $"Name: {Profile.Name}\n" +
@@ -179,6 +188,26 @@ namespace AC_Career_Mode
                                           $"Loans: {Profile.Loans}\n" +
                                           $"Race Podiums: {Profile.RacePodiums}\n" +
                                           $"Kilometers Driven: {Profile.KmsDriven}\n";
+        }
+
+        private void ColHeader_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader column = (sender as GridViewColumnHeader);
+            string sortBy = column.Tag.ToString();
+            if (listViewSortCol != null)
+            {
+                AdornerLayer.GetAdornerLayer(listViewSortCol).Remove(listViewSortAdorner);
+                lv_RaceLst.Items.SortDescriptions.Clear();
+            }
+
+            ListSortDirection newDir = ListSortDirection.Ascending;
+            if (listViewSortCol == column && listViewSortAdorner.Direction == newDir)
+                newDir = ListSortDirection.Descending;
+
+            listViewSortCol = column;
+            listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
+            AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
+            lv_RaceLst.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
         }
 
     }

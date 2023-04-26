@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+#pragma warning disable IDE0063 // Use simple 'using' statement
 
 namespace AC_Career_Mode
 {
@@ -15,15 +16,15 @@ namespace AC_Career_Mode
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
 
-        internal static int RoundTen(double i)
+        internal static uint RoundTen(double i)
         {
-            return ((int)Math.Round(i / 10.0)) * 10;
+            return ((uint)Math.Round(i / 10.0)) * 10;
         }
         internal static ImageSource? RetriveImage(string imagePath)
         {
 
-            Uri myUri = new Uri(imagePath, UriKind.Absolute);
-            string str = imagePath.Substring(imagePath.Length - 3);
+            Uri myUri = new(imagePath, UriKind.Absolute);
+            
             try
             {
                 BitmapDecoder decoder = BitmapDecoder.Create(myUri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None);
@@ -38,7 +39,7 @@ namespace AC_Career_Mode
         //Serialize: pass your object to this method to serialize it
         public static void Serialize(object value, string path)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            BinaryFormatter formatter = new();
 
             using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
@@ -51,7 +52,7 @@ namespace AC_Career_Mode
         {
             if (!File.Exists(path)) { throw new FileNotFoundException(); }
 
-            BinaryFormatter formatter = new BinaryFormatter();
+            BinaryFormatter formatter = new();
 
             using (Stream fStream = File.OpenRead(path))
             {

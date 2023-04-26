@@ -5,9 +5,14 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC Daily Races", "AC Daily Races\AC Daily Races.csproj", "{1E620E2D-DE93-4921-870C-52F3ABACEE31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC Career Mode", "AC Career Mode\AC Career Mode.csproj", "{FAAC8BF9-91F7-4994-BF91-92FA7F71166C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AC Career Mode", "AC Career Mode\AC Career Mode.csproj", "{FAAC8BF9-91F7-4994-BF91-92FA7F71166C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoLibrary", "DemoLibrary\DemoLibrary.csproj", "{148083A6-7011-4A54-9189-7A1534E42581}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoLibrary", "DemoLibrary\DemoLibrary.csproj", "{148083A6-7011-4A54-9189-7A1534E42581}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CFBC69CE-BE15-4026-9A38-4FE0B0DEB20F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

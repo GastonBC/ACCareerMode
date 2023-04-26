@@ -74,9 +74,9 @@ namespace AC_Career_Mode
 
         private RaceResult? get_results()
         {
-            int laps;
-            int position;
-            if (int.TryParse(tb_laps.Text, out laps) && int.TryParse(tb_position.Text, out position))
+            uint laps;
+            uint position;
+            if (uint.TryParse(tb_laps.Text, out laps) && uint.TryParse(tb_position.Text, out position))
             {
                 if (position > 0)
                 {

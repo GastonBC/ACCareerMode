@@ -40,10 +40,8 @@ namespace AC_Career_Mode
 
             // Try to get it's top speed for race time calculations
             // Most cars dont have it or it's badly formatted
-            int top_speed = 200;
 
-
-            if (!Int32.TryParse(new string(car.Specs["topspeed"].Where(char.IsDigit).ToArray()), out top_speed))
+            if (!Int32.TryParse(new string(car.Specs["topspeed"].Where(char.IsDigit).ToArray()), out int top_speed))
             {
                 top_speed = 200;
             }

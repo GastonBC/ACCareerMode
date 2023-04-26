@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 using Dapper;
+#pragma warning disable IDE0063 // Use simple 'using' statement
 
 namespace DemoLibrary
 {
@@ -14,7 +15,7 @@ namespace DemoLibrary
     {
         public static List<Player> LoadPlayers()
         {
-            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 var output = cnn.Query<Player>("select * from Player", new DynamicParameters());
                 return output.ToList();
@@ -23,7 +24,7 @@ namespace DemoLibrary
 
         public static void SavePlayer(Player pName)
         {
-            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 cnn.Execute("insert into Player (Name) values (@Name)", pName);
             }
@@ -32,16 +33,18 @@ namespace DemoLibrary
         public static Player LoadPlayer(int Id)
         {
 
-            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
+
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 Player output = cnn.QueryFirst<Player>($"select * from Player where Id={Id}", new DynamicParameters());
                 return output;
             }
+
         }
 
         public static Player UpdatePlayer(Player player)
         {
-            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 cnn.Open();
                 string update_record = ($"UPDATE Player SET " +
