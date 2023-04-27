@@ -23,6 +23,8 @@ namespace AC_Career_Mode
         private GridViewColumnHeader listViewSortCol;
         private SortAdorner listViewSortAdorner;
 
+        List<Car> ForSale_Cars = new();
+
         const string TRACKS_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\content\tracks";
         const string CARS_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\content\cars";
         List<Track> AvailableTracks = new();
@@ -93,7 +95,7 @@ namespace AC_Career_Mode
 
             #region Race Tab
             Random random = new();
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 100; i++)
             {
                 Array race_groups = Enum.GetValues(typeof(RaceGroup));
                 Array race_types = Enum.GetValues(typeof(RaceLength));
@@ -102,7 +104,7 @@ namespace AC_Career_Mode
                 RaceLength random_race_type = (RaceLength)race_types.GetValue(random.Next(race_types.Length));
 
 
-                Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group);
+                Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group, i);
 
                 races.Add(Race);
 
@@ -110,13 +112,33 @@ namespace AC_Career_Mode
             UpdateDialogUserDetails();
             WireUpRaceList();
             #endregion
+
+
+
+            #region Market Tab
+
+            Random rd = new();
+            for (int i = 0; i < 5; i++)
+            {
+                int index = rd.Next(AvailableCars.Count);
+                ForSale_Cars.Add(AvailableCars[index]);
+            }
+
+            lv_car_sale.ItemsSource = ForSale_Cars;
+
+            //foreach (Car car1 in AvailableCars)
+            //{
+            //    SqliteDataAccess.InsertCar(car1);
+            //}
+
+
+            #endregion
         }
 
 
         #region Profile Tab
 
         // CODE
-
 
         #endregion
 
@@ -184,6 +206,8 @@ namespace AC_Career_Mode
         }
         #endregion
 
+
+
         #region OTHER
         private void UpdateDialogUserDetails()
         {
@@ -194,12 +218,16 @@ namespace AC_Career_Mode
             toplabel_Races.Content = $"Races: {Profile.Races}";
 
 
-            tbl_ProfileDescription.Text = $"Name: {Profile.Name}\n" +
-                                          $"Money: {Profile.Money}\n" +
-                                          $"Race Wins: {Profile.RacePodiums}\n" +
-                                          $"Loans: {Profile.Loans}\n" +
-                                          $"Race Podiums: {Profile.RacePodiums}\n" +
-                                          $"Kilometers Driven: {Profile.KmsDriven}\n";
+            List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(Profile);
+            lv_owned_cars.ItemsSource = null;
+            lv_owned_cars.ItemsSource = owned_cars;
+
+            //tbl_ProfileDescription.Text = $"Name: {Profile.Name}\n" +
+            //                              $"Money: {Profile.Money}\n" +
+            //                              $"Race Wins: {Profile.RacePodiums}\n" +
+            //                              $"Loans: {Profile.Loans}\n" +
+            //                              $"Race Podiums: {Profile.RacePodiums}\n" +
+            //                              $"Kilometers Driven: {Profile.KmsDriven}\n";
         }
 
         private void ColHeader_Click(object sender, RoutedEventArgs e)

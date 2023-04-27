@@ -78,9 +78,39 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                IEnumerable<Car>? output = cnn.Query<Car>($"select * from Car where Owner={profile.Id}", new DynamicParameters());
+                IEnumerable<Car>? output = cnn.Query<Car>($"select * from Cars where Owner='{profile.Id}'", new DynamicParameters());
 
                 return output.ToList();
+            }
+        }
+
+
+        public static void InsertCar(Car car)
+        {
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
+            {
+                    
+               
+
+                string cmd = "INSERT INTO Cars (Name,Description,Year,Class,Path,Preview,TopSpeed,Price,Mileage,Owner) VALUES (@Name, @Description, @Year, @Class, @Path, @Preview, @TopSpeed, @Price, @Mileage, @Owner)";
+
+                cnn.Execute(cmd, car);
+
+                //string insert_record = $"INSERT INTO Cars " +
+                //    $"Name='{car.Name}', " +
+                //    $"Description='{car.Description}', " +
+                //    $"Year='{car.Year}', " +
+                //    $"Class='{car.Class}', " +
+                //    $"Path='{car.Path}', " +
+                //    $"Preview='{car.Preview}', " +
+                //    $"TopSpeed='{car.TopSpeed}', " +
+                //    $"Price='10000', " +
+                //    $"Mileage='{car.Mileage}', +" +
+                //    $"Owner='1'";
+
+                //SQLiteCommand command = new(insert_record, cnn);
+                //command.ExecuteNonQuery();
+                //cnn.Close();
             }
         }
 

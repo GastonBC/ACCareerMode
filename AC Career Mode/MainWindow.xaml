@@ -88,26 +88,26 @@
                         <ColumnDefinition Width="210"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="417*"/>
-                        <RowDefinition Height="34*"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_car_sale" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.RowSpan="2" Margin="0,6,10,0" SelectionChanged="market_selection_changed" >
+                    <ListView x:Name="lv_car_sale" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.RowSpan="2" Margin="0,10,10,0" SelectionChanged="market_selection_changed" >
                         <ListView.View>
                             <GridView>
 
-                                <GridViewColumn Width="300">
+                                <GridViewColumn Width="300" DisplayMemberBinding="{Binding Name}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Car" Click="ColHeader_Click">Car</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="50">
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Price" Click="ColHeader_Click">Price</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="70">
+                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding Mileage}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Mileage" Click="ColHeader_Click">Mileage</GridViewColumnHeader>
                                     </GridViewColumn.Header>
@@ -121,8 +121,31 @@
             </TabItem>
             <TabItem Header="Profile">
                 <Grid>
-                    <TextBlock x:Name="tbl_ProfileDescription" TextWrapping="Wrap" Text="TextBlock" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="210"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="lv_owned_cars" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="market_selection_changed" Margin="0,10,10,0" Grid.RowSpan="2" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="300" DisplayMemberBinding="{Binding Name}">
+                                    <GridViewColumnHeader Tag="Car" Click="ColHeader_Click" Content="Car"/>
+                                </GridViewColumn>
 
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price}">
+                                    <GridViewColumnHeader Tag="Price" Click="ColHeader_Click" Content="Price"/>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding Mileage}">
+                                    <GridViewColumnHeader Tag="Mileage" Click="ColHeader_Click" Content="Mileage"/>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </Grid>
             </TabItem>
         </TabControl>

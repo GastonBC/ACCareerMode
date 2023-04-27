@@ -25,7 +25,7 @@ namespace AC_Career_Mode
         ///  Race length is determined first by the 70% the top speed of the car. To make the race short in time
         ///  If car has no top speed attribute, it's a random between a distance in kms and a factor between 60% and 100%
         ///  Seed changes with the day
-        public Race(RaceLength raceType, List<Track> tracks, List<Car> cars, RaceGroup group)
+        public Race(RaceLength raceType, List<Track> tracks, List<Car> cars, RaceGroup group, int seed_modifier = 0)
         {
             string date = DateTime.Today.ToString();
 
@@ -38,7 +38,7 @@ namespace AC_Career_Mode
 
             // DateAsSeed makes sure the race is changed daily
             // RaceType and group flavour the seed according to the type of race
-            Seed = DateAsSeed + (int)raceType + (int)group;
+            Seed = DateAsSeed + (int)raceType + (int)group + seed_modifier;
 
 #if DEBUG
 //  Different seeds for testing

@@ -21,6 +21,8 @@ namespace DemoLibrary
         public int TopSpeed { get; set; }
         public Dictionary<string, string> Specs { get; set; }
         public uint Mileage { get; set; }
+        public uint Price { get; set; }
+        public int Owner { get; set; }
 
 
         public static Car LoadCarJson(string json_path)
@@ -39,6 +41,7 @@ namespace DemoLibrary
             DirectoryInfo car_folder = Directory.GetParent(json_path).Parent;
             car.Preview = Directory.GetFiles(car_folder.ToString(), "preview.jpg", SearchOption.AllDirectories).First().ToString();
 
+            car.Path = car_folder.ToString();
 
             // Try to get it's top speed for race time calculations
             // Most cars dont have it or it's badly formatted
@@ -48,6 +51,9 @@ namespace DemoLibrary
                 top_speed = 200;
             }
             car.TopSpeed = top_speed;
+            car.Price = 10000;
+            car.Mileage = 0;
+            car.Owner = 1;
 
             return car;
         }
