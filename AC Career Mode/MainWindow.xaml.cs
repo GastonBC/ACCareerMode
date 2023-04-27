@@ -1,5 +1,4 @@
-﻿
-using DemoLibrary;
+﻿using DemoLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 
 /// TODO: Ideas
 /// Have a track section where you can buy tracks and they generate profit over time, they require maintenance and improvements to generate profit
@@ -38,13 +39,13 @@ namespace AC_Career_Mode
         List<Track> AvailableTracks = new();
         List<Car> AvailableCars = new();
         
-        Player Profile;
+        Player CurrentUser;
 
         Random random = new(Utils.TodaysSeed());
 
         public MainWindow(Player profile)
         {
-            Profile = profile;
+            CurrentUser = profile;
 
             InitializeComponent();
 
@@ -60,36 +61,38 @@ namespace AC_Career_Mode
             b_goracing.IsEnabled = true;
             Race rc = lv_RaceLst.SelectedItem as Race;
 
+
             track_background.Source = Utils.RetriveImage(rc.Track.PreviewPath);
+
             track_preview.Source = Utils.RetriveImage(rc.Track.OutlinePath);
             car_preview.Source = Utils.RetriveImage(rc.Car.Preview);
-
         }
 
         private void b_goracing_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
             Race race = lv_RaceLst.SelectedItem as Race;
+
             FinishedRace race_dialog = new(race);
+
             race_dialog.ShowDialog();
 
             if (race_dialog.Result != null)
             {
                 // Add statistics to player
-                Profile.Money += race_dialog.Result.PrizeAwarded;
-                Profile.Races++;
-                Profile.KmsDriven += Convert.ToInt32(race_dialog.Result.KmsDriven);
+                CurrentUser.Money += race_dialog.Result.PrizeAwarded;
+                CurrentUser.Races++;
+                CurrentUser.KmsDriven += Convert.ToInt32(race_dialog.Result.KmsDriven);
                 
                 if (race_dialog.Result.Position <= 3)
                 {
-                    Profile.RacePodiums++;
+                    CurrentUser.RacePodiums++;
                     if (race_dialog.Result.Position == 1)
                     {
-                        Profile.RaceWins++;
+                        CurrentUser.RaceWins++;
                     }
                 }
-                SqliteDataAccess.UpdatePlayer(Profile);
-                LoadDialogUserDetails();
+                UpdateAndRefreshPlayer(CurrentUser);
             }
 
             
@@ -121,14 +124,7 @@ namespace AC_Career_Mode
 
         #endregion
 
-        private bool HasPlayerEnoughMoney(Player player, int price)
-        {
-            if (player.Money >= price)
-            {
-                return true;
-            }
-            return false;
-        }
+
 
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
         {
@@ -136,11 +132,11 @@ namespace AC_Career_Mode
             {
                 Car selected_car = lv_car_sale.SelectedItem as Car;
 
-                if (HasPlayerEnoughMoney(Profile, selected_car.Price))
+                if (HasPlayerEnoughMoney(CurrentUser, selected_car.Price))
                 {
-                    selected_car.Owner = Profile.Id;
+                    selected_car.Owner = CurrentUser.Id;
                     selected_car.ForSale = false;
-                    Profile.Money -= selected_car.Price;
+                    CurrentUser.Money -= selected_car.Price;
                     // not yet in the database, insert new car in
                     if (selected_car.Id == null)
                     {
@@ -153,8 +149,7 @@ namespace AC_Career_Mode
                         SqliteDataAccess.UpdateCar(selected_car);
                     }
                 }
-                SqliteDataAccess.UpdatePlayer(Profile);
-                LoadDialogUserDetails();
+                UpdateAndRefreshPlayer(CurrentUser);
             }
         }
     }

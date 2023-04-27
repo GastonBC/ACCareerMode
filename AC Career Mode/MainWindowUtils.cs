@@ -62,25 +62,18 @@ namespace AC_Career_Mode
         }
 
 
-        private void LoadDialogUserDetails()
+        private void LoadDialogUserDetails(Player profile)
         {
-            Profile = SqliteDataAccess.LoadPlayer(Profile.Id);
-            toplabel_User.Content = Profile.Name;
-            toplabel_Money.Content = $"${Profile.Money}";
-            toplabel_Wins.Content = $"🏆 {Profile.RaceWins}";
-            toplabel_Races.Content = $"Races: {Profile.Races}";
+            Player profile_ = SqliteDataAccess.LoadPlayer(profile.Id);
+            toplabel_User.Content = profile_.Name;
+            toplabel_Money.Content = $"${profile_.Money}";
+            toplabel_Wins.Content = $"🏆 {profile_.RaceWins}";
+            toplabel_Races.Content = $"Races: {profile_.Races}";
 
 
-            List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(Profile);
+            List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(CurrentUser);
             lv_owned_cars.ItemsSource = null;
             lv_owned_cars.ItemsSource = owned_cars;
-
-            //tbl_ProfileDescription.Text = $"Name: {Profile.Name}\n" +
-            //                              $"Money: {Profile.Money}\n" +
-            //                              $"Race Wins: {Profile.RacePodiums}\n" +
-            //                              $"Loans: {Profile.Loans}\n" +
-            //                              $"Race Podiums: {Profile.RacePodiums}\n" +
-            //                              $"Kilometers Driven: {Profile.KmsDriven}\n";
         }
 
         private void ColHeader_Click(object sender, RoutedEventArgs e)
@@ -103,6 +96,11 @@ namespace AC_Career_Mode
             lv_RaceLst.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
         }
 
+        private void UpdateAndRefreshPlayer(Player profile)
+        {
+            SqliteDataAccess.UpdatePlayer(profile);
+            LoadDialogUserDetails(profile);
+        }
 
         private void GetAvailableCarsAndTracks()
         {
@@ -163,5 +161,14 @@ namespace AC_Career_Mode
             #endregion
         }
 
+
+        private bool HasPlayerEnoughMoney(Player player, int price)
+        {
+            if (player.Money >= price)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
