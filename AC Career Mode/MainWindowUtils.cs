@@ -30,6 +30,7 @@ namespace AC_Career_Mode
             for (int i = 0; i < 5; i++)
             {
                 int index = random.Next(AvailableCars.Count);
+                
                 ForSale_Cars.Add(AvailableCars[index]);
             }
 
@@ -61,7 +62,7 @@ namespace AC_Career_Mode
         }
 
 
-        private void UpdateDialogUserDetails()
+        private void LoadDialogUserDetails()
         {
             Profile = SqliteDataAccess.LoadPlayer(Profile.Id);
             toplabel_User.Content = Profile.Name;

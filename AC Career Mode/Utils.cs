@@ -16,9 +16,9 @@ namespace AC_Career_Mode
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
 
-        internal static uint RoundTen(double i)
+        internal static int RoundTen(double i)
         {
-            return ((uint)Math.Round(i / 10.0)) * 10;
+            return Convert.ToInt32(i / 10.0) * 10;
         }
 
         internal static int TodaysSeed()
@@ -50,6 +50,8 @@ namespace AC_Career_Mode
                 return null;
             }
         }
+
+
 
         //Serialize: pass your object to this method to serialize it
         public static void Serialize(object value, string path)

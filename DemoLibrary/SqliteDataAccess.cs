@@ -13,7 +13,12 @@ namespace DemoLibrary
 {
     public class SqliteDataAccess
     {
-        public static List<Player> LoadPlayers()
+        private static string LoadConnectionString(string id = "Default")
+        {
+            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+        }
+
+        public static List<Player> LoadAllPlayers()
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
@@ -35,14 +40,6 @@ namespace DemoLibrary
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 Player output = cnn.QueryFirst<Player>($"select * from Player where Id={Id}", new DynamicParameters());
-                return output;
-            }
-        }
-        public static Car LoadCar(int Id)
-        {
-            using (SQLiteConnection cnn = new(LoadConnectionString()))
-            {
-                Car output = cnn.QueryFirst<Car>($"select * from Car where Id={Id}", new DynamicParameters());
                 return output;
             }
         }
@@ -68,11 +65,23 @@ namespace DemoLibrary
             return LoadPlayer(player.Id);
         }
 
-        private static string LoadConnectionString(string id = "Default")
-        {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
-        }
 
+
+        public static Car LoadCar(int? Id)
+        {
+            if (Id != null)
+            {
+                using (SQLiteConnection cnn = new(LoadConnectionString()))
+                {
+                    Car output = cnn.QueryFirst<Car>($"select * from Car where Id={Id}", new DynamicParameters());
+                    return output;
+                }
+            }
+            else
+            {
+                throw new Exception("No id provided");
+            }
+        }
 
         public static List<Car> GetPlayerCars(Player profile)
         {
@@ -84,49 +93,59 @@ namespace DemoLibrary
             }
         }
 
-
         public static void InsertCar(Car car)
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                    
-               
-
-                string cmd = "INSERT INTO Cars (Name,Description,Year,Class,Path,Preview,TopSpeed,Price,Mileage,Owner) VALUES (@Name, @Description, @Year, @Class, @Path, @Preview, @TopSpeed, @Price, @Mileage, @Owner)";
+                string cmd = "INSERT INTO Cars (" +
+                    "Name," +
+                    "Description," +
+                    "Year," +
+                    "Class," +
+                    "Path," +
+                    "Preview," +
+                    "TopSpeed," +
+                    "Price," +
+                    "Kms," +
+                    "Owner" +
+                    ") VALUES (" +
+                    "@Name, " +
+                    "@Description, " +
+                    "@Year, " +
+                    "@Class, " +
+                    "@Path, " +
+                    "@Preview, " +
+                    "@TopSpeed, " +
+                    "@Price, " +
+                    "@Mileage, " +
+                    "@Owner)";
 
                 cnn.Execute(cmd, car);
-
-                //string insert_record = $"INSERT INTO Cars " +
-                //    $"Name='{car.Name}', " +
-                //    $"Description='{car.Description}', " +
-                //    $"Year='{car.Year}', " +
-                //    $"Class='{car.Class}', " +
-                //    $"Path='{car.Path}', " +
-                //    $"Preview='{car.Preview}', " +
-                //    $"TopSpeed='{car.TopSpeed}', " +
-                //    $"Price='10000', " +
-                //    $"Mileage='{car.Mileage}', +" +
-                //    $"Owner='1'";
-
-                //SQLiteCommand command = new(insert_record, cnn);
-                //command.ExecuteNonQuery();
-                //cnn.Close();
             }
         }
 
+        /// <summary>
+        /// Updates price, mileage and owner
+        /// </summary>
         public static Car UpdateCar(Car car)
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                cnn.Open();
-                string update_record = ($"UPDATE Player SET " +
-                    $"Mileage='{car.Mileage}', " +
-                    $"WHERE Id='{car.Id}'");
+                string cmd = "INSERT INTO Cars (" +
+                    
+                    "Price," +
+                    "Kms," +
+                    "Owner" +
 
-                SQLiteCommand command = new(update_record, cnn);
-                command.ExecuteNonQuery();
-                cnn.Close();
+                    ") VALUES (" +
+                    
+                    "@Price, " +
+                    "@Mileage, " +
+                    "@Owner)";
+
+                cnn.Execute(cmd, car);
             }
+
             return LoadCar(car.Id);
         }
     }

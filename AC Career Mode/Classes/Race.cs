@@ -8,11 +8,11 @@ namespace AC_Career_Mode
 {
     public class Race
     {
-        public uint Laps { get; set; }
+        public int Laps { get; set; }
         public Car Car { get; set; }
         public string DisplayName { get; set; }
         public Track Track { get; set; }
-        public uint Prize { get; set; }
+        public int Prize { get; set; }
         public RaceLength RaceType { get; set; }
         public int Seed { get; set; }
         public string Description { get; set; }
@@ -130,24 +130,27 @@ namespace AC_Career_Mode
 
             if (RaceType == RaceLength.Short)
             {
-                Laps = (uint)TotalLaps(0.15, 30, factor_seed);
+                Laps = TotalLaps(0.15, 30, factor_seed);
             }
+
             else if (RaceType == RaceLength.Medium)
             {
-                Laps = (uint)TotalLaps(0.50, 70, factor_seed);
+                Laps = TotalLaps(0.50, 70, factor_seed);
             }
 
             else if (RaceType == RaceLength.Long)
             {
-                Laps = (uint)TotalLaps(1.00, 150, factor_seed);
+                Laps = TotalLaps(1.00, 150, factor_seed);
             }
+
             else if (RaceType == RaceLength.Endurance)
             {
-                Laps = (uint)TotalLaps(2.00, 350, factor_seed);
+                Laps = TotalLaps(2.00, 350, factor_seed);
             }
+
             else
             {
-                throw (new Exception("Need a RaceLength"));
+                throw new Exception("Need a RaceLength");
             }
 
 

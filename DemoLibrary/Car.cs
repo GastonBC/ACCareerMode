@@ -10,8 +10,9 @@ namespace DemoLibrary
     [Serializable]
     public class Car
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
+        public bool ForSale { get; set; }
         public string Description { get; set; }
         public string Year { get; set; }
         public string Class { get; set; }
@@ -20,9 +21,9 @@ namespace DemoLibrary
         public string Preview { get; set; }
         public int TopSpeed { get; set; }
         public Dictionary<string, string> Specs { get; set; }
-        public uint Mileage { get; set; }
-        public uint Price { get; set; }
-        public int Owner { get; set; }
+        public int Mileage { get; set; }
+        public int Price { get; set; }
+        public int? Owner { get; set; }
 
 
         public static Car LoadCarJson(string json_path)
@@ -51,9 +52,16 @@ namespace DemoLibrary
                 top_speed = 200;
             }
             car.TopSpeed = top_speed;
-            car.Price = 10000;
+            
             car.Mileage = 0;
-            car.Owner = 1;
+            car.Owner = null;
+            car.ForSale = true;
+            car.Id = null;
+
+            /// Price cars according their type
+            /// Maybe a json file with middle prices
+
+            car.Price = 10000;
 
             return car;
         }
