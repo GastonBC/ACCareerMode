@@ -27,18 +27,12 @@ namespace AC_Career_Mode
         ///  Seed changes with the day
         public Race(RaceLength raceType, List<Track> tracks, List<Car> cars, RaceGroup group, int seed_modifier = 0)
         {
-            string date = DateTime.Today.ToString();
-
             RaceType = raceType;
             Group = group;
-            int Year = DateTime.Now.Year;
-            int Month = DateTime.Now.Month;
-            int Day = DateTime.Now.Day;
-            int DateAsSeed = Year*Month*Day;
 
-            // DateAsSeed makes sure the race is changed daily
+            // TodaysSeed makes sure the race is changed daily
             // RaceType and group flavour the seed according to the type of race
-            Seed = DateAsSeed + (int)raceType + (int)group + seed_modifier;
+            Seed = Utils.TodaysSeed() + (int)raceType + (int)group + seed_modifier;
 
 #if DEBUG
 //  Different seeds for testing
@@ -176,7 +170,7 @@ namespace AC_Career_Mode
 
             DisplayName = Car.Name + " - " + Track.Name;
             TotalLength = Math.Round(Track.LengthKm * Laps, 1);
-            Prize = Utils.RoundTen(TotalLength) * 300;
+            Prize = Utils.RoundTen(TotalLength) * 600;
 
             Description = Track.Name + "\n" +
                           "Track Length: " + Math.Round(Track.LengthKm, 1) + " km" + "\n" +
@@ -214,7 +208,7 @@ namespace AC_Career_Mode
             //}
 
             double LengthRandomized = TopRaceLength * factor;
-            return (int)Math.Round(LengthRandomized / Track.LengthKm);
+            return Convert.ToInt32(LengthRandomized / Track.LengthKm);
         }
 
     }

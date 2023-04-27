@@ -20,6 +20,21 @@ namespace AC_Career_Mode
         {
             return ((uint)Math.Round(i / 10.0)) * 10;
         }
+
+        internal static int TodaysSeed()
+        {
+            string date = DateTime.Today.ToString();
+
+            int Year = DateTime.Now.Year;
+            int Month = DateTime.Now.Month;
+            int Day = DateTime.Now.Day;
+            int DateAsSeed = Year * Month * Day;
+
+            // DateAsSeed makes sure the race is changed daily
+            // RaceType and group flavour the seed according to the type of race
+            return DateAsSeed;
+        }
+
         internal static ImageSource? RetriveImage(string imagePath)
         {
 
