@@ -1,14 +1,9 @@
 ﻿using DemoLibrary;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -20,10 +15,6 @@ using System.Windows.Documents;
 /// Finance section, where you can take loans and repay them, view your spendings and earnings.
 /// "History" section, with a log of your races, position and the races of your teammates
 
-/// TODO: marketplace cars need to be serialized so when you buy one it disappears from that list
-/// TODO: prices per car type, maybe a json file with middle prices. ie Formula Hybrid price is a random around 1.500.000
-/// TODO: Format numbers in tables
-/// BUG: Pressing a column header to sort will crash the window (only columns with numbers work)
 /// BUG: Some races require 1000nds of laps. This might be due to lacking information from AC (track length, car top speed)
 
 
@@ -32,18 +23,16 @@ namespace AC_Career_Mode
 {
     public partial class MainWindow : Window
     {
-        List<Car> ForSale_Cars = new();
         List<Car> DailyCars = new();
 
         List<Track> AvailableTracks = new();
         List<Car> AvailableCars = new();
 
         List<Race> AllRaces = new();
-        
 
         Player CurrentUser;
 
-        Random random = new(Utils.TodaysSeed());
+        Random RandomDaily = new(Utils.TodaysSeed());
 
         public MainWindow(Player profile)
         {
@@ -58,23 +47,24 @@ namespace AC_Career_Mode
         }
 
         #region RACE TAB
-        private void selection_changed(object sender, SelectionChangedEventArgs e)
+        private void RaceLv_SelChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lv_RaceLst.SelectedItem == null)
             {
                 return;
             }
-                b_goracing.IsEnabled = true;
-                Race rc = lv_RaceLst.SelectedItem as Race;
+
+            b_GoRacing.IsEnabled = true;
+            Race rc = lv_RaceLst.SelectedItem as Race;
 
 
-                track_background.Source = Utils.RetriveImage(rc.Track.PreviewPath);
+            track_background.Source = Utils.RetriveImage(rc.Track.PreviewPath);
 
-                track_preview.Source = Utils.RetriveImage(rc.Track.OutlinePath);
-                car_preview.Source = Utils.RetriveImage(rc.Car.Preview);
+            track_preview.Source = Utils.RetriveImage(rc.Track.OutlinePath);
+            car_preview.Source = Utils.RetriveImage(rc.Car.Preview);
         }
 
-        private void b_goracing_Click(object sender, RoutedEventArgs e)
+        private void b_GoRacing_Click(object sender, RoutedEventArgs e)
         {
             
             Race race = lv_RaceLst.SelectedItem as Race;
@@ -118,9 +108,9 @@ namespace AC_Career_Mode
 
                 Utils.Serialize(AllRaces, GlobalVars.SavedRaces);
 
+                // TODO: Add mileage to car
+
                 RefreshRaceList();
-
-
                 UpdateAndRefreshPlayer(CurrentUser);
             }
 
@@ -128,7 +118,7 @@ namespace AC_Career_Mode
             this.ShowDialog();
         }
 
-        private void chk_FilterRaces_click(object sender, RoutedEventArgs e)
+        private void chk_FilterRaces_Click(object sender, RoutedEventArgs e)
         {
             List<Race> FilteredRaces = new();
 
@@ -154,13 +144,13 @@ namespace AC_Career_Mode
 
 
         #region MARKET TAB
-        private void market_selection_changed(object sender, SelectionChangedEventArgs e)
+        private void MarketLv_SelChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lv_car_sale.SelectedItem != null)
             {
                 b_BuyCar.IsEnabled = true;
                 Car car = lv_car_sale.SelectedItem as Car;
-                img_forsalecar.Source = Utils.RetriveImage(car.Preview);
+                Img_ForSaleCar.Source = Utils.RetriveImage(car.Preview);
             }
             else
             {

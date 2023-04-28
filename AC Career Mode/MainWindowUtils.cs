@@ -44,9 +44,9 @@ namespace AC_Career_Mode
             else
             {
                 // Using a seed so cars are changed daily
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 25; i++)
                 {
-                    int index = random.Next(AvailableCars.Count);
+                    int index = RandomDaily.Next(AvailableCars.Count);
                     DailyCars.Add(AvailableCars[index]);
                 }
 
@@ -76,8 +76,8 @@ namespace AC_Career_Mode
                     Array race_groups = Enum.GetValues(typeof(RaceGroup));
                     Array race_types = Enum.GetValues(typeof(RaceLength));
 
-                    RaceGroup random_race_group = (RaceGroup)race_groups.GetValue(random.Next(race_groups.Length));
-                    RaceLength random_race_type = (RaceLength)race_types.GetValue(random.Next(race_types.Length));
+                    RaceGroup random_race_group = (RaceGroup)race_groups.GetValue(RandomDaily.Next(race_groups.Length));
+                    RaceLength random_race_type = (RaceLength)race_types.GetValue(RandomDaily.Next(race_types.Length));
 
 
                     Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group, i);
@@ -113,8 +113,7 @@ namespace AC_Career_Mode
         GridViewColumnHeader _lastHeaderClicked = null;
         ListSortDirection _lastDirection = ListSortDirection.Ascending;
 
-        void GridViewColumnHeaderClickedHandler(object sender,
-                                                RoutedEventArgs e)
+        void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
         {
             GridViewColumnHeader? headerClicked = e.OriginalSource as GridViewColumnHeader;
 

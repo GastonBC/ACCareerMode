@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AC_Career_Mode
 {
@@ -33,9 +22,9 @@ namespace AC_Career_Mode
             Result = null;
         }
 
-        private void b_race_finish(object sender, RoutedEventArgs e)
+        private void b_RaceFinish_Click(object sender, RoutedEventArgs e)
         {
-            Result = get_results();
+            Result = GetRaceResults();
 
             if (Result != null)
             {
@@ -47,23 +36,23 @@ namespace AC_Career_Mode
             this.Close();
         }
 
-        private void b_cancel_Click(object sender, RoutedEventArgs e)
+        private void b_RaceCancel_Click(object sender, RoutedEventArgs e)
         {
             Result = null;
             this.Close();
         }
 
-        private void pos_txt_changed(object sender, TextChangedEventArgs e)
+        private void tb_Pos_Changed(object sender, TextChangedEventArgs e)
         {
-            is_race_valid();
+            IsRaceValid();
         }
 
-        private void laps_txt_changed(object sender, TextChangedEventArgs e)
+        private void tb_Laps_Changed(object sender, TextChangedEventArgs e)
         {
-            is_race_valid();
+            IsRaceValid();
         }
 
-        private bool is_race_valid()
+        private bool IsRaceValid()
         {
             if (string.IsNullOrEmpty(tb_laps.Text) || string.IsNullOrEmpty(tb_position.Text))
             {
@@ -71,7 +60,13 @@ namespace AC_Career_Mode
                 return false;
             }
 
-            if (get_results == null)
+            // laps or position is a negative number
+            if (!uint.TryParse(tb_laps.Text, out _) || !uint.TryParse(tb_position.Text, out _))
+                {
+                return false;
+            }
+
+            if (GetRaceResults == null)
             {
                 return false;
             }
@@ -80,7 +75,7 @@ namespace AC_Career_Mode
             return true;
         }
 
-        private RaceResult? get_results()
+        private RaceResult? GetRaceResults()
         {
             int laps;
             int position;

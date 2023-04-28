@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace DemoLibrary
 {
@@ -19,6 +14,7 @@ namespace DemoLibrary
         public List<string> Tags { get; set; }
         public string Path { get; set; }
         public string Preview { get; set; }
+        public CarGroup Group { get; set; }
         public int TopSpeed { get; set; }
         public Dictionary<string, string> Specs { get; set; }
         public int Mileage { get; set; }
@@ -52,7 +48,20 @@ namespace DemoLibrary
                 top_speed = 200;
             }
             car.TopSpeed = top_speed;
+
+            ManualCarValues manual_values = ManualCarValues.LoadCarValues().Find(c => c.Name == car.Name);
             
+            if (manual_values == null)
+            {
+                throw new Exception($"Car not manually inputted. {car.Name}");
+            }
+
+
+            double PriceFactor = Utils.GetRandomNumber(0.9, 1.2, car.Path.Length);
+
+            car.Price = Utils.RoundHunred(manual_values.Price * PriceFactor);
+
+            car.Group = manual_values.Group;
             car.Mileage = 0;
             car.Owner = null;
             car.ForSale = 1;
@@ -60,8 +69,6 @@ namespace DemoLibrary
 
             /// Price cars according their type
             /// Maybe a json file with middle prices
-
-            car.Price = 10000;
 
             return car;
         }

@@ -30,7 +30,7 @@
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
 
-                    <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,6,5,0" SelectionChanged="selection_changed" Grid.RowSpan="2" >
+                    <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,5,0" SelectionChanged="RaceLv_SelChanged" Grid.RowSpan="2" >
                         <ListView.View>
                             <GridView>
 
@@ -46,7 +46,7 @@
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="90" DisplayMemberBinding="{Binding Prize}">
+                                <GridViewColumn Width="90" DisplayMemberBinding="{Binding Prize, StringFormat={}{0:##,#}}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Prize" Click="GridViewColumnHeaderClickedHandler">Prize</GridViewColumnHeader>
                                     </GridViewColumn.Header>
@@ -73,8 +73,8 @@
                     <Image x:Name="track_background" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" VerticalAlignment="Top" Height="100" />
                     <Image x:Name="track_preview" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" Height="100" VerticalAlignment="Top" />
                     <Image x:Name="car_preview" Grid.Column="1"  Grid.Row="1" Margin="2,115,2,0" Height="100" VerticalAlignment="Top" />
-                    <Button x:Name="b_goracing" IsEnabled="False" Content="Race!" Grid.Row="2" Click="b_goracing_Click" Grid.Column="1" />
-                    <CheckBox x:Name="chk_FilterRaces" Content="Show races I can take" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="chk_FilterRaces_click"/>
+                    <Button x:Name="b_GoRacing" IsEnabled="False" Content="Race!" Grid.Row="2" Click="b_GoRacing_Click" Grid.Column="1" />
+                    <CheckBox x:Name="chk_FilterRaces" Content="Show races I can take" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="chk_FilterRaces_Click"/>
 
                 </Grid>
 
@@ -92,7 +92,7 @@
                         <RowDefinition/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_car_sale" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.RowSpan="2" Margin="0,0,5,0" SelectionChanged="market_selection_changed" Grid.Row="1" >
+                    <ListView x:Name="lv_car_sale" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.RowSpan="2" Margin="0,0,5,0" SelectionChanged="MarketLv_SelChanged" Grid.Row="1" >
                         <ListView.View>
                             <GridView>
 
@@ -102,13 +102,13 @@
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price}">
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Price">Price</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding Mileage}">
+                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding Mileage, StringFormat={}{0:##,#}}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Mileage">Mileage</GridViewColumnHeader>
                                     </GridViewColumn.Header>
@@ -116,7 +116,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Image x:Name="img_forsalecar" Grid.Column="1"  Margin="2,10,2,0" VerticalAlignment="Top" Height="100" Grid.RowSpan="2" />
+                    <Image x:Name="Img_ForSaleCar" Grid.Column="1"  Margin="2,10,2,0" VerticalAlignment="Top" Height="100" Grid.RowSpan="2" />
                     <Button x:Name="b_BuyCar" Grid.Column="1" Content="Buy" IsEnabled="False" Grid.Row="2" Click="b_BuyCar_Click"/>
                 </Grid>
             </TabItem>
@@ -138,11 +138,11 @@
                                     <GridViewColumnHeader Tag="Car" Content="Car"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price}">
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
                                     <GridViewColumnHeader Tag="Price" Content="Price"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding Mileage}">
+                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding StringFormat={}{0:##,#}}">
                                     <GridViewColumnHeader Tag="Mileage" Content="Mileage"/>
                                 </GridViewColumn>
                             </GridView>
@@ -164,7 +164,7 @@
                         <RowDefinition/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_HistoryRecords"   SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="market_selection_changed" Margin="0,0,5,0" Grid.RowSpan="2" Grid.Row="1" >
+                    <ListView x:Name="lv_HistoryRecords"   SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="MarketLv_SelChanged" Margin="0,0,5,0" Grid.RowSpan="2" Grid.Row="1" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="300" DisplayMemberBinding="{Binding Date}">
