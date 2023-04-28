@@ -59,12 +59,14 @@ namespace AC_Career_Mode
 
         private void double_click_player(object sender, MouseButtonEventArgs e)
         {
-            Player profile = lb_Players.SelectedItem as Player;
-            MainWindow wn = new(profile);
-            this.Close();
-            
-            wn.Show();
+            if (lb_Players.SelectedItem != null)
+            {
+                Player profile = lb_Players.SelectedItem as Player;
+                MainWindow wn = new(profile);
+                this.Close();
 
+                wn.Show();
+            }
         }
     }
 }

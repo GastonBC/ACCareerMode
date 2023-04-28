@@ -33,6 +33,7 @@ namespace AC_Career_Mode
     public partial class MainWindow : Window
     {
         List<Car> ForSale_Cars = new();
+        List<Car> DailyCars = new();
 
         List<Track> AvailableTracks = new();
         List<Car> AvailableCars = new();
@@ -174,18 +175,28 @@ namespace AC_Career_Mode
 
                 if (HasPlayerEnoughMoney(CurrentUser, selected_car.Price))
                 {
-                    selected_car.Owner = CurrentUser.Id;
-                    selected_car.ForSale = 0;
+                    
+
                     CurrentUser.Money -= selected_car.Price;
-                    // not yet in the database, insert new car in
+
+                    // Car comes from DailyCar list (bin object)
+                    // Remove the car from DailyCar, serialize the list
+                    // Insert to database
                     if (selected_car.Id == null)
                     {
+                        int idx = DailyCars.IndexOf(selected_car);
+                        DailyCars.RemoveAt(idx);
+
+                        selected_car.Owner = CurrentUser.Id;
+                        selected_car.ForSale = 0;
                         SqliteDataAccess.InsertCar(selected_car);
                     }
 
                     // else search the database and update the entry
                     else
                     {
+                        selected_car.Owner = CurrentUser.Id;
+                        selected_car.ForSale = 0;
                         SqliteDataAccess.UpdateCar(selected_car);
                     }
                 }

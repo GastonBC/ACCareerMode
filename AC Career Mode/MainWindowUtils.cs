@@ -21,16 +21,19 @@ namespace AC_Career_Mode
 
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Serializes the dailycar list, loads it and joins with DB cars for sale, then 
+        /// </summary>
         public void RefreshMarket()
         {
-            List<Car> DailyCars = (List<Car>)Utils.Deserialize(GlobalVars.SavedMarket);
-            List<Car> CarsForSale = SqliteDataAccess.LoadForSaleCars();
-            lv_car_sale.ItemsSource = ForSale_Cars.Concat(CarsForSale);
+            Utils.Serialize(DailyCars, GlobalVars.SavedMarket);
+            PopulateMarketList();
         }
 
         private void PopulateMarketList()
         {
-            List<Car> DailyCars = new();
+            lv_car_sale.ItemsSource = null;
+            DailyCars.Clear();
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.SavedMarket) && DateTime.Today == File.GetLastWriteTime(GlobalVars.SavedMarket).Date)
             {
@@ -44,14 +47,15 @@ namespace AC_Career_Mode
                 for (int i = 0; i < 5; i++)
                 {
                     int index = random.Next(AvailableCars.Count);
-                    ForSale_Cars.Add(AvailableCars[index]);
+                    DailyCars.Add(AvailableCars[index]);
                 }
 
                 Utils.Serialize(DailyCars, GlobalVars.SavedMarket);
             }
+
             List<Car> CarsForSale = SqliteDataAccess.LoadForSaleCars();
 
-            lv_car_sale.ItemsSource = ForSale_Cars.Concat(CarsForSale);
+            lv_car_sale.ItemsSource = CarsForSale.Concat(DailyCars);
         }
 
         private void PopulateRaceList()

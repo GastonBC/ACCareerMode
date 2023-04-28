@@ -18,6 +18,8 @@ namespace DemoLibrary
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
+
+        #region Players db
         public static List<Player> LoadAllPlayers()
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
@@ -65,7 +67,10 @@ namespace DemoLibrary
             return LoadPlayer(player.Id);
         }
 
+        #endregion
 
+
+        #region Cars db
 
         public static Car LoadCar(int? Id)
         {
@@ -107,7 +112,8 @@ namespace DemoLibrary
                     "TopSpeed," +
                     "Price," +
                     "Kms," +
-                    "Owner" +
+                    "Owner, " +
+                    "ForSale" +
                     ") VALUES (" +
                     "@Name, " +
                     "@Description, " +
@@ -118,7 +124,8 @@ namespace DemoLibrary
                     "@TopSpeed, " +
                     "@Price, " +
                     "@Mileage, " +
-                    "@Owner)";
+                    "@Owner, " +
+                    "@ForSale)";
 
                 cnn.Execute(cmd, car);
             }
@@ -156,5 +163,7 @@ namespace DemoLibrary
                 return output;
             }
         }
+
+        #endregion
     }
 }
