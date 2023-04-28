@@ -30,37 +30,37 @@
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
-                    <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,6,5,10" SelectionChanged="selection_changed" Grid.RowSpan="2" >
+                    <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,6,5,0" SelectionChanged="selection_changed" Grid.RowSpan="2" >
                         <ListView.View>
                             <GridView>
-
+                                
                                 <GridViewColumn Width="150" DisplayMemberBinding="{Binding Car.Name}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Car" Click="ColHeader_Click">Car</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Car" Click="GridViewColumnHeaderClickedHandler">Car</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Track.Name}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Track" Click="ColHeader_Click">Track</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Track" Click="GridViewColumnHeaderClickedHandler">Track</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="90" DisplayMemberBinding="{Binding Prize}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Prize" Click="ColHeader_Click">Prize</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Prize" Click="GridViewColumnHeaderClickedHandler">Prize</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Laps}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Laps" Click="ColHeader_Click">Laps</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Laps" Click="GridViewColumnHeaderClickedHandler">Laps</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding TotalLength}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Length" Click="ColHeader_Click">Length</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Length" Click="GridViewColumnHeaderClickedHandler">Length</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
@@ -74,11 +74,12 @@
                     <Image x:Name="track_preview" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" Height="100" VerticalAlignment="Top" />
                     <Image x:Name="car_preview" Grid.Column="1"  Grid.Row="1" Margin="2,115,2,0" Height="100" VerticalAlignment="Top" />
                     <Button x:Name="b_goracing" IsEnabled="False" Content="Race!" Grid.Row="2" Click="b_goracing_Click" Grid.Column="1" />
+                    <CheckBox x:Name="chk_FilterRaces" Content="Show races I can take" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="chk_FilterRaces_click"/>
 
                 </Grid>
 
             </TabItem>
-            <TabItem Header="Bank" />
+            <TabItem Header="Finance" />
 
             <TabItem Header="Market" >
                 <Grid>
@@ -96,19 +97,19 @@
 
                                 <GridViewColumn Width="300" DisplayMemberBinding="{Binding Name}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Car" Click="ColHeader_Click">Car</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Car">Car</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Price" Click="ColHeader_Click">Price</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Price">Price</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="70" DisplayMemberBinding="{Binding Mileage}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Mileage" Click="ColHeader_Click">Mileage</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Mileage">Mileage</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
                             </GridView>
@@ -128,19 +129,51 @@
                         <RowDefinition/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_owned_cars" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="market_selection_changed" Margin="0,10,10,0" Grid.RowSpan="2" >
+                    <ListView x:Name="lv_owned_cars" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="OwnedCars_SelChanged" Margin="0,10,10,0" Grid.RowSpan="2" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="300" DisplayMemberBinding="{Binding Name}">
-                                    <GridViewColumnHeader Tag="Car" Click="ColHeader_Click" Content="Car"/>
+                                    <GridViewColumnHeader Tag="Car" Content="Car"/>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="50" DisplayMemberBinding="{Binding Price}">
-                                    <GridViewColumnHeader Tag="Price" Click="ColHeader_Click" Content="Price"/>
+                                    <GridViewColumnHeader Tag="Price" Content="Price"/>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="70" DisplayMemberBinding="{Binding Mileage}">
-                                    <GridViewColumnHeader Tag="Mileage" Click="ColHeader_Click" Content="Mileage"/>
+                                    <GridViewColumnHeader Tag="Mileage" Content="Mileage"/>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Image x:Name="img_OwnedCar" Grid.Column="1"  Margin="2,10,2,0" VerticalAlignment="Top" Height="100" />
+                    <Button x:Name="b_SellCar" Grid.Column="1" Content="Sell" IsEnabled="False" Grid.Row="1" Click="b_SellCar_Click"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="History">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="210"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="lv_HistoryRecords"   SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="market_selection_changed" Margin="0,10,10,0" Grid.RowSpan="2" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="300" DisplayMemberBinding="{Binding Date}">
+                                    <GridViewColumnHeader Tag="Car" Content="Car" />
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding LogType}">
+                                    <GridViewColumnHeader Tag="Price" Content="Price"/>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding Description}">
+                                    <GridViewColumnHeader Tag="Mileage" Content="Mileage"/>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
@@ -148,9 +181,9 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Label x:Name="toplabel_User" Content="Gas" />
-        <Label x:Name="toplabel_Money" Content="$10.000" Grid.Column="1" />
-        <Label x:Name="toplabel_Wins" Content="🏆 11" Grid.Column="2" />
-        <Label x:Name="toplabel_Races" Content="Races: 25" Grid.Column="3" />
+        <Label x:Name="toplabel_User" Content="Gas" FontWeight="Bold" />
+        <Label x:Name="toplabel_Money" Content="$10.000" Grid.Column="1" FontWeight="Bold" />
+        <Label x:Name="toplabel_Wins" Content="🏆 11" Grid.Column="2" FontWeight="Bold" />
+        <Label x:Name="toplabel_Races" Content="Races: 25" Grid.Column="3" FontWeight="Bold" />
     </Grid>
 </Window>

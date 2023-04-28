@@ -6,9 +6,12 @@ using System.Linq;
 
 namespace AC_Career_Mode
 {
+    [Serializable]
     public class Race
     {
+        public string Guid { get; set; }
         public int Laps { get; set; }
+        public bool Completed { get; set; }
         public Car Car { get; set; }
         public string DisplayName { get; set; }
         public Track Track { get; set; }
@@ -27,6 +30,7 @@ namespace AC_Career_Mode
         ///  Seed changes with the day
         public Race(RaceLength raceType, List<Track> tracks, List<Car> cars, RaceGroup group, int seed_modifier = 0)
         {
+            Guid = new Guid().ToString();
             RaceType = raceType;
             Group = group;
 
@@ -174,6 +178,7 @@ namespace AC_Career_Mode
             DisplayName = Car.Name + " - " + Track.Name;
             TotalLength = Math.Round(Track.LengthKm * Laps, 1);
             Prize = Utils.RoundTen(TotalLength) * 600;
+            Completed = false;
 
             Description = Track.Name + "\n" +
                           "Track Length: " + Math.Round(Track.LengthKm, 1) + " km" + "\n" +

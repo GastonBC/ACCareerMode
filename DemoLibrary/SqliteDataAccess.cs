@@ -73,7 +73,7 @@ namespace DemoLibrary
             {
                 using (SQLiteConnection cnn = new(LoadConnectionString()))
                 {
-                    Car output = cnn.QueryFirst<Car>($"select * from Car where Id={Id}", new DynamicParameters());
+                    Car output = cnn.QueryFirst<Car>($"select * from Cars where Id={Id}", new DynamicParameters());
                     return output;
                 }
             }
@@ -131,22 +131,30 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                string cmd = "INSERT INTO Cars (" +
-                    
-                    "Price," +
-                    "Kms," +
-                    "Owner" +
 
-                    ") VALUES (" +
-                    
-                    "@Price, " +
-                    "@Mileage, " +
-                    "@Owner)";
+                cnn.Open();
+                string update_record = $"UPDATE Cars SET " +
+                    $"Price='{car.Price}', " +
+                    $"Kms='{car.Mileage}', " +
+                    $"ForSale='{car.ForSale}', " +
+                    $"Owner='{car.Owner}' " +
+                    $"WHERE Id='{car.Id}'";
 
-                cnn.Execute(cmd, car);
+                SQLiteCommand command = new(update_record, cnn);
+                command.ExecuteNonQuery();
+                cnn.Close();
+
+                return LoadCar(car.Id);
             }
+        }
 
-            return LoadCar(car.Id);
+        public static List<Car> LoadForSaleCars()
+        {
+            using (SQLiteConnection cnn = new(LoadConnectionString()))
+            {
+                var output = cnn.Query<Car>($"select * from Cars where Owner=NULL OR ForSale=1", new DynamicParameters()).ToList();
+                return output;
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 
 #pragma warning disable CS8604 // Possible null reference argument.
@@ -31,14 +32,14 @@ namespace AC_Career_Mode
 {
     public partial class MainWindow : Window
     {
-        private GridViewColumnHeader listViewSortCol;
-        private SortAdorner listViewSortAdorner;
-
         List<Car> ForSale_Cars = new();
 
         List<Track> AvailableTracks = new();
         List<Car> AvailableCars = new();
+
+        List<Race> AllRaces = new();
         
+
         Player CurrentUser;
 
         Random random = new(Utils.TodaysSeed());
@@ -50,7 +51,7 @@ namespace AC_Career_Mode
             InitializeComponent();
 
             GetAvailableCarsAndTracks();
-            LoadDialogUserDetails();
+            LoadDialogUserDetails(profile);
             PopulateRaceList();
             PopulateMarketList();
         }
@@ -58,20 +59,36 @@ namespace AC_Career_Mode
         #region RACE TAB
         private void selection_changed(object sender, SelectionChangedEventArgs e)
         {
-            b_goracing.IsEnabled = true;
-            Race rc = lv_RaceLst.SelectedItem as Race;
+            if (lv_RaceLst.SelectedItem == null)
+            {
+                return;
+            }
+                b_goracing.IsEnabled = true;
+                Race rc = lv_RaceLst.SelectedItem as Race;
 
 
-            track_background.Source = Utils.RetriveImage(rc.Track.PreviewPath);
+                track_background.Source = Utils.RetriveImage(rc.Track.PreviewPath);
 
-            track_preview.Source = Utils.RetriveImage(rc.Track.OutlinePath);
-            car_preview.Source = Utils.RetriveImage(rc.Car.Preview);
+                track_preview.Source = Utils.RetriveImage(rc.Track.OutlinePath);
+                car_preview.Source = Utils.RetriveImage(rc.Car.Preview);
         }
 
         private void b_goracing_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            
             Race race = lv_RaceLst.SelectedItem as Race;
+
+            List<Car> PlayerCars = SqliteDataAccess.GetPlayerCars(CurrentUser);
+
+
+            // Player doesn't have the needed car
+            if (!PlayerCars.Any(pCar => pCar.Name == race.Car.Name))
+            {
+                MessageBox.Show("You don't have the required car!");
+                return;
+            }
+
+            this.Hide();
 
             FinishedRace race_dialog = new(race);
 
@@ -92,6 +109,17 @@ namespace AC_Career_Mode
                         CurrentUser.RaceWins++;
                     }
                 }
+
+                // Update race completed status and save to bin file
+                int idx = AllRaces.IndexOf(race);
+                race.Completed = true;
+                AllRaces[idx] = race;
+
+                Utils.Serialize(AllRaces, GlobalVars.SavedRaces);
+
+                RefreshRaceList();
+
+
                 UpdateAndRefreshPlayer(CurrentUser);
             }
 
@@ -99,11 +127,29 @@ namespace AC_Career_Mode
             this.ShowDialog();
         }
 
+        private void chk_FilterRaces_click(object sender, RoutedEventArgs e)
+        {
+            List<Race> FilteredRaces = new();
+
+            if (chk_FilterRaces.IsChecked == true)
+            {
+                List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(CurrentUser);
+
+                IEnumerable<string>? names = AllRaces.Select(r => r.Car.Name).Intersect(owned_cars.Select(c => c.Name));
+                List<Race> FilteredList = AllRaces.Where(r => names.Contains(r.Car.Name)).ToList();
+
+                lv_RaceLst.ItemsSource = FilteredList;
+            }
+            else
+            {
+                lv_RaceLst.ItemsSource = AllRaces;
+            }
+        }
 
 
         #endregion
 
-        
+
 
 
         #region MARKET TAB
@@ -120,12 +166,6 @@ namespace AC_Career_Mode
                 b_BuyCar.IsEnabled = false;
             }
         }
-
-
-        #endregion
-
-
-
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
         {
             if (lv_car_sale.SelectedItem != null)
@@ -135,7 +175,7 @@ namespace AC_Career_Mode
                 if (HasPlayerEnoughMoney(CurrentUser, selected_car.Price))
                 {
                     selected_car.Owner = CurrentUser.Id;
-                    selected_car.ForSale = false;
+                    selected_car.ForSale = 0;
                     CurrentUser.Money -= selected_car.Price;
                     // not yet in the database, insert new car in
                     if (selected_car.Id == null)
@@ -149,8 +189,52 @@ namespace AC_Career_Mode
                         SqliteDataAccess.UpdateCar(selected_car);
                     }
                 }
+                RefreshMarket();
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
+
+        #endregion
+
+
+
+        #region PROFILE TAB
+
+        private void OwnedCars_SelChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lv_owned_cars.SelectedItem != null)
+            {
+                b_SellCar.IsEnabled = true;
+                Car car = lv_owned_cars.SelectedItem as Car;
+                img_OwnedCar.Source = Utils.RetriveImage(car.Preview);
+            }
+            else
+            {
+                b_SellCar.IsEnabled = false;
+            }
+        }
+
+        private void b_SellCar_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_owned_cars.SelectedItem != null)
+            {
+                Car selected_car = lv_owned_cars.SelectedItem as Car;
+
+                selected_car.Owner = null;
+                selected_car.ForSale = 1;
+                CurrentUser.Money += selected_car.Price;
+
+
+                SqliteDataAccess.UpdateCar(selected_car);
+                RefreshMarket();
+                UpdateAndRefreshPlayer(CurrentUser);
+            }
+                
+            
+        }
+
+        #endregion
+
+
     }
 }

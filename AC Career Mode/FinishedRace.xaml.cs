@@ -36,6 +36,14 @@ namespace AC_Career_Mode
         private void b_race_finish(object sender, RoutedEventArgs e)
         {
             Result = get_results();
+
+            if (Result != null)
+            {
+                string msg = $"Race finished!\n" +
+                    $"You finished {Result.Position} and earned {Result.PrizeAwarded}";
+
+                MessageBox.Show(msg);
+            }
             this.Close();
         }
 

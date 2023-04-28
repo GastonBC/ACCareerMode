@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 
 /// This file contains some population functions for the main window
@@ -20,47 +21,75 @@ namespace AC_Career_Mode
 
     public partial class MainWindow : Window
     {
-
+        public void RefreshMarket()
+        {
+            List<Car> DailyCars = (List<Car>)Utils.Deserialize(GlobalVars.SavedMarket);
+            List<Car> CarsForSale = SqliteDataAccess.LoadForSaleCars();
+            lv_car_sale.ItemsSource = ForSale_Cars.Concat(CarsForSale);
+        }
 
         private void PopulateMarketList()
         {
-
-            // Using a seed so cars are changed daily
-
-            for (int i = 0; i < 5; i++)
+            List<Car> DailyCars = new();
+            // GET FROM CACHE IF FILE WAS MODIFIED TODAY
+            if (File.Exists(GlobalVars.SavedMarket) && DateTime.Today == File.GetLastWriteTime(GlobalVars.SavedMarket).Date)
             {
-                int index = random.Next(AvailableCars.Count);
-                
-                ForSale_Cars.Add(AvailableCars[index]);
+                DailyCars = (List<Car>)Utils.Deserialize(GlobalVars.SavedMarket);
             }
 
-            lv_car_sale.ItemsSource = ForSale_Cars;
+            // CREATE CACHE FILE WITH AVAILABLE RACES
+            else
+            {
+                // Using a seed so cars are changed daily
+                for (int i = 0; i < 5; i++)
+                {
+                    int index = random.Next(AvailableCars.Count);
+                    ForSale_Cars.Add(AvailableCars[index]);
+                }
+
+                Utils.Serialize(DailyCars, GlobalVars.SavedMarket);
+            }
+            List<Car> CarsForSale = SqliteDataAccess.LoadForSaleCars();
+
+            lv_car_sale.ItemsSource = ForSale_Cars.Concat(CarsForSale);
         }
 
         private void PopulateRaceList()
         {
-            List<Race> races = new();
-            // Create 100 random races each day
 
-            for (int i = 0; i < 100; i++)
+            // GET FROM CACHE IF FILE WAS MODIFIED TODAY
+            if (File.Exists(GlobalVars.SavedRaces) && DateTime.Today == File.GetLastWriteTime(GlobalVars.SavedRaces).Date)
             {
-                Array race_groups = Enum.GetValues(typeof(RaceGroup));
-                Array race_types = Enum.GetValues(typeof(RaceLength));
-
-                RaceGroup random_race_group = (RaceGroup)race_groups.GetValue(random.Next(race_groups.Length));
-                RaceLength random_race_type = (RaceLength)race_types.GetValue(random.Next(race_types.Length));
-
-
-                Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group, i);
-
-                races.Add(Race);
+                AllRaces = (List<Race>)Utils.Deserialize(GlobalVars.SavedRaces);
             }
 
-            lv_RaceLst.ItemsSource = null;
-            lv_RaceLst.ItemsSource = races;
-            lv_RaceLst.DisplayMemberPath = "DisplayName";
-        }
+            // CREATE CACHE FILE WITH AVAILABLE RACES
+            else
+            {
+                // Create 100 random races each day
+                for (int i = 0; i < 100; i++)
+                {
+                    Array race_groups = Enum.GetValues(typeof(RaceGroup));
+                    Array race_types = Enum.GetValues(typeof(RaceLength));
 
+                    RaceGroup random_race_group = (RaceGroup)race_groups.GetValue(random.Next(race_groups.Length));
+                    RaceLength random_race_type = (RaceLength)race_types.GetValue(random.Next(race_types.Length));
+
+
+                    Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group, i);
+
+                    AllRaces.Add(Race);
+                }
+
+                Utils.Serialize(AllRaces, GlobalVars.SavedRaces);
+            }
+            RefreshRaceList();
+        }
+        private void RefreshRaceList()
+        {
+            lv_RaceLst.ItemsSource = null;
+            lv_RaceLst.ItemsSource = AllRaces.Where(rc => rc.Completed == false);
+        }
 
         private void LoadDialogUserDetails(Player profile)
         {
@@ -76,24 +105,74 @@ namespace AC_Career_Mode
             lv_owned_cars.ItemsSource = owned_cars;
         }
 
-        private void ColHeader_Click(object sender, RoutedEventArgs e)
+
+        GridViewColumnHeader _lastHeaderClicked = null;
+        ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        void GridViewColumnHeaderClickedHandler(object sender,
+                                                RoutedEventArgs e)
         {
-            GridViewColumnHeader column = (sender as GridViewColumnHeader);
-            string sortBy = column.Tag.ToString();
-            if (listViewSortCol != null)
+            GridViewColumnHeader? headerClicked = e.OriginalSource as GridViewColumnHeader;
+
+            ListSortDirection direction;
+
+            if (headerClicked != null)
             {
-                AdornerLayer.GetAdornerLayer(listViewSortCol).Remove(listViewSortAdorner);
-                lv_RaceLst.Items.SortDescriptions.Clear();
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
+                    var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+
+                    Sort(sortBy, direction);
+
+                    if (direction == ListSortDirection.Ascending)
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                          Resources["HeaderTemplateArrowUp"] as DataTemplate;
+                    }
+                    else
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                          Resources["HeaderTemplateArrowDown"] as DataTemplate;
+                    }
+
+                    // Remove arrow from previously sorted header
+                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+                    {
+                        _lastHeaderClicked.Column.HeaderTemplate = null;
+                    }
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
             }
+        }
 
-            ListSortDirection newDir = ListSortDirection.Ascending;
-            if (listViewSortCol == column && listViewSortAdorner.Direction == newDir)
-                newDir = ListSortDirection.Descending;
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            ICollectionView dataView =
+              CollectionViewSource.GetDefaultView(lv_RaceLst.ItemsSource);
 
-            listViewSortCol = column;
-            listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
-            AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
-            lv_RaceLst.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
+            dataView.SortDescriptions.Clear();
+            SortDescription sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
         }
 
         private void UpdateAndRefreshPlayer(Player profile)

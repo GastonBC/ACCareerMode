@@ -12,7 +12,7 @@ namespace DemoLibrary
     {
         public int? Id { get; set; }
         public string Name { get; set; }
-        public bool ForSale { get; set; }
+        public int ForSale { get; set; }
         public string Description { get; set; }
         public string Year { get; set; }
         public string Class { get; set; }
@@ -55,7 +55,7 @@ namespace DemoLibrary
             
             car.Mileage = 0;
             car.Owner = null;
-            car.ForSale = true;
+            car.ForSale = 1;
             car.Id = null;
 
             /// Price cars according their type
