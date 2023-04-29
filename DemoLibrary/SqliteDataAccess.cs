@@ -130,7 +130,7 @@ cnn.Execute("insert into Player (Name, Money) values (@Name, 100000000)", pName)
                     "@Preview, " +
                     "@TopSpeed, " +
                     "@Price, " +
-                    "@Mileage, " +
+                    "@Kms, " +
                     "@Owner, " +
                     "@ForSale)";
 

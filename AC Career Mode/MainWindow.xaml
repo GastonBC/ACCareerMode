@@ -59,13 +59,13 @@
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding RaceLengthKm, StringFormat=G4}">
+                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthKm, StringFormat=G4}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Kms" Click="GridViewColumnHeaderClickedHandler">Race length (km)</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding RaceLengthMinutes}">
+                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthMinutes, StringFormat=G4}">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Minutes" Click="GridViewColumnHeaderClickedHandler">Race length (minutes)</GridViewColumnHeader>
                                     </GridViewColumn.Header>

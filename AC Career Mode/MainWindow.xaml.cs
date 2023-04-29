@@ -15,8 +15,6 @@ using System.Windows.Controls;
 /// Finance section, where you can take loans and repay them, view your spendings and earnings.
 /// "History" section, with a log of your races, position and the races of your teammates
 
-
-
 namespace AC_Career_Mode
 {
     public partial class MainWindow : Window
@@ -49,26 +47,27 @@ namespace AC_Career_Mode
         {
             if (lv_RaceLst.SelectedItem == null)
             {
+                b_GoRacing.IsEnabled = false;
+                track_background.Source = null;
+                track_preview.Source = null;
+                car_preview.Source = null;
                 return;
             }
 
             b_GoRacing.IsEnabled = true;
             Race SelectedRace = lv_RaceLst.SelectedItem as Race;
 
-
             track_background.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
-
             track_preview.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
             car_preview.Source = Utils.RetriveImage(SelectedRace.Car.Preview);
         }
 
+
         private void b_GoRacing_Click(object sender, RoutedEventArgs e)
         {
-            
             Race race = lv_RaceLst.SelectedItem as Race;
 
             Car EquippedCar = SqliteDataAccess.LoadCar(CurrentUser.EquippedCarId);
-
 
             // Player doesn't have the needed car
             if (EquippedCar == null || EquippedCar.Name != race.Car.Name)
@@ -108,7 +107,7 @@ namespace AC_Career_Mode
                 race.Completed = true;
                 AllRaces[idx] = race;
 
-                Utils.Serialize(AllRaces, GlobalVars.SavedRaces);
+                Utils.Serialize(AllRaces, GlobalVars.RacesBin);
 
                 // TODO: Add mileage to car
 
@@ -117,6 +116,7 @@ namespace AC_Career_Mode
             }
 
             this.ShowDialog();
+
         }
 
         private void chk_FilterRaces_Click(object sender, RoutedEventArgs e)
@@ -138,7 +138,6 @@ namespace AC_Career_Mode
             }
         }
 
-
         #endregion
 
 
@@ -147,17 +146,18 @@ namespace AC_Career_Mode
         #region MARKET TAB
         private void MarketLv_SelChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lv_car_sale.SelectedItem != null)
-            {
-                b_BuyCar.IsEnabled = true;
-                Car car = lv_car_sale.SelectedItem as Car;
-                Img_ForSaleCar.Source = Utils.RetriveImage(car.Preview);
-            }
-            else
+            if (lv_car_sale.SelectedItem == null)
             {
                 b_BuyCar.IsEnabled = false;
+                Img_ForSaleCar.Source = null;
+                return;
             }
+
+            b_BuyCar.IsEnabled = true;
+            Car car = lv_car_sale.SelectedItem as Car;
+            Img_ForSaleCar.Source = Utils.RetriveImage(car.Preview);
         }
+
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
         {
             if (lv_car_sale.SelectedItem != null)
@@ -232,10 +232,6 @@ namespace AC_Career_Mode
                 
             
         }
-
-
-        #endregion
-
         private void lv_OwnedCars_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (lv_OwnedCar.SelectedItem != null)
@@ -246,5 +242,9 @@ namespace AC_Career_Mode
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
+
+        #endregion
+
+
     }
 }

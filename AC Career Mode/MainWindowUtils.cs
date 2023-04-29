@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+#pragma warning disable CS8605 // Unboxing a possibly null value.
 
 /// This file contains some population functions for the main window
 /// Originally it was all in the same file but it cluttered reading
@@ -26,7 +27,7 @@ namespace AC_Career_Mode
         /// </summary>
         public void RefreshMarket()
         {
-            Utils.Serialize(DailyCars, GlobalVars.SavedMarket);
+            Utils.Serialize(DailyCars, GlobalVars.DailyCarBin);
             PopulateMarketList();
         }
 
@@ -35,9 +36,9 @@ namespace AC_Career_Mode
             lv_car_sale.ItemsSource = null;
             DailyCars.Clear();
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
-            if (File.Exists(GlobalVars.SavedMarket) && DateTime.Today == File.GetLastWriteTime(GlobalVars.SavedMarket).Date)
+            if (File.Exists(GlobalVars.DailyCarBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.DailyCarBin).Date)
             {
-                DailyCars = (List<Car>)Utils.Deserialize(GlobalVars.SavedMarket);
+                DailyCars = (List<Car>)Utils.Deserialize(GlobalVars.DailyCarBin);
             }
 
             // CREATE CACHE FILE WITH AVAILABLE RACES
@@ -50,7 +51,7 @@ namespace AC_Career_Mode
                     DailyCars.Add(AvailableCars[index]);
                 }
 
-                Utils.Serialize(DailyCars, GlobalVars.SavedMarket);
+                Utils.Serialize(DailyCars, GlobalVars.DailyCarBin);
             }
 
             List<Car> CarsForSale = SqliteDataAccess.LoadForSaleCars();
@@ -62,30 +63,23 @@ namespace AC_Career_Mode
         {
 
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
-            if (File.Exists(GlobalVars.SavedRaces) && DateTime.Today == File.GetLastWriteTime(GlobalVars.SavedRaces).Date)
+            if (File.Exists(GlobalVars.RacesBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.RacesBin).Date)
             {
-                AllRaces = (List<Race>)Utils.Deserialize(GlobalVars.SavedRaces);
+                AllRaces = (List<Race>)Utils.Deserialize(GlobalVars.RacesBin);
             }
 
             // CREATE CACHE FILE WITH AVAILABLE RACES
             else
             {
-                // Create 100 random races each day
+                // Create 400 random races each day
                 for (int i = 0; i < 400; i++)
                 {
-                    Array race_groups = Enum.GetValues(typeof(RaceGroup));
-                    Array race_types = Enum.GetValues(typeof(RaceLength));
+                    Race race = Race.RaceFromList(AvailableTracks, AvailableCars, i);
 
-                    RaceGroup random_race_group = (RaceGroup)race_groups.GetValue(RandomDaily.Next(race_groups.Length));
-                    RaceLength random_race_type = (RaceLength)race_types.GetValue(RandomDaily.Next(race_types.Length));
-
-
-                    Race Race = new(random_race_type, AvailableTracks, AvailableCars, random_race_group, i);
-
-                    AllRaces.Add(Race);
+                    AllRaces.Add(race);
                 }
 
-                Utils.Serialize(AllRaces, GlobalVars.SavedRaces);
+                Utils.Serialize(AllRaces, GlobalVars.RacesBin);
             }
             RefreshRaceList();
         }
@@ -203,10 +197,10 @@ namespace AC_Career_Mode
             #region GET CARS AND TRACKS
 #if RELEASE
             // GET ALL TRACKS AND CARS FROM CACHE IF FILE WAS MODIFIED TODAY
-            if (File.Exists(GlobalVars.SavedTracks) && DateTime.Today == File.GetLastWriteTime(GlobalVars.SavedTracks).Date)
+            if (File.Exists(GlobalVars.TracksBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.TracksBin).Date)
             {
-                AvailableTracks = (List<Track>)Utils.Deserialize(GlobalVars.SavedTracks);
-                AvailableCars = (List<Car>)Utils.Deserialize(GlobalVars.SavedCars);
+                AvailableTracks = (List<Track>)Utils.Deserialize(GlobalVars.TracksBin);
+                AvailableCars = (List<Car>)Utils.Deserialize(GlobalVars.CarsBin);
             }
 #endif
 
@@ -246,8 +240,8 @@ namespace AC_Career_Mode
                     AvailableCars.Add(car);
                 }
 
-                Utils.Serialize(AvailableTracks, GlobalVars.SavedTracks);
-                Utils.Serialize(AvailableCars, GlobalVars.SavedCars);
+                Utils.Serialize(AvailableTracks, GlobalVars.TracksBin);
+                Utils.Serialize(AvailableCars, GlobalVars.CarsBin);
             }
 
             #endregion

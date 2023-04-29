@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+#pragma warning disable CS8605 // Unboxing a possibly null value.
 
 namespace AC_Career_Mode
 {
@@ -17,105 +18,23 @@ namespace AC_Career_Mode
         public int Prize { get; set; }
         public RaceLength RaceType { get; set; }
         public int Seed { get; set; }
+        public double LengthKm { get; set; }
+        public int LengthMinutes { get; set; }
+        public double OneLapTimeMinutes { get; set; }
         public string Description { get; set; }
-        public double RaceLengthKm { get; set; }
-        public RaceGroup Group { get; set; }
-        public int RaceLengthMinutes { get; set; }
-        public double OneLapTime { get; set; }
 
-        ///  Race is determined by type short to endurance
-        ///  Race length is determined first by the 70% the top speed of the car. To make the race short in time
-        ///  If car has no top speed attribute, it's a random between a distance in kms and a factor between 60% and 100%
-        ///  Seed changes with the day
-        public Race(RaceLength raceLengthType, List<Track> tracks, List<Car> cars, RaceGroup group, int seed_modifier = 0)
+        /// <summary>
+        /// Creates a race of variable length given a car, track and a length type
+        /// </summary>
+        public Race(Car car, Track track, RaceLength raceLengthType, int seed_modifier = 0)
         {
+            Completed = false;
+            Car = car;
+            Track = track;
             RaceType = raceLengthType;
-            Group = group;
+            OneLapTimeMinutes = (Track.LengthKm / (Car.TopSpeed * 0.70))*60;
 
-            // TodaysSeed makes sure the race is changed daily
-            // RaceType and group flavour the seed according to the type of race
-            Seed = Utils.TodaysSeed() + (int)raceLengthType + (int)group + seed_modifier;
-
-#if DEBUG
-//  Different seeds for testing
-            Random random = new();
-#endif
-#if RELEASE
-            Random random = new Random(Seed);
-#endif
-
-            Car = cars[random.Next(cars.Count)];
-            Track = tracks[random.Next(tracks.Count)];
-            OneLapTime = Track.LengthKm / (Car.TopSpeed * 0.70);
-
-            #region RACE GROUP
-
-            if (Group == RaceGroup.F1)
-            {
-                
-
-                string[] DissallowedTracks = new string[] { "Donington", "Short", "Mallory", "Atlanta", "Victor Borrat", "Oval", "Indianapolis", "Magione", "Nordschleife", "Phoenix", "Tsukuba", };
-
-                while (Car.Group != CarGroup.F1)
-                {
-                    Car = cars[random.Next(cars.Count)];
-                }
-
-                while (DissallowedTracks.Any(disall_tracks => Track.Name.ToLower().Contains(disall_tracks.ToLower())))
-                {
-                    Track = tracks[random.Next(tracks.Count)];
-                }
-            }
-
-            else if (Group == RaceGroup.Formula)
-            {
-
-                string[] DissallowedTracks = new string[] { "Donington", "Short", "Mallory", "Atlanta", "Victor Borrat", "Oval", "Indianapolis", "Magione", "Nordschleife", "Phoenix", "Tsukuba", };
-
-                while (Car.Group != CarGroup.Formula)
-                {
-                    Car = cars[random.Next(cars.Count)];
-                }
-
-                while (DissallowedTracks.Any(disall_tracks => Track.Name.ToLower().Contains(disall_tracks.ToLower())))
-                {
-                    Track = tracks[random.Next(tracks.Count)];
-                }
-            }
-
-            else if (Group == RaceGroup.GT)
-            {
-                string[] DissallowedTracks = new string[] { "Atlanta", "Oval", "Indianapolis", "Phoenix" };
-
-                while (Car.Group != CarGroup.GT)
-                {
-                    Car = cars[random.Next(cars.Count)];
-                }
-
-                while (DissallowedTracks.Any(disall_tracks => Track.Name.ToLower().Contains(disall_tracks.ToLower())))
-                {
-                    Track = tracks[random.Next(tracks.Count)];
-                }
-
-            }
-
-            else if (Group == RaceGroup.Oval)
-            {
-                string[] AllowedTracks = new string[] { "Atlanta", "Oval", "Indy 500", "Phoenix" };
-
-                while (Car.Group != CarGroup.Oval)
-                {
-                    Car = cars[random.Next(cars.Count)];
-                }
-
-                while (!AllowedTracks.Any(disall_tracks => Track.Name.ToLower().Contains(disall_tracks.ToLower())))
-                {
-                    Track = tracks[random.Next(tracks.Count)];
-                }
-            }
-
-
-            #endregion
+            Seed = Utils.TodaysSeed() + (int)raceLengthType + (int)Car.Group + seed_modifier;
 
             #region RACE LENGTH
 
@@ -125,87 +44,137 @@ namespace AC_Career_Mode
             switch (RaceType)
             {
                 case RaceLength.Short:
-                    {
-                        RaceLengthMinutes = Utils.RoundX(Utils.GetRandomNumber(5, 15, factor_seed), 5);
-                        Laps = TotalLaps(30, factor_seed);
-                        break;
-                    }
+                    LengthMinutes = Utils.RoundX(Utils.GetRandomNumber(5, 15, factor_seed), 5);
+                    break;
 
                 case RaceLength.Medium:
-                    {
-                        RaceLengthMinutes = Utils.RoundX(Utils.GetRandomNumber(15, 30, factor_seed), 5);
-                        Laps = TotalLaps(70, factor_seed);
-                        break;
-                    }
+                    LengthMinutes = Utils.RoundX(Utils.GetRandomNumber(15, 30, factor_seed), 5);
+                    break;
 
                 case RaceLength.Long:
-                    {
-                        RaceLengthMinutes = Utils.RoundX(Utils.GetRandomNumber(30, 60, factor_seed), 5);
-                        Laps = TotalLaps(150, factor_seed);
-                        break;
-                    }
+                    LengthMinutes = Utils.RoundX(Utils.GetRandomNumber(30, 60, factor_seed), 5);
+                    break;
 
                 case RaceLength.Endurance:
-                    {
-                        RaceLengthMinutes = Utils.RoundX(Utils.GetRandomNumber(60, 120, factor_seed), 5);
-                        Laps = TotalLaps(350, factor_seed);
-                        break;
-                    }
+                    LengthMinutes = Utils.RoundX(Utils.GetRandomNumber(60, 120, factor_seed), 5);
+                    break;
+
                 default:
-                    {
-                        throw new Exception("No race length defined");
-                        
-                    }
+                    throw new Exception("No race length defined");
             };
 
             #endregion
 
-            RaceLengthKm = Convert.ToInt32(Track.LengthKm * Laps);
-
-
-            switch (Group)
+            // Race length and laps calculations are fuzzy (not all cars have top speed and not all tracks have length)
+            // But it's used to define the prize based on expected travel distance
+            // Rounded up to have 1 lap races (ie nordschleife)
+            Laps = Convert.ToInt32(Math.Ceiling(LengthMinutes / OneLapTimeMinutes));
+            LengthKm = Convert.ToInt32(Track.LengthKm * Laps);
+            switch (Car.Group)
             {
-                case RaceGroup.F1:
-                    Prize = Utils.RoundX(RaceLengthKm, 10) * 600;
+                case CarGroup.F1:
+                    Prize = Utils.RoundX(LengthKm, 10) * 2400;
                     break;
-                case RaceGroup.GT:
-                    Prize = Utils.RoundX(RaceLengthKm, 10) * 600;
+
+                case CarGroup.Formula:
+                    Prize = Utils.RoundX(LengthKm, 10) * 1400;
                     break;
+
+                case CarGroup.GT:
+                    Prize = Utils.RoundX(LengthKm, 10) * 600;
+                    break;
+                
                 default:
-                    Prize = Utils.RoundX(RaceLengthKm, 10) * 400;
+                    Prize = Utils.RoundX(LengthKm, 10) * 400;
                     break;
-            }    
+            }
 
-
-            Completed = false;
 
             Description = Track.Name + "\n" +
-                          "Track Length: " + Math.Round(Track.LengthKm, 1) + " km" + "\n" +
-                          Car.Name + "\n" +
-                          "Laps: " + Laps.ToString() + "\n" +
-                          "Race Lenght: " + RaceLengthKm + " km" + "\n" +
-                          "Top Speed: " + Car.TopSpeed + "\n" +
-                          "Race Time: " + RaceLengthMinutes + " minutes" + "\n" +
-                          "Prize: " + Prize;
+              "Track Length: " + Math.Round(Track.LengthKm, 1) + " km" + "\n" +
+              Car.Name + "\n" +
+              "Laps: " + Laps.ToString() + "\n" +
+              "Race Lenght: " + LengthKm + " km" + "\n" +
+              "Top Speed: " + Car.TopSpeed + "\n" +
+              "Race Time: " + LengthMinutes + " minutes" + "\n" +
+              "Prize: " + Prize;
 
         }
-
 
         /// <summary>
-        /// Total laps defined by a max race running length in Kms divided the length of the track.
-        /// If no length is provided, returns.
+        /// Creates a random race given a list of available tracks, cars and a length type
         /// </summary>
-        internal int TotalLaps(double TopRaceLength, int seed)
+        public static Race RaceFromList(List<Track> tracks, List<Car> cars, int seed_modifier = 0)
         {
-            if (Track.LengthKm > 0)
-            {
-                double factor = Utils.GetRandomNumber(0.60, 1.00, seed);
+            Random random = new Random(Utils.TodaysSeed() + seed_modifier);
 
-                double LengthRandomized = TopRaceLength * factor;
-                return Convert.ToInt32(LengthRandomized / Track.LengthKm);
+            Array length_types = Enum.GetValues(typeof(RaceLength));
+
+            RaceLength raceLengthType = (RaceLength)length_types.GetValue(random.Next(length_types.Length));
+
+
+            Car car = cars[random.Next(cars.Count)];
+            Track track = tracks[random.Next(tracks.Count)];
+
+
+            // Force track to be suitable for car (ie no small tracks for F1 cars)
+            // This may change to a list of tracks and allowed groups
+            switch (car.Group)
+            {
+                case CarGroup.F1:
+                    {
+                        string[] DissallowedTracks = new string[] { "Donington", "Short", "Mallory", "Atlanta", "Victor Borrat", "Oval", "Indianapolis", "Magione", "Nordschleife", "Phoenix", "Tsukuba", };
+
+                        while (DissallowedTracks.Any(disall_tracks => track.Name.ToLower().Contains(disall_tracks.ToLower())))
+                        {
+                            track = tracks[random.Next(tracks.Count)];
+                        }
+                        break;
+                    }
+                case CarGroup.Formula:
+                    {
+
+                        string[] DissallowedTracks = new string[] { "Donington", "Short", "Mallory", "Atlanta", "Victor Borrat", "Oval", "Indianapolis", "Magione", "Nordschleife", "Phoenix", "Tsukuba", };
+
+
+                        while (DissallowedTracks.Any(disall_tracks => track.Name.ToLower().Contains(disall_tracks.ToLower())))
+                        {
+                            track = tracks[random.Next(tracks.Count)];
+                        }
+                        break;
+                    }
+                case CarGroup.GT:
+                    {
+                        {
+                            string[] DissallowedTracks = new string[] { "Atlanta", "Oval", "Indianapolis", "Phoenix" };
+
+                            while (DissallowedTracks.Any(disall_tracks => track.Name.ToLower().Contains(disall_tracks.ToLower())))
+                            {
+                                track = tracks[random.Next(tracks.Count)];
+                            }
+
+                            break;
+                        }
+                    }
+                case CarGroup.Oval:
+                    {
+                        string[] AllowedTracks = new string[] { "Atlanta", "Oval", "Indy 500", "Phoenix" };
+
+
+                        while (!AllowedTracks.Any(disall_tracks => track.Name.ToLower().Contains(disall_tracks.ToLower())))
+                        {
+                            track = tracks[random.Next(tracks.Count)];
+                        }
+                        break;
+                    }
+                default:
+                    { break; }
             }
-            else return 0;
+
+
+            return new Race(car, track, raceLengthType, seed_modifier);
         }
+
 
     }
 }
