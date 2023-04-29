@@ -87,7 +87,14 @@ namespace AC_Career_Mode
         {
             lv_RaceLst.ItemsSource = null;
             //lv_RaceLst.ItemsSource = AllRaces.Where(rc => rc.Completed == false);
-            lv_RaceLst.ItemsSource = AllRaces;
+            if (chk_FilterRaces.IsChecked == true)
+            {
+                FilterRaces();
+            }
+            else
+            {
+                lv_RaceLst.ItemsSource = AllRaces;
+            }
         }
 
         private void LoadDialogUserDetails(Player profile)
@@ -98,6 +105,8 @@ namespace AC_Career_Mode
             toplabel_Wins.Content = $"🏆 {profile_.RaceWins}";
             toplabel_Races.Content = $"Races: {profile_.Races}";
 
+            lv_HistoryRecords.ItemsSource = Record.DeserializeRecords(profile);
+
             // DB returns null as 0
             if (profile_.EquippedCarId != 0)
             {
@@ -107,6 +116,7 @@ namespace AC_Career_Mode
             {
                 toplabel_EquippedCar.Content = "";
             }
+
 
             List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(CurrentUser);
             lv_OwnedCar.ItemsSource = null;

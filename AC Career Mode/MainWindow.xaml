@@ -171,19 +171,15 @@
                         <RowDefinition/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_HistoryRecords"   SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="MarketLv_SelChanged" Margin="0,0,5,0" Grid.RowSpan="2" Grid.Row="1" >
+                    <ListView x:Name="lv_HistoryRecords"   SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="MarketLv_SelChanged" Grid.RowSpan="2" Grid.Row="1" Grid.ColumnSpan="2" >
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="300" DisplayMemberBinding="{Binding Date}">
-                                    <GridViewColumnHeader Tag="Car" Content="Car" />
+                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Date, StringFormat=dd-MM-yyyy}">
+                                    <GridViewColumnHeader Tag="Date" Content="Date" />
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding LogType}">
-                                    <GridViewColumnHeader Tag="Price" Content="Price"/>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="70" DisplayMemberBinding="{Binding Description}">
-                                    <GridViewColumnHeader Tag="Mileage" Content="Mileage"/>
+                                <GridViewColumn Width="600" DisplayMemberBinding="{Binding Description}">
+                                    <GridViewColumnHeader Tag="Description" Content="Description"/>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>

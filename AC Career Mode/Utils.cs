@@ -1,14 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 #pragma warning disable IDE0063 // Use simple 'using' statement
 
 namespace AC_Career_Mode
 {
     internal static class Utils
     {
+
+
 
         internal static double GetRandomNumber(double minimum, double maximum, int Seed)
         {

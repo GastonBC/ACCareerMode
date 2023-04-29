@@ -4,14 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace AC_Career_Mode
 {
     public class Record
     {
+
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public int UserId { get; set; }
@@ -19,10 +22,7 @@ namespace AC_Career_Mode
         public string Description { get; set; }
 
         // For xml serialization
-        internal Record()
-        {
-            
-        }
+        internal Record() { }
 
         internal Record(string logType, int userId, string description)
         {
@@ -32,13 +32,28 @@ namespace AC_Career_Mode
             Description = description;
         }
 
-        internal static Record RecordRace(Player player, Race race, RaceResult result)
+        internal static void RecordRace(Player player, RaceResult result)
         {
-            string msg = $"{player.Name} raced in {race.Track.Name} with a {race.Car.Name} and came out {result.Position}, winning {result.PrizeAwarded}";
+            string msg = $"{player.Name} raced in {result.Race.Track.Name} with a {result.Race.Car.Name} and came out {result.Position}, winning {result.PrizeAwarded}";
             Record r = new Record("Race", player.Id, msg);
 
             InsertLog(r, player);
-            return r;
+        }
+
+        internal static void RecordBuy(Player player, Car car)
+        {
+            string msg = $"{player.Name} bought {car.Name} for ${car.Price}";
+            Record r = new Record("BuyCar", player.Id, msg);
+
+            InsertLog(r, player);
+        }
+
+        internal static void RecordSell(Player player, Car car)
+        {
+            string msg = $"{player.Name} sold {car.Name} for ${car.Price}";
+            Record r = new Record("SellCar", player.Id, msg);
+
+            InsertLog(r, player);
         }
 
         internal static Record RecordError(Exception ex, Player player)
@@ -53,18 +68,42 @@ namespace AC_Career_Mode
         /// Inserts a record in the log file, if it doesnt exists, creates one
         private static void InsertLog(Record record, Player profile)
         {
-            XmlSerializer serializer = new XmlSerializer(record.GetType());
+            List<Record> records = new();
+            XmlSerializer serializer = new XmlSerializer(records.GetType());
 
+            string log_path = $"./logs/{profile.Id}_{profile.Name}.xml";
 
-
-            string log_path = $"./{profile.Name}.xml";
-
-            using (StreamWriter sw = new(log_path, true))
+            if (File.Exists(log_path))
             {
-                serializer.Serialize(sw, record);
+                records = DeserializeRecords(profile);
+            }
+            record.Id = records.Count;
+            records.Add(record);
+
+            using (StreamWriter sw = new(log_path))
+            {
+                serializer.Serialize(sw, records);
             }
 
         }
+
+
+        internal static List<Record> DeserializeRecords(Player profile)
+        {
+            string log_path = $"./logs/{profile.Id}_{profile.Name}.xml";
+
+            XmlSerializer deserializer = new XmlSerializer(typeof(List<Record>));
+
+            TextReader reader = new StreamReader(log_path);
+
+            object obj = deserializer.Deserialize(reader);
+            List<Record> XmlData = (List<Record>)obj;
+
+            reader.Close();
+
+            return XmlData;
+        }
+
 
     }
 }

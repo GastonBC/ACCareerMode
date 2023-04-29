@@ -1,9 +1,15 @@
 ﻿using DemoLibrary;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -32,6 +38,9 @@ namespace AC_Career_Mode
 
         public MainWindow(Player profile)
         {
+
+
+
             CurrentUser = profile;
 
             InitializeComponent();
@@ -92,7 +101,7 @@ namespace AC_Career_Mode
                 carUsed.Kms += Convert.ToInt32(RaceResult.Result.KmsDriven);
 
                 SqliteDataAccess.UpdateCar(carUsed);
-                
+
                 if (RaceResult.Result.Position <= 3)
                 {
                     CurrentUser.RacePodiums++;
@@ -109,7 +118,7 @@ namespace AC_Career_Mode
 
                 Utils.Serialize(AllRaces, GlobalVars.RacesBin);
 
-                // TODO: Add mileage to car
+                Record.RecordRace(CurrentUser, RaceResult.Result);
 
                 RefreshRaceList();
                 UpdateAndRefreshPlayer(CurrentUser);
@@ -120,6 +129,13 @@ namespace AC_Career_Mode
         }
 
         private void chk_FilterRaces_Click(object sender, RoutedEventArgs e)
+        {
+            FilterRaces();
+        }
+
+        #endregion
+
+        private void FilterRaces()
         {
             List<Race> FilteredRaces = new();
 
@@ -137,10 +153,6 @@ namespace AC_Career_Mode
                 lv_RaceLst.ItemsSource = AllRaces;
             }
         }
-
-        #endregion
-
-
 
 
         #region MARKET TAB
@@ -188,6 +200,8 @@ namespace AC_Career_Mode
                         selected_car.ForSale = 0;
                         SqliteDataAccess.UpdateCar(selected_car);
                     }
+
+                    Record.RecordBuy(CurrentUser, selected_car);
                 }
                 RefreshMarket();
                 UpdateAndRefreshPlayer(CurrentUser);
@@ -211,6 +225,7 @@ namespace AC_Career_Mode
             else
             {
                 b_SellCar.IsEnabled = false;
+                img_OwnedCar.Source = null;
             }
         }
 
@@ -223,9 +238,9 @@ namespace AC_Career_Mode
                 selected_car.Owner = null;
                 selected_car.ForSale = 1;
                 CurrentUser.Money += selected_car.Price;
-
-
                 SqliteDataAccess.UpdateCar(selected_car);
+
+                Record.RecordSell(CurrentUser, selected_car);
                 RefreshMarket();
                 UpdateAndRefreshPlayer(CurrentUser);
             }
@@ -245,6 +260,12 @@ namespace AC_Career_Mode
 
         #endregion
 
+
+        #region HISTORY TAB
+
+        
+
+        #endregion
 
     }
 }
