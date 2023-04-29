@@ -94,7 +94,7 @@
                 new ManualCarValues("GT Vortex V10", CarGroup.GT, 700000),
                 new ManualCarValues("LMGT Nisumo R39 V8", CarGroup.GT, 700000),
                 new ManualCarValues("LMGT Toyama 2-Zero V8", CarGroup.GT, 700000),
-                new ManualCarValues("LMP1 Protech P91 Hybrid Evo", CarGroup.GT, 700000),
+                new ManualCarValues("LMP1 Protech P91 Hybrid Evo", CarGroup.GT, 80000000),
                 new ManualCarValues("LMP Ferruccio 33 V12", CarGroup.GT, 700000),
                 new ManualCarValues("Lamborghini Murcielago SGT300", CarGroup.GT, 700000),
                 new ManualCarValues("SCG 007LMH", CarGroup.GT, 700000),

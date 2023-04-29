@@ -16,9 +16,9 @@ namespace AC_Career_Mode
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
 
-        internal static int RoundTen(double i)
+        internal static int RoundX(double i, int x)
         {
-            return Convert.ToInt32(i / 10.0) * 10;
+            return Convert.ToInt32(i / x) * x;
         }
 
         internal static int TodaysSeed()

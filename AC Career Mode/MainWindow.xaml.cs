@@ -15,8 +15,6 @@ using System.Windows.Controls;
 /// Finance section, where you can take loans and repay them, view your spendings and earnings.
 /// "History" section, with a log of your races, position and the races of your teammates
 
-/// BUG: Some races require 1000nds of laps. This might be due to lacking information from AC (track length, car top speed)
-
 
 
 namespace AC_Career_Mode
@@ -55,13 +53,13 @@ namespace AC_Career_Mode
             }
 
             b_GoRacing.IsEnabled = true;
-            Race rc = lv_RaceLst.SelectedItem as Race;
+            Race SelectedRace = lv_RaceLst.SelectedItem as Race;
 
 
-            track_background.Source = Utils.RetriveImage(rc.Track.PreviewPath);
+            track_background.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
 
-            track_preview.Source = Utils.RetriveImage(rc.Track.OutlinePath);
-            car_preview.Source = Utils.RetriveImage(rc.Car.Preview);
+            track_preview.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
+            car_preview.Source = Utils.RetriveImage(SelectedRace.Car.Preview);
         }
 
         private void b_GoRacing_Click(object sender, RoutedEventArgs e)
@@ -69,33 +67,37 @@ namespace AC_Career_Mode
             
             Race race = lv_RaceLst.SelectedItem as Race;
 
-            List<Car> PlayerCars = SqliteDataAccess.GetPlayerCars(CurrentUser);
+            Car EquippedCar = SqliteDataAccess.LoadCar(CurrentUser.EquippedCarId);
 
 
             // Player doesn't have the needed car
-            if (!PlayerCars.Any(pCar => pCar.Name == race.Car.Name))
+            if (EquippedCar == null || EquippedCar.Name != race.Car.Name)
             {
-                MessageBox.Show("You don't have the required car!");
+                MessageBox.Show("You don't have the required car equipped!");
                 return;
             }
 
             this.Hide();
 
-            FinishedRace race_dialog = new(race);
+            FinishedRace RaceResult = new(race);
 
-            race_dialog.ShowDialog();
+            RaceResult.ShowDialog();
 
-            if (race_dialog.Result != null)
+            if (RaceResult.Result != null)
             {
                 // Add statistics to player
-                CurrentUser.Money += race_dialog.Result.PrizeAwarded;
+                CurrentUser.Money += RaceResult.Result.PrizeAwarded;
                 CurrentUser.Races++;
-                CurrentUser.KmsDriven += Convert.ToInt32(race_dialog.Result.KmsDriven);
+                CurrentUser.KmsDriven += Convert.ToInt32(RaceResult.Result.KmsDriven);
+                Car carUsed = SqliteDataAccess.LoadCar(CurrentUser.EquippedCarId);
+                carUsed.Kms += Convert.ToInt32(RaceResult.Result.KmsDriven);
+
+                SqliteDataAccess.UpdateCar(carUsed);
                 
-                if (race_dialog.Result.Position <= 3)
+                if (RaceResult.Result.Position <= 3)
                 {
                     CurrentUser.RacePodiums++;
-                    if (race_dialog.Result.Position == 1)
+                    if (RaceResult.Result.Position == 1)
                     {
                         CurrentUser.RaceWins++;
                     }
@@ -114,7 +116,6 @@ namespace AC_Career_Mode
                 UpdateAndRefreshPlayer(CurrentUser);
             }
 
-            
             this.ShowDialog();
         }
 
@@ -165,14 +166,12 @@ namespace AC_Career_Mode
 
                 if (HasPlayerEnoughMoney(CurrentUser, selected_car.Price))
                 {
-                    
-
                     CurrentUser.Money -= selected_car.Price;
 
                     // Car comes from DailyCar list (bin object)
                     // Remove the car from DailyCar, serialize the list
                     // Insert to database
-                    if (selected_car.Id == null)
+                    if (selected_car.Id == 0)
                     {
                         int idx = DailyCars.IndexOf(selected_car);
                         DailyCars.RemoveAt(idx);
@@ -203,10 +202,10 @@ namespace AC_Career_Mode
 
         private void OwnedCars_SelChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lv_owned_cars.SelectedItem != null)
+            if (lv_OwnedCar.SelectedItem != null)
             {
                 b_SellCar.IsEnabled = true;
-                Car car = lv_owned_cars.SelectedItem as Car;
+                Car car = lv_OwnedCar.SelectedItem as Car;
                 img_OwnedCar.Source = Utils.RetriveImage(car.Preview);
             }
             else
@@ -217,9 +216,9 @@ namespace AC_Career_Mode
 
         private void b_SellCar_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_owned_cars.SelectedItem != null)
+            if (lv_OwnedCar.SelectedItem != null)
             {
-                Car selected_car = lv_owned_cars.SelectedItem as Car;
+                Car selected_car = lv_OwnedCar.SelectedItem as Car;
 
                 selected_car.Owner = null;
                 selected_car.ForSale = 1;
@@ -234,8 +233,18 @@ namespace AC_Career_Mode
             
         }
 
+
         #endregion
 
+        private void lv_OwnedCars_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (lv_OwnedCar.SelectedItem != null)
+            {
+                Car SelCar = lv_OwnedCar.SelectedItem as Car;
+                CurrentUser.EquippedCarId = SelCar.Id;
 
+                UpdateAndRefreshPlayer(CurrentUser);
+            }
+        }
     }
 }

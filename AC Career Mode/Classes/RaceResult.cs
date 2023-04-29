@@ -44,7 +44,6 @@ namespace AC_Career_Mode
             else if (position >= 4 && position <= 10)
             {
                 PrizeAwarded = Convert.ToInt32(race.Prize * 0.2);
-
             }
             else
             {

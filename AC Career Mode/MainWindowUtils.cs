@@ -71,7 +71,7 @@ namespace AC_Career_Mode
             else
             {
                 // Create 100 random races each day
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 400; i++)
                 {
                     Array race_groups = Enum.GetValues(typeof(RaceGroup));
                     Array race_types = Enum.GetValues(typeof(RaceLength));
@@ -92,21 +92,31 @@ namespace AC_Career_Mode
         private void RefreshRaceList()
         {
             lv_RaceLst.ItemsSource = null;
-            lv_RaceLst.ItemsSource = AllRaces.Where(rc => rc.Completed == false);
+            //lv_RaceLst.ItemsSource = AllRaces.Where(rc => rc.Completed == false);
+            lv_RaceLst.ItemsSource = AllRaces;
         }
 
         private void LoadDialogUserDetails(Player profile)
         {
             Player profile_ = SqliteDataAccess.LoadPlayer(profile.Id);
             toplabel_User.Content = profile_.Name;
-            toplabel_Money.Content = $"${profile_.Money}";
+            toplabel_Money.Content = profile_.Money.ToString("##,#");
             toplabel_Wins.Content = $"🏆 {profile_.RaceWins}";
             toplabel_Races.Content = $"Races: {profile_.Races}";
 
+            // DB returns null as 0
+            if (profile_.EquippedCarId != 0)
+            {
+                toplabel_EquippedCar.Content = SqliteDataAccess.LoadCar(profile_.EquippedCarId).Name;
+            }
+            else
+            {
+                toplabel_EquippedCar.Content = "";
+            }
 
             List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(CurrentUser);
-            lv_owned_cars.ItemsSource = null;
-            lv_owned_cars.ItemsSource = owned_cars;
+            lv_OwnedCar.ItemsSource = null;
+            lv_OwnedCar.ItemsSource = owned_cars;
         }
 
 

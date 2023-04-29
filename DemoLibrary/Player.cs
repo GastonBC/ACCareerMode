@@ -15,6 +15,7 @@ namespace DemoLibrary
 	    public int Races { get; set; }
 	    public int RaceWins { get; set; }
 	    public int RacePodiums { get; set; }
-	    public int KmsDriven { get; set; }
+        public int KmsDriven { get; set; }
+        public int EquippedCarId { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace DemoLibrary
     [Serializable]
     public class Car
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int ForSale { get; set; }
         public string Description { get; set; }
@@ -17,7 +17,7 @@ namespace DemoLibrary
         public CarGroup Group { get; set; }
         public int TopSpeed { get; set; }
         public Dictionary<string, string> Specs { get; set; }
-        public int Mileage { get; set; }
+        public int Kms { get; set; }
         public int Price { get; set; }
         public int? Owner { get; set; }
 
@@ -62,10 +62,10 @@ namespace DemoLibrary
             car.Price = Utils.RoundHunred(manual_values.Price * PriceFactor);
 
             car.Group = manual_values.Group;
-            car.Mileage = 0;
+            car.Kms = 0;
             car.Owner = null;
             car.ForSale = 1;
-            car.Id = null;
+            car.Id = 0;
 
             /// Price cars according their type
             /// Maybe a json file with middle prices

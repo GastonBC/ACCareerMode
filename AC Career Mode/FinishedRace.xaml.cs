@@ -54,15 +54,15 @@ namespace AC_Career_Mode
 
         private bool IsRaceValid()
         {
+            b_finished.IsEnabled = false;
             if (string.IsNullOrEmpty(tb_laps.Text) || string.IsNullOrEmpty(tb_position.Text))
             {
-                b_finished.IsEnabled = false;
                 return false;
             }
 
             // laps or position is a negative number
             if (!uint.TryParse(tb_laps.Text, out _) || !uint.TryParse(tb_position.Text, out _))
-                {
+            {
                 return false;
             }
 

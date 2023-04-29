@@ -33,15 +33,21 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                cnn.Execute("insert into Player (Name) values (@Name)", pName);
+#if RELEASE
+                cnn.Execute("insert into Player (Name, Money) values (@Name, 50000)", pName);
+#endif
+#if !RELEASE
+cnn.Execute("insert into Player (Name, Money) values (@Name, 100000000)", pName);
+#endif
             }
         }
+
 
         public static Player LoadPlayer(int Id)
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                Player output = cnn.QueryFirst<Player>($"select * from Player where Id={Id}", new DynamicParameters());
+                Player output = cnn.QuerySingleOrDefault<Player>($"select * from Player where Id={Id}", new DynamicParameters());
                 return output;
             }
         }
@@ -57,7 +63,8 @@ namespace DemoLibrary
                     $"Races='{player.Races}', " +
                     $"RaceWins='{player.RaceWins}', " +
                     $"RacePodiums='{player.RacePodiums}', " +
-                    $"KmsDriven='{player.KmsDriven}' " +
+                    $"KmsDriven='{player.KmsDriven}', " +
+                    $"EquippedCarId='{player.EquippedCarId}' " +
                     $"WHERE Id='{player.Id}'");
 
                 SQLiteCommand command = new(update_record, cnn);
@@ -67,10 +74,10 @@ namespace DemoLibrary
             return LoadPlayer(player.Id);
         }
 
-        #endregion
+#endregion
 
 
-        #region Cars db
+#region Cars db
 
         public static Car LoadCar(int? Id)
         {
@@ -78,7 +85,7 @@ namespace DemoLibrary
             {
                 using (SQLiteConnection cnn = new(LoadConnectionString()))
                 {
-                    Car output = cnn.QueryFirst<Car>($"select * from Cars where Id={Id}", new DynamicParameters());
+                    Car output = cnn.QuerySingleOrDefault<Car>($"select * from Cars where Id={Id}", new DynamicParameters());
                     return output;
                 }
             }
@@ -132,7 +139,7 @@ namespace DemoLibrary
         }
 
         /// <summary>
-        /// Updates price, mileage and owner
+        /// Updates price, mileage and owner. Returns the car updated
         /// </summary>
         public static Car UpdateCar(Car car)
         {
@@ -142,7 +149,7 @@ namespace DemoLibrary
                 cnn.Open();
                 string update_record = $"UPDATE Cars SET " +
                     $"Price='{car.Price}', " +
-                    $"Kms='{car.Mileage}', " +
+                    $"Kms='{car.Kms}', " +
                     $"ForSale='{car.ForSale}', " +
                     $"Owner='{car.Owner}' " +
                     $"WHERE Id='{car.Id}'";
@@ -164,6 +171,6 @@ namespace DemoLibrary
             }
         }
 
-        #endregion
+#endregion
     }
 }
