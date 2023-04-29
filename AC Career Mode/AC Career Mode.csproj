@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="bins\placeholder.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="CareerMode.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

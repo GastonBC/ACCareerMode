@@ -56,8 +56,6 @@ namespace AC_Career_Mode
             }
         }
 
-
-
         //Serialize: pass your object to this method to serialize it
         public static void Serialize(object value, string path)
         {
