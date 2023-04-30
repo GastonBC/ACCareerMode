@@ -33,7 +33,7 @@ namespace AC_Career_Mode
 
         private void PopulateMarketList()
         {
-            lv_car_sale.ItemsSource = null;
+            lv_CarMarket.ItemsSource = null;
             DailyCars.Clear();
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.DailyCarBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.DailyCarBin).Date)
@@ -56,7 +56,7 @@ namespace AC_Career_Mode
 
             List<Car> CarsForSale = SqliteDataAccess.LoadForSaleCars();
 
-            lv_car_sale.ItemsSource = CarsForSale.Concat(DailyCars);
+            lv_CarMarket.ItemsSource = CarsForSale.Concat(DailyCars);
         }
 
         private void PopulateRaceList()
@@ -124,73 +124,6 @@ namespace AC_Career_Mode
         }
 
 
-        GridViewColumnHeader _lastHeaderClicked = null;
-        ListSortDirection _lastDirection = ListSortDirection.Ascending;
-
-        void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
-        {
-            GridViewColumnHeader? headerClicked = e.OriginalSource as GridViewColumnHeader;
-
-            ListSortDirection direction;
-
-            if (headerClicked != null)
-            {
-                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
-                {
-                    if (headerClicked != _lastHeaderClicked)
-                    {
-                        direction = ListSortDirection.Ascending;
-                    }
-                    else
-                    {
-                        if (_lastDirection == ListSortDirection.Ascending)
-                        {
-                            direction = ListSortDirection.Descending;
-                        }
-                        else
-                        {
-                            direction = ListSortDirection.Ascending;
-                        }
-                    }
-
-                    var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
-                    var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-
-                    Sort(sortBy, direction);
-
-                    if (direction == ListSortDirection.Ascending)
-                    {
-                        headerClicked.Column.HeaderTemplate =
-                          Resources["HeaderTemplateArrowUp"] as DataTemplate;
-                    }
-                    else
-                    {
-                        headerClicked.Column.HeaderTemplate =
-                          Resources["HeaderTemplateArrowDown"] as DataTemplate;
-                    }
-
-                    // Remove arrow from previously sorted header
-                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
-                    {
-                        _lastHeaderClicked.Column.HeaderTemplate = null;
-                    }
-
-                    _lastHeaderClicked = headerClicked;
-                    _lastDirection = direction;
-                }
-            }
-        }
-
-        private void Sort(string sortBy, ListSortDirection direction)
-        {
-            ICollectionView dataView =
-              CollectionViewSource.GetDefaultView(lv_RaceLst.ItemsSource);
-
-            dataView.SortDescriptions.Clear();
-            SortDescription sd = new SortDescription(sortBy, direction);
-            dataView.SortDescriptions.Add(sd);
-            dataView.Refresh();
-        }
 
         private void UpdateAndRefreshPlayer(Player profile)
         {
@@ -266,5 +199,92 @@ namespace AC_Career_Mode
             }
             return false;
         }
+
+
+        #region Header clicks
+
+        void RaceLv_Clicked(object sender, RoutedEventArgs e)
+        {
+            HeaderClickedHandler(sender, e, lv_RaceLst);
+        }
+
+        private void MarketCarsLv_Click(object sender, RoutedEventArgs e)
+        {
+            HeaderClickedHandler(sender, e, lv_CarMarket);
+        }
+
+        void OwnedCarsLv_Clicked(object sender, RoutedEventArgs e)
+        {
+            HeaderClickedHandler(sender, e, lv_OwnedCar);
+        }
+
+        GridViewColumnHeader _lastHeaderClicked = null;
+        ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        void HeaderClickedHandler(object sender, RoutedEventArgs e, ListView lv)
+        {
+            GridViewColumnHeader? headerClicked = e.OriginalSource as GridViewColumnHeader;
+
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
+                    var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+
+                    Sort(sortBy, direction, lv);
+
+                    if (direction == ListSortDirection.Ascending)
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                          Resources["HeaderTemplateArrowUp"] as DataTemplate;
+                    }
+                    else
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                          Resources["HeaderTemplateArrowDown"] as DataTemplate;
+                    }
+
+                    // Remove arrow from previously sorted header
+                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+                    {
+                        _lastHeaderClicked.Column.HeaderTemplate = null;
+                    }
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+        private void Sort(string sortBy, ListSortDirection direction, ListView lv)
+        {
+            ICollectionView dataView =
+              CollectionViewSource.GetDefaultView(lv.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            SortDescription sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
+        }
+#endregion
     }
 }

@@ -37,37 +37,37 @@
 
                                 <GridViewColumn Width="150" DisplayMemberBinding="{Binding Car.Name}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Car" Click="GridViewColumnHeaderClickedHandler">Car</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Car" Click="RaceLv_Clicked">Car</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Track.Name}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Track" Click="GridViewColumnHeaderClickedHandler">Track</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Track" Click="RaceLv_Clicked">Track</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="90" DisplayMemberBinding="{Binding Prize, StringFormat={}{0:##,#}}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Prize" Click="GridViewColumnHeaderClickedHandler">Prize</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Prize" Click="RaceLv_Clicked">Prize</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Laps}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Laps" Click="GridViewColumnHeaderClickedHandler">Laps</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Laps" Click="RaceLv_Clicked">Laps</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthKm, StringFormat=G4}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Kms" Click="GridViewColumnHeaderClickedHandler">Race length (km)</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Kms" Click="RaceLv_Clicked">Race length (km)</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthMinutes, StringFormat=G4}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Minutes" Click="GridViewColumnHeaderClickedHandler">Race length (minutes)</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Minutes" Click="RaceLv_Clicked">Race length (minutes)</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
@@ -99,25 +99,25 @@
                         <RowDefinition/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_car_sale" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.RowSpan="2" Margin="0,0,5,0" SelectionChanged="MarketLv_SelChanged" Grid.Row="1" >
+                    <ListView x:Name="lv_CarMarket" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.RowSpan="2" Margin="0,0,5,0" SelectionChanged="MarketLv_SelChanged" Grid.Row="1" >
                         <ListView.View>
                             <GridView>
 
                                 <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Car">Car</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Car" Click="MarketCarsLv_Click">Car</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Price">Price</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Price" Click="MarketCarsLv_Click">Price</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Kms, StringFormat=G4}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Mileage">Mileage</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Mileage" Click="MarketCarsLv_Click">Mileage</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
                             </GridView>
@@ -127,6 +127,7 @@
                     <Button x:Name="b_BuyCar" Grid.Column="1" Content="Buy" IsEnabled="False" Grid.Row="2" Click="b_BuyCar_Click"/>
                 </Grid>
             </TabItem>
+            
             <TabItem Header="Profile">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -142,15 +143,15 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
-                                    <GridViewColumnHeader Tag="Car" Content="Car"/>
+                                    <GridViewColumnHeader Tag="Car" Content="Car" Click="OwnedCarsLv_Clicked"/>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Tag="Price" Content="Price"/>
+                                    <GridViewColumnHeader Tag="Price" Content="Price" Click="OwnedCarsLv_Clicked"/>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Kms, StringFormat=G4}">
-                                    <GridViewColumnHeader Tag="Mileage" Content="Mileage (kms)"/>
+                                    <GridViewColumnHeader Tag="Mileage" Content="Mileage (kms)" Click="OwnedCarsLv_Clicked"/>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
@@ -187,6 +188,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        
+        
         <Label x:Name="toplabel_User" Content="Gas" FontWeight="Bold" />
         <Label x:Name="toplabel_Money" Content="$10.000" Grid.Column="1" FontWeight="Bold" />
         <Label x:Name="toplabel_Wins" Content="🏆 11" Grid.Column="2" FontWeight="Bold" />

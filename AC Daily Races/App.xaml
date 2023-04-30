@@ -1,9 +1,0 @@
-﻿<Application x:Class="AC_Daily_Races.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AC_Daily_Races"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
-</Application>

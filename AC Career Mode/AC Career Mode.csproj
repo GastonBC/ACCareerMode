@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DemoLibrary\DemoLibrary.csproj" />
+    <ProjectReference Include="..\DemoLibrary\DBLink.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -150,7 +150,7 @@ namespace AC_Career_Mode
         #region MARKET TAB
         private void MarketLv_SelChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lv_car_sale.SelectedItem == null)
+            if (lv_CarMarket.SelectedItem == null)
             {
                 b_BuyCar.IsEnabled = false;
                 Img_ForSaleCar.Source = null;
@@ -158,15 +158,15 @@ namespace AC_Career_Mode
             }
 
             b_BuyCar.IsEnabled = true;
-            Car car = lv_car_sale.SelectedItem as Car;
+            Car car = lv_CarMarket.SelectedItem as Car;
             Img_ForSaleCar.Source = Utils.RetriveImage(car.Preview);
         }
 
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_car_sale.SelectedItem != null)
+            if (lv_CarMarket.SelectedItem != null)
             {
-                Car selected_car = lv_car_sale.SelectedItem as Car;
+                Car selected_car = lv_CarMarket.SelectedItem as Car;
 
                 if (HasPlayerEnoughMoney(CurrentUser, selected_car.Price))
                 {
@@ -250,14 +250,10 @@ namespace AC_Career_Mode
             }
         }
 
+
+
         #endregion
 
-
-        #region HISTORY TAB
-
-        
-
-        #endregion
 
     }
 }
