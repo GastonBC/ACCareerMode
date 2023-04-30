@@ -17,7 +17,6 @@ namespace AC_Career_Mode
         public bool Completed { get; set; }
         [ProtoMember(3)]
         public Car Car { get; set; }
-
         [ProtoMember(4)]
         public Track Track { get; set; }
         [ProtoMember(5)]
@@ -98,7 +97,15 @@ namespace AC_Career_Mode
                 case CarGroup.GT:
                     Prize = Utils.RoundX(LengthKm, 10) * 600;
                     break;
-                
+
+                case CarGroup.Vintage:
+                    Prize = Utils.RoundX(LengthKm, 10) * 1200;
+                    break;
+
+                case CarGroup.Kart:
+                    Prize = Utils.RoundX(LengthKm, 10) * 600;
+                    break;
+
                 default:
                     Prize = Utils.RoundX(LengthKm, 10) * 400;
                     break;
