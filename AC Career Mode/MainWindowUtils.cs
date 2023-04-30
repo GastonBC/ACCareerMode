@@ -209,8 +209,8 @@ namespace AC_Career_Mode
             // GET ALL TRACKS AND CARS FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.TracksBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.TracksBin).Date)
             {
-                AvailableTracks = (List<Track>)Utils.Deserialize(GlobalVars.TracksBin);
-                AvailableCars = (List<Car>)Utils.Deserialize(GlobalVars.CarsBin);
+                AvailableTracks = (List<Track>)Utils.Deserialize<List<Track>>(GlobalVars.TracksBin);
+                AvailableCars = (List<Car>)Utils.Deserialize<List<Car>>(GlobalVars.CarsBin);
             }
 #endif
 

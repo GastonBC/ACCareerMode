@@ -21,7 +21,7 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                var output = cnn.Query<Player>("select * from Player", new DynamicParameters());
+                var output = cnn.Query<Player>("select * from players", new DynamicParameters());
                 return output.ToList();
             }
         }
@@ -29,15 +29,15 @@ namespace DemoLibrary
         public static Player SavePlayer(Player pName)
         {
             int money = 100000000;
-#if release
-            money = 50000
+#if !DEBUG
+            money = 50000;
 #endif
             int new_player_id = 0;
 
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 cnn.Open();
-                cnn.Execute($"INSERT INTO Player (Name, Money) VALUES (@Name, {money})", pName);
+                cnn.Execute($"INSERT INTO players (Name, Money) VALUES (@Name, {money})", pName);
 
                 new_player_id = (int)cnn.LastInsertRowId;
                 cnn.Close();
@@ -51,7 +51,7 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                Player output = cnn.QuerySingleOrDefault<Player>($"select * from Player where Id={Id}", new DynamicParameters());
+                Player output = cnn.QuerySingleOrDefault<Player>($"select * from players where Id={Id}", new DynamicParameters());
                 return output;
             }
         }
@@ -61,7 +61,7 @@ namespace DemoLibrary
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
                 cnn.Open();
-                string update_record = ($"UPDATE Player SET " +
+                string update_record = ($"UPDATE players SET " +
                     $"Money='{player.Money}', " +
                     $"Loans='{player.Loans}', " +
                     $"Races='{player.Races}', " +
@@ -89,7 +89,7 @@ namespace DemoLibrary
             {
                 using (SQLiteConnection cnn = new(LoadConnectionString()))
                 {
-                    Car output = cnn.QuerySingleOrDefault<Car>($"select * from Cars where Id={Id}", new DynamicParameters());
+                    Car output = cnn.QuerySingleOrDefault<Car>($"select * from garage where Id={Id}", new DynamicParameters());
                     return output;
                 }
             }
@@ -103,7 +103,7 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                IEnumerable<Car>? output = cnn.Query<Car>($"select * from Cars where Owner='{profile.Id}'", new DynamicParameters());
+                IEnumerable<Car>? output = cnn.Query<Car>($"select * from garage where Owner='{profile.Id}'", new DynamicParameters());
 
                 return output.ToList();
             }
@@ -113,7 +113,7 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                string cmd = "INSERT INTO Cars (" +
+                string cmd = "INSERT INTO garage (" +
                     "Name," +
                     "Description," +
                     "Year," +
@@ -154,7 +154,7 @@ namespace DemoLibrary
             {
 
                 cnn.Open();
-                string update_record = $"UPDATE Cars SET " +
+                string update_record = $"UPDATE garage SET " +
                     $"Price='{car.Price}', " +
                     $"Kms='{car.Kms}', " +
                     $"ForSale='{car.ForSale}', " +
@@ -173,7 +173,7 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                var output = cnn.Query<Car>($"select * from Cars where Owner=NULL OR ForSale=1", new DynamicParameters()).ToList();
+                var output = cnn.Query<Car>($"select * from garage where Owner=NULL OR ForSale=1", new DynamicParameters()).ToList();
                 return output;
             }
         }
