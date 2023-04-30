@@ -1,26 +1,42 @@
 ﻿using Newtonsoft.Json;
+using ProtoBuf;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace DemoLibrary
 {
-    [Serializable]
+    [ProtoContract]
     public class Car
     {
+        [ProtoMember(1)]
         public int Id { get; set; }
+        [ProtoMember(2)]
         public string Name { get; set; }
+        [ProtoMember(3)]
         public int ForSale { get; set; }
+        [ProtoMember(4)]
         public string Description { get; set; }
+        [ProtoMember(5)]
         public string Year { get; set; }
+        [ProtoMember(6)]
         public string Class { get; set; }
+        [ProtoMember(7)]
         public List<string> Tags { get; set; }
+        [ProtoMember(8)]
         public string Path { get; set; }
+        [ProtoMember(9)]
         public string Preview { get; set; }
+        [ProtoMember(10)]
         public CarGroup Group { get; set; }
+        [ProtoMember(11)]
         public int TopSpeed { get; set; }
+        [ProtoMember(12)]
         public Dictionary<string, string> Specs { get; set; }
+        [ProtoMember(13)]
         public int Kms { get; set; }
+        [ProtoMember(14)]
         public int Price { get; set; }
+        [ProtoMember(15)]
         public int? Owner { get; set; }
-
 
         public static Car LoadCarJson(string json_path)
         {

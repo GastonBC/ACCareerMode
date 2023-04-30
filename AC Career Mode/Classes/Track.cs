@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,18 +8,28 @@ using System.Linq;
 
 namespace AC_Career_Mode
 {
-    [Serializable]
+    [ProtoContract]
     public class Track
     {
+        [ProtoMember(1)]
         public string Name { get; set; }
+        [ProtoMember(2)]
         public string Description { get; set; }
+        [ProtoMember(3)]
         public string Length { get; set; }
+        [ProtoMember(4)]
         public double LengthKm { get; set; }
+        [ProtoMember(5)]
         public string Year { get; set; }
+        [ProtoMember(6)]
         public List<string> Tags { get; set; }
+        [ProtoMember(7)]
         public string Path { get; set; }
+        [ProtoMember(8)]
         public string OutlinePath { get; set; }
+        [ProtoMember(9)]
         public string PreviewPath { get; set; }
+        [ProtoMember(10)]
         public string Author { get; set; }
 
 

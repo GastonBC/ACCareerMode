@@ -1,11 +1,8 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 #pragma warning disable IDE0063 // Use simple 'using' statement
 
 namespace AC_Career_Mode
@@ -56,27 +53,29 @@ namespace AC_Career_Mode
             }
         }
 
-        //Serialize: pass your object to this method to serialize it
+        /// <summary>
+        /// Protobuf serializer. Cars and tracks are kept as bin files to work easier and faster
+        /// </summary>
         public static void Serialize(object value, string path)
         {
-            BinaryFormatter formatter = new();
-
             using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                formatter.Serialize(fStream, value);
+                Serializer.Serialize(fStream, value);
             }
         }
 
-        //Deserialize: Here is what you are looking for
-        public static object Deserialize(string path)
-        {
+
+        /// <summary>
+        /// Protobuf deserializer
+        /// </summary>
+        public static object Deserialize<T>(string path)
+        { 
             if (!File.Exists(path)) { throw new FileNotFoundException(); }
 
-            BinaryFormatter formatter = new();
-
+            
             using (Stream fStream = File.OpenRead(path))
             {
-                return formatter.Deserialize(fStream);
+                return Serializer.Deserialize<T>(fStream);
             }
         }
 

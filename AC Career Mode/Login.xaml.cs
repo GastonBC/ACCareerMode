@@ -29,7 +29,9 @@ namespace AC_Career_Mode
             Player p = new();
             p.Name = tb_Name.Text;
 
-            SqliteDataAccess.SavePlayer(p);
+            p = SqliteDataAccess.SavePlayer(p);
+
+            Record.RecordRegister(p);
 
             tb_Name.Text = "";
 

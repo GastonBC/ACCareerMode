@@ -1,4 +1,5 @@
 ﻿using DemoLibrary;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,21 +8,35 @@ using System.Linq;
 
 namespace AC_Career_Mode
 {
-    [Serializable]
+    [ProtoContract]
     public class Race
     {
+        [ProtoMember(1)]
         public int Laps { get; set; }
+        [ProtoMember(2)]
         public bool Completed { get; set; }
+        [ProtoMember(3)]
         public Car Car { get; set; }
 
+        [ProtoMember(4)]
         public Track Track { get; set; }
+        [ProtoMember(5)]
         public int Prize { get; set; }
+        [ProtoMember(6)]
         public RaceLength RaceType { get; set; }
+        [ProtoMember(7)]
         public int Seed { get; set; }
+        [ProtoMember(8)]
         public double LengthKm { get; set; }
+        [ProtoMember(9)]
         public int LengthMinutes { get; set; }
+        [ProtoMember(10)]
         public double OneLapTimeMinutes { get; set; }
+        [ProtoMember(11)]
         public string Description { get; set; }
+
+        // Parameterless for protobuff
+        public Race() { }
 
         /// <summary>
         /// Creates a race of variable length given a car, track and a length type

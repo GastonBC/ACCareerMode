@@ -3,13 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -38,9 +33,6 @@ namespace AC_Career_Mode
 
         public MainWindow(Player profile)
         {
-
-
-
             CurrentUser = profile;
 
             InitializeComponent();

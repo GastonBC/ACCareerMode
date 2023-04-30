@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 using Dapper;
+using System.Data.SqlTypes;
 #pragma warning disable IDE0063 // Use simple 'using' statement
 
 namespace DemoLibrary
@@ -29,16 +26,23 @@ namespace DemoLibrary
             }
         }
 
-        public static void SavePlayer(Player pName)
+        public static Player SavePlayer(Player pName)
         {
+            int money = 100000000;
+#if release
+            money = 50000
+#endif
+            int new_player_id = 0;
+
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-#if RELEASE
-                cnn.Execute("insert into Player (Name, Money) values (@Name, 50000)", pName);
-#endif
-#if !RELEASE
-cnn.Execute("insert into Player (Name, Money) values (@Name, 100000000)", pName);
-#endif
+                cnn.Open();
+                cnn.Execute($"INSERT INTO Player (Name, Money) VALUES (@Name, {money})", pName);
+
+                new_player_id = (int)cnn.LastInsertRowId;
+                cnn.Close();
+
+                return LoadPlayer(new_player_id);
             }
         }
 
@@ -105,7 +109,7 @@ cnn.Execute("insert into Player (Name, Money) values (@Name, 100000000)", pName)
             }
         }
 
-        public static void InsertCar(Car car)
+        public static Car InsertCar(Car car)
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
@@ -134,7 +138,10 @@ cnn.Execute("insert into Player (Name, Money) values (@Name, 100000000)", pName)
                     "@Owner, " +
                     "@ForSale)";
 
+                cnn.Open();
                 cnn.Execute(cmd, car);
+                long car_id = cnn.LastInsertRowId;
+                return LoadCar((int)car_id);
             }
         }
 

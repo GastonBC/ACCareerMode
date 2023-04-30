@@ -38,7 +38,7 @@ namespace AC_Career_Mode
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.DailyCarBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.DailyCarBin).Date)
             {
-                DailyCars = (List<Car>)Utils.Deserialize(GlobalVars.DailyCarBin);
+                DailyCars = (List<Car>)Utils.Deserialize<List<Car>>(GlobalVars.DailyCarBin);
             }
 
             // CREATE CACHE FILE WITH AVAILABLE RACES
@@ -65,7 +65,7 @@ namespace AC_Career_Mode
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.RacesBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.RacesBin).Date)
             {
-                AllRaces = (List<Race>)Utils.Deserialize(GlobalVars.RacesBin);
+                AllRaces = (List<Race>)Utils.Deserialize< List<Race>>(GlobalVars.RacesBin);
             }
 
             // CREATE CACHE FILE WITH AVAILABLE RACES

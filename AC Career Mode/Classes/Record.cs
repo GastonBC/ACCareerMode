@@ -56,6 +56,14 @@ namespace AC_Career_Mode
             InsertLog(r, player);
         }
 
+        internal static void RecordRegister(Player player)
+        {
+            string msg = $"{player.Name} created their account.";
+            Record r = new Record("AccountCreate", player.Id, msg);
+
+            InsertLog(r, player);
+        }
+
         internal static Record RecordError(Exception ex, Player player)
         {
             string msg = $"EXCEPTION -> {ex.Message} at {ex.Source}";
@@ -71,7 +79,7 @@ namespace AC_Career_Mode
             List<Record> records = new();
             XmlSerializer serializer = new XmlSerializer(records.GetType());
 
-            string log_path = $"./logs/{profile.Id}_{profile.Name}.xml";
+            string log_path = $"./userlogs/{profile.Id}_{profile.Name}.xml";
 
             if (File.Exists(log_path))
             {
@@ -90,7 +98,7 @@ namespace AC_Career_Mode
 
         internal static List<Record> DeserializeRecords(Player profile)
         {
-            string log_path = $"./logs/{profile.Id}_{profile.Name}.xml";
+            string log_path = $"./userlogs/{profile.Id}_{profile.Name}.xml";
 
             XmlSerializer deserializer = new XmlSerializer(typeof(List<Record>));
 
