@@ -1,4 +1,4 @@
-﻿namespace DemoLibrary
+﻿namespace DBLink
 {
     // Loads manual values for cars like price and type
     internal class ManualCarValues
@@ -66,7 +66,7 @@
                 new ManualCarValues("Porsche 911 GT3 R 2016", CarGroup.GT, 700000),
                 new ManualCarValues("Porsche 919 Hybrid 2015", CarGroup.GT, 700000),
                 new ManualCarValues("Porsche 919 Hybrid 2016", CarGroup.GT, 700000),
-                new ManualCarValues("Praga R1", CarGroup.GT, 700000),
+                new ManualCarValues("Praga R1", CarGroup.GT, 300000),
                 new ManualCarValues("Toyota AE86 Drift", CarGroup.GT, 700000),
                 new ManualCarValues("Toyota AE86 Tuned", CarGroup.GT, 700000),
                 new ManualCarValues("Toyota Supra MKIV Drift", CarGroup.GT, 700000),
@@ -79,7 +79,7 @@
                 new ManualCarValues("Lotus Evora GTC", CarGroup.GT, 700000),
                 new ManualCarValues("Lotus Evora GTE", CarGroup.GT, 700000),
                 new ManualCarValues("Mercedes SLS AMG GT3", CarGroup.GT, 700000),
-                new ManualCarValues("Radical SR3 LHD", CarGroup.GT, 700000),
+                new ManualCarValues("Radical SR3 LHD", CarGroup.GT, 200000),
                 new ManualCarValues("Formula RSS 2013 V8", CarGroup.F1, 700000),
                 new ManualCarValues("Formula Americas 2020", CarGroup.F1, 700000),
                 new ManualCarValues("GT-M Bayro 6 V8", CarGroup.GT, 700000),
@@ -140,7 +140,8 @@
                 new ManualCarValues("Porsche 935/78 'Moby Dick'", CarGroup.Vintage, 140000),
                 new ManualCarValues("Porsche 962 C Long Tail", CarGroup.Vintage, 1000000),
                 new ManualCarValues("Formula RSS 1990 V12", CarGroup.Vintage, 5000000),
-                
+                new ManualCarValues("Formula RSS 1970 V8", CarGroup.Vintage, 5000000),
+
                 new ManualCarValues("Formula Americas 2020 Oval", CarGroup.Oval, 10000),
                 new ManualCarValues("Hyperion 2020", CarGroup.Oval, 10000),
 

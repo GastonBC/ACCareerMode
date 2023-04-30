@@ -1,4 +1,4 @@
-﻿namespace DemoLibrary
+﻿namespace DBLink
 { 
     public enum CarGroup
     {

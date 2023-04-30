@@ -6,7 +6,7 @@ using Dapper;
 using System.Data.SqlTypes;
 #pragma warning disable IDE0063 // Use simple 'using' statement
 
-namespace DemoLibrary
+namespace DBLink
 {
     public class SqliteDataAccess
     {
@@ -21,7 +21,7 @@ namespace DemoLibrary
         {
             using (SQLiteConnection cnn = new(LoadConnectionString()))
             {
-                var output = cnn.Query<Player>("select * from players", new DynamicParameters());
+                var output = cnn.Query<Player>("SELECT * FROM players", new DynamicParameters());
                 return output.ToList();
             }
         }
