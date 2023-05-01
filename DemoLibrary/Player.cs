@@ -8,7 +8,6 @@ namespace DBLink
         public int Id { get; set; }
         public string Name { get; set; }
         public int Money { get; set; }
-        public int Loans { get; set; }
         public int Races { get; set; }
         public int RaceWins { get; set; }
         public int RacePodiums { get; set; }
@@ -26,8 +25,6 @@ namespace DBLink
                 return output;
             }
         }
-
-
 
         public static List<Player> LoadAllPlayers()
         {
@@ -60,6 +57,22 @@ namespace DBLink
         }
 
 
+        /// <summary>
+        /// Loads all player loans from DB
+        /// </summary>
+        public List<Loan> GetPlayerLoans()
+        {
+            List<Loan> loans = new();
+
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                IEnumerable<Loan> output = cnn.Query<Loan>($"SELECT * FROM loans where OwnerId={this.Id}", new DynamicParameters());
+
+                return output.ToList();
+            }
+        }
+
+
         public static void UpdatePlayer(Player player)
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
@@ -67,7 +80,6 @@ namespace DBLink
                 cnn.Open();
                 string update_record = ($"UPDATE players SET " +
                     $"Money='{player.Money}', " +
-                    $"Loans='{player.Loans}', " +
                     $"Races='{player.Races}', " +
                     $"RaceWins='{player.RaceWins}', " +
                     $"RacePodiums='{player.RacePodiums}', " +

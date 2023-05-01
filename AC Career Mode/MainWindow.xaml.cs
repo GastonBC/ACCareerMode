@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using Utilities;
@@ -47,18 +48,23 @@ namespace AC_Career_Mode
 
         private void PopulateLoans()
         {
-            lv_LoansLV.Items.Clear();
+            lv_LoansAvailable.ItemsSource = null;
             available_loans.Clear();
-            lv_LoansLV.Items.Clear();
 
             for (int i = 0; i < 10; i++)
             {
                 available_loans.Add(new Loan(i));
             }
 
-            lv_LoansLV.ItemsSource = available_loans;
-
+            lv_LoansAvailable.ItemsSource = available_loans;
         }
+
+        private void RefreshPlayerLoans(Player player)
+        {
+            lv_PlayerLoans.ItemsSource = null;
+            lv_PlayerLoans.ItemsSource = player.GetPlayerLoans();
+        }
+
 
         #region RACE TAB
         private void RaceLv_SelChanged(object sender, SelectionChangedEventArgs e)
@@ -269,8 +275,30 @@ namespace AC_Career_Mode
 
 
 
+
         #endregion
 
+        private void lv_AvailableLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (lv_LoansAvailable.SelectedItem != null)
+            {
+                Loan loan = lv_LoansAvailable.SelectedItem as Loan;
+                loan.ExecuteLoan(CurrentUser);
 
+                RefreshPlayerLoans(CurrentUser);
+                UpdateAndRefreshPlayer(CurrentUser);
+            }
+        }
+
+        private void lv_PlayerLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (lv_PlayerLoans.SelectedItem != null)
+            {
+                Loan loan = lv_LoansAvailable.SelectedItem as Loan;
+                loan.PayInstallment(CurrentUser);
+                UpdateAndRefreshPlayer(CurrentUser);
+            }
+
+        }
     }
 }

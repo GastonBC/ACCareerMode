@@ -98,7 +98,7 @@ namespace DBLink
             return car;
         }
 
-        public Car LoadCar(int? Id)
+        public static Car LoadCar(int? Id)
         {
             if (Id != null)
             {

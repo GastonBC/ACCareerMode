@@ -108,6 +108,8 @@ namespace AC_Career_Mode
             toplabel_Wins.Content = $"🏆 {profile_.RaceWins}";
             toplabel_Races.Content = $"Races: {profile_.Races}";
 
+            RefreshPlayerLoans(profile);
+
             lv_HistoryRecords.ItemsSource = Record.DeserializeRecords(profile);
 
             // DB returns null as 0

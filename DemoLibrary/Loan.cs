@@ -29,7 +29,9 @@ namespace DBLink
         }
         public int BillingInterval { get; set; }
         public int Installment { get; set; }
-        
+
+
+        public Loan() { }
 
         /// <summary>
         /// Creates a random loan, depending on the day. Used to create daily loans not stored in db
@@ -51,44 +53,36 @@ namespace DBLink
 
 
 
-        /// <summary>
-        /// Loads all loans from DB given an owner
-        /// </summary>
-        public static List<Loan> GetPlayerLoans(Player player)
+
+
+
+        public void PayInstallment(Player player)
         {
-            List<Loan> loans = new();
-
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            if (player.Money >= Installment)
             {
-                IEnumerable<Loan> output = cnn.Query<Loan>($"SELECT * FROM loans where OwnerId={player.Id}", new DynamicParameters());
-
-                return output.ToList();
-            }
-        }
-
-
-        public void PayInstallment(Loan loan, Player player)
-        {
-            if (player.Money >= loan.Installment)
-            {
-                player.Money -= loan.Installment;
-                loan.AmountLeft -= loan.Installment;
+                player.Money -= Installment;
+                AmountLeft -= Installment;
+                LastPaid = DateTime.Today;
 
                 Player.UpdatePlayer(player);
-                
+                UpdateLoan();
+
+
             }
         }
 
-
-        public void UpdateLoan(Loan loan)
+        /// <summary>
+        /// Updates the loan in the database
+        /// </summary>
+        public void UpdateLoan()
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
                 cnn.Open();
-                string update_record = ($"UPDATE players SET " +
-                    $"AmountLeft='{loan.AmountLeft}', " +
-                    $"_LastPaid='{loan._LastPaid}' " +
-                    $"WHERE Id='{loan.Id}'");
+                string update_record = ($"UPDATE loans SET " +
+                    $"AmountLeft={AmountLeft}, " +
+                    $"_LastPaid={_LastPaid} " +
+                    $"WHERE Id={Id}");
 
                 SQLiteCommand command = new(update_record, cnn);
                 command.ExecuteNonQuery();
@@ -97,16 +91,16 @@ namespace DBLink
             return;
         }
 
-        public bool IsInstallmentDue(Loan loan)
+        public bool IsInstallmentDue()
         {
             DateTime today = DateTime.Today;
 
             // ie 25th - 13th = 12 days
             // loan interval must be smaller than 12
-            int interval = (int)(today - loan.LastPaid).TotalDays;
+            int interval = (int)(today - this.LastPaid).TotalDays;
 
 
-            if (loan.BillingInterval < interval)
+            if (this.BillingInterval < interval)
             {
                 return true;
             }
@@ -115,38 +109,40 @@ namespace DBLink
 
 
 
-        public void ExecuteLoan(Loan loan, Player player)
+        public void ExecuteLoan(Player player)
         {
-            int interest = Convert.ToInt32(loan.AmountLeft * (loan.InterestRate / 100));
-            loan.AmountLeft += interest;
-            loan.OwnerId = player.Id;
-            InsertLoan(loan);
+            if (this.Id != 0)
+            {
+                throw new InvalidOperationException("New loan alredy has an id");
+            }
+
+            player.Money += AmountLeft;
+
+            int interest = Convert.ToInt32(AmountLeft * (InterestRate / 100));
+            AmountLeft += interest;
+            OwnerId = player.Id;
+
+
+            this.InsertLoan();
         }
 
-        // Inserts the loan executed by the player into db
-        public void InsertLoan(Loan loan) 
+        // Inserts the loan executed by the player into db. Only allowed if Id = 0 (non existent in db)
+        public void InsertLoan()
         {
+            if (this.Id != 0)
+            {
+                throw new InvalidOperationException("New loan alredy has an id");
+            }
+
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
-                string cmd = "INSERT INTO LOANS (" +
-                                "OwnerId, " +
-                                "AmountLeft, " +
-                                "InterestRate, " +
-                                "_LastPaid, " +
-                                "BillingInterval, " +
-                                "Installment" +
-                                ") VALUES (" +
-                                "@OwnerId, " +
-                                "@AmountLeft, " +
-                                "@InterestRate, " +
-                                "@_LastPaid, " +
-                                "@BillingInterval, " +
-                                "@Installment)";
-
                 cnn.Open();
-                cnn.Execute(cmd, loan);
-                long loan_id = cnn.LastInsertRowId;
+                string update_record = $"INSERT INTO loans (OwnerId, AmountLeft, InterestRate, _LastPaid, BillingInterval, Installment) VALUES ({OwnerId}, {AmountLeft}, {InterestRate}, {_LastPaid}, {BillingInterval}, {Installment})";
+
+                SQLiteCommand command = new(update_record, cnn);
+                command.ExecuteNonQuery();
                 cnn.Close();
+
             }
         }
 
