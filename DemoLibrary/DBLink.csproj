@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Classes\**" />
+    <EmbeddedResource Remove="Classes\**" />
+    <None Remove="Classes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     
@@ -17,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Classes\" />
+    <ProjectReference Include="..\Utils\Utilities.csproj" />
   </ItemGroup>
 
 </Project>

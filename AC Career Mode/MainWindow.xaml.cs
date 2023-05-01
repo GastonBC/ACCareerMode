@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Utils = Utilities.Utilities;
+using GlobalVars = Utilities.GlobalVariables;
 
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -159,7 +161,7 @@ namespace AC_Career_Mode
 
             b_BuyCar.IsEnabled = true;
             Car car = lv_CarMarket.SelectedItem as Car;
-            Img_ForSaleCar.Source = Utils.RetriveImage(car.Preview);
+            Img_ForSaleCar.Source = Utilities.Utilities.RetriveImage(car.Preview);
         }
 
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
@@ -212,7 +214,7 @@ namespace AC_Career_Mode
             {
                 b_SellCar.IsEnabled = true;
                 Car car = lv_OwnedCar.SelectedItem as Car;
-                img_OwnedCar.Source = Utils.RetriveImage(car.Preview);
+                img_OwnedCar.Source = Utilities.Utilities.RetriveImage(car.Preview);
             }
             else
             {

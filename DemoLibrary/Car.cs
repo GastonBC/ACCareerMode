@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
 using ProtoBuf;
+using System.Diagnostics;
+using Utils = Utilities.Utilities;
+using GlobalVars = Utilities.GlobalVariables;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace DBLink
@@ -65,7 +68,12 @@ namespace DBLink
             }
             car.TopSpeed = top_speed;
 
-            ManualCarValues manual_values = ManualCarValues.LoadCarValues().Find(c => c.Name == car.Name);
+
+
+            ManualCarData manual_values = ManualCarData.LoadCarValues().Find(c => c.Name == car.Name);
+
+
+                
             
             if (manual_values == null)
             {
@@ -75,7 +83,7 @@ namespace DBLink
 
             double PriceFactor = Utils.GetRandomNumber(0.9, 1.2, car.Path.Length);
 
-            car.Price = Utils.RoundHunred(manual_values.Price * PriceFactor);
+            car.Price = Utils.RoundX(manual_values.Price * PriceFactor, 100);
 
             car.Group = manual_values.Group;
             car.Kms = 0;

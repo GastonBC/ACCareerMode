@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Utils = Utilities.Utilities;
+using GlobalVars = Utilities.GlobalVariables;
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
 namespace AC_Career_Mode
@@ -124,7 +126,7 @@ namespace AC_Career_Mode
         }
 
         /// <summary>
-        /// Creates a random race given a list of available tracks, cars and a length type
+        /// Creates a random (short, medium) race given a list of available tracks and cars
         /// </summary>
         public static Race RaceFromList(List<Track> tracks, List<Car> cars, int seed_modifier = 0)
         {
@@ -132,7 +134,10 @@ namespace AC_Career_Mode
 
             Array length_types = Enum.GetValues(typeof(RaceLength));
 
-            RaceLength raceLengthType = (RaceLength)length_types.GetValue(random.Next(length_types.Length));
+            //RaceLength raceLengthType = (RaceLength)length_types.GetValue(random.Next(length_types.Length));
+
+
+            RaceLength raceLengthType = (RaceLength)length_types.GetValue(random.Next(2));
 
 
             Car car = cars[random.Next(cars.Count)];

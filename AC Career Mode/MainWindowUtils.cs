@@ -8,7 +8,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
+using Utils = Utilities.Utilities;
+using GlobalVars = Utilities.GlobalVariables;
+
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
 /// This file contains some population functions for the main window
@@ -38,7 +40,7 @@ namespace AC_Career_Mode
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.DailyCarBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.DailyCarBin).Date)
             {
-                DailyCars = (List<Car>)Utils.Deserialize<List<Car>>(GlobalVars.DailyCarBin);
+                DailyCars = (List<Car>)Utilities.Utilities.Deserialize<List<Car>>(GlobalVars.DailyCarBin);
             }
 
             // CREATE CACHE FILE WITH AVAILABLE RACES
@@ -65,14 +67,14 @@ namespace AC_Career_Mode
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.RacesBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.RacesBin).Date)
             {
-                AllRaces = (List<Race>)Utils.Deserialize< List<Race>>(GlobalVars.RacesBin);
+                AllRaces = (List<Race>)Utils.Deserialize<List<Race>>(GlobalVars.RacesBin);
             }
 
             // CREATE CACHE FILE WITH AVAILABLE RACES
             else
             {
-                // Create 400 random races each day
-                for (int i = 0; i < 400; i++)
+                // Create 200 random races each day
+                for (int i = 0; i < 200; i++)
                 {
                     Race race = Race.RaceFromList(AvailableTracks, AvailableCars, i);
 
