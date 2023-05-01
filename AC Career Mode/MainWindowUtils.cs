@@ -123,7 +123,7 @@ namespace AC_Career_Mode
             }
 
 
-            List<Car> owned_cars = Car.GetPlayerCars(CurrentUser);
+            List<Car> owned_cars = CurrentUser.GetPlayerCars();
             lv_OwnedCar.ItemsSource = null;
             lv_OwnedCar.ItemsSource = owned_cars;
         }
@@ -132,7 +132,7 @@ namespace AC_Career_Mode
 
         private void UpdateAndRefreshPlayer(Player profile)
         {
-            Player.UpdatePlayer(profile);
+            profile.UpdateInDB();
             LoadDialogUserDetails(profile);
         }
 
@@ -196,14 +196,7 @@ namespace AC_Career_Mode
         }
 
 
-        private bool HasPlayerEnoughMoney(Player player, int price)
-        {
-            if (player.Money >= price)
-            {
-                return true;
-            }
-            return false;
-        }
+
 
 
         #region Header clicks

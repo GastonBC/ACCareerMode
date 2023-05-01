@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ProtoBuf;
 using System.Data.SQLite;
+using System.Security.Policy;
 using Utilities;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -18,29 +19,21 @@ namespace DBLink
         [ProtoMember(3)]
         public int ForSale { get; set; }
         [ProtoMember(4)]
-        public string Description { get; set; }
-        [ProtoMember(5)]
-        public string Year { get; set; }
-        [ProtoMember(6)]
-        public string Class { get; set; }
-        [ProtoMember(7)]
-        public List<string> Tags { get; set; }
-        [ProtoMember(8)]
         public string Path { get; set; }
-        [ProtoMember(9)]
+        [ProtoMember(5)]
         public string Preview { get; set; }
-        [ProtoMember(10)]
+        [ProtoMember(6)]
         public CarGroup Group { get; set; }
-        [ProtoMember(11)]
+        [ProtoMember(7)]
         public int TopSpeed { get; set; }
-        [ProtoMember(12)]
+        [ProtoMember(8)]
         public Dictionary<string, string> Specs { get; set; }
-        [ProtoMember(13)]
+        [ProtoMember(9)]
         public int Kms { get; set; }
-        [ProtoMember(14)]
+        [ProtoMember(10)]
         public int Price { get; set; }
-        [ProtoMember(15)]
-        public int? Owner { get; set; }
+        [ProtoMember(11)]
+        public int Owner { get; set; }
 
         public static Car LoadCarJson(string json_path)
         {
@@ -88,7 +81,7 @@ namespace DBLink
 
             car.Group = manual_values.Group;
             car.Kms = 0;
-            car.Owner = null;
+            car.Owner = 0;
             car.ForSale = 1;
             car.Id = 0;
 
@@ -100,7 +93,7 @@ namespace DBLink
 
         public static Car LoadCar(int? Id)
         {
-            if (Id != null)
+            if (Id != 0)
             {
                 using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
                 {
@@ -114,52 +107,30 @@ namespace DBLink
             }
         }
 
-        public static List<Car> GetPlayerCars(Player player)
+
+
+        public void InsertInDB()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            if (Id != 0)
             {
-                IEnumerable<Car>? output = cnn.Query<Car>($"select * from garage where Owner='{player.Id}'", new DynamicParameters());
-
-                return output.ToList();
+                throw new InvalidOperationException("Car Id is not 0");
             }
-        }
 
-        public static Car InsertCar(Car car)
-        {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            try
             {
-                string cmd = "INSERT INTO garage (" +
-                    "Name," +
-                    "Description," +
-                    "Year," +
-                    "Class," +
-                    "Path," +
-                    "Preview," +
-                    "TopSpeed," +
-                    "Price," +
-                    "Kms," +
-                    "Owner, " +
-                    "ForSale" +
-                    ") VALUES (" +
-                    "@Name, " +
-                    "@Description, " +
-                    "@Year, " +
-                    "@Class, " +
-                    "@Path, " +
-                    "@Preview, " +
-                    "@TopSpeed, " +
-                    "@Price, " +
-                    "@Kms, " +
-                    "@Owner, " +
-                    "@ForSale)";
+                using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+                {
+                    cnn.Open();
+                    string cmd = $"INSERT INTO garage (Name, Path, Preview, TopSpeed, Price, Kms, Owner, ForSale) " +
+                        $"VALUES ('{Name}', '{Path}', '{Preview}', {TopSpeed}, {Price}, {Kms}, {Owner}, {ForSale})";
 
-                cnn.Open();
-                cnn.Execute(cmd, car);
-                long car_id = cnn.LastInsertRowId;
-                cnn.Close();
-
-                return LoadCar((int)car_id);
+                    SQLiteCommand command = new(cmd, cnn);
+                    cnn.Execute(cmd);
+                    Id = (int)cnn.LastInsertRowId;
+                    cnn.Close();
+                }
             }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex.Message); }
         }
 
 
@@ -167,24 +138,21 @@ namespace DBLink
         /// <summary>
         /// Updates price, mileage and owner. Returns the car updated
         /// </summary>
-        public static Car UpdateCar(Car car)
+        public void UpdateInDB()
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
 
                 cnn.Open();
                 string update_record = $"UPDATE garage SET " +
-                    $"Price='{car.Price}', " +
-                    $"Kms='{car.Kms}', " +
-                    $"ForSale='{car.ForSale}', " +
-                    $"Owner='{car.Owner}' " +
-                    $"WHERE Id='{car.Id}'";
+                    $"Price='{Price}', " +
+                    $"Kms='{Kms}', " +
+                    $"ForSale='{ForSale}', " +
+                    $"Owner='{Owner}' " +
+                    $"WHERE Id='{Id}'";
 
-                SQLiteCommand command = new(update_record, cnn);
-                command.ExecuteNonQuery();
+                cnn.Execute(update_record);
                 cnn.Close();
-
-                return LoadCar(car.Id);
             }
         }
 

@@ -115,7 +115,7 @@ namespace AC_Career_Mode
                 Car carUsed = Car.LoadCar(CurrentUser.EquippedCarId);
                 carUsed.Kms += Convert.ToInt32(RaceResult.Result.KmsDriven);
 
-                Car.UpdateCar(carUsed);
+                carUsed.UpdateInDB();
 
                 if (RaceResult.Result.Position <= 3)
                 {
@@ -156,7 +156,7 @@ namespace AC_Career_Mode
 
             if (chk_FilterRaces.IsChecked == true)
             {
-                List<Car> owned_cars = Car.GetPlayerCars(CurrentUser);
+                List<Car> owned_cars = CurrentUser.GetPlayerCars();
 
                 IEnumerable<string>? names = AllRaces.Select(r => r.Car.Name).Intersect(owned_cars.Select(c => c.Name));
                 List<Race> FilteredList = AllRaces.Where(r => names.Contains(r.Car.Name)).ToList();
@@ -191,7 +191,7 @@ namespace AC_Career_Mode
             {
                 Car selected_car = lv_CarMarket.SelectedItem as Car;
 
-                if (HasPlayerEnoughMoney(CurrentUser, selected_car.Price))
+                if (CurrentUser.HasPlayerEnoughMoney(selected_car.Price))
                 {
                     CurrentUser.Money -= selected_car.Price;
 
@@ -205,7 +205,7 @@ namespace AC_Career_Mode
 
                         selected_car.Owner = CurrentUser.Id;
                         selected_car.ForSale = 0;
-                        Car.InsertCar(selected_car);
+                        selected_car.InsertInDB();
                     }
 
                     // else search the database and update the entry
@@ -213,7 +213,7 @@ namespace AC_Career_Mode
                     {
                         selected_car.Owner = CurrentUser.Id;
                         selected_car.ForSale = 0;
-                        Car.UpdateCar(selected_car);
+                        selected_car.UpdateInDB();
                     }
 
                     Record.RecordBuy(CurrentUser, selected_car);
@@ -250,10 +250,10 @@ namespace AC_Career_Mode
             {
                 Car selected_car = lv_OwnedCar.SelectedItem as Car;
 
-                selected_car.Owner = null;
+                selected_car.Owner = 0;
                 selected_car.ForSale = 1;
                 CurrentUser.Money += selected_car.Price;
-                Car.UpdateCar(selected_car);
+                selected_car.UpdateInDB();
 
                 Record.RecordSell(CurrentUser, selected_car);
                 RefreshMarket();

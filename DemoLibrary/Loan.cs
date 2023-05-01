@@ -5,8 +5,10 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.ConstrainedExecution;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Utilities;
 
 namespace DBLink
@@ -51,11 +53,6 @@ namespace DBLink
             Installment = Utils.RoundX(AmountLeft * 0.05, 1);
         }
 
-
-
-
-
-
         public void PayInstallment(Player player)
         {
             if (player.Money >= Installment)
@@ -64,8 +61,8 @@ namespace DBLink
                 AmountLeft -= Installment;
                 LastPaid = DateTime.Today;
 
-                Player.UpdatePlayer(player);
-                UpdateLoan();
+                player.UpdateInDB();
+                UpdateInDB();
 
 
             }
@@ -74,7 +71,7 @@ namespace DBLink
         /// <summary>
         /// Updates the loan in the database
         /// </summary>
-        public void UpdateLoan()
+        public void UpdateInDB()
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
@@ -84,8 +81,7 @@ namespace DBLink
                     $"_LastPaid={_LastPaid} " +
                     $"WHERE Id={Id}");
 
-                SQLiteCommand command = new(update_record, cnn);
-                command.ExecuteNonQuery();
+                cnn.Execute(update_record);
                 cnn.Close();
             }
             return;
@@ -123,11 +119,11 @@ namespace DBLink
             OwnerId = player.Id;
 
 
-            this.InsertLoan();
+            this.InsertInDB();
         }
 
         // Inserts the loan executed by the player into db. Only allowed if Id = 0 (non existent in db)
-        public void InsertLoan()
+        public void InsertInDB()
         {
             if (this.Id != 0)
             {
@@ -139,8 +135,7 @@ namespace DBLink
                 cnn.Open();
                 string update_record = $"INSERT INTO loans (OwnerId, AmountLeft, InterestRate, _LastPaid, BillingInterval, Installment) VALUES ({OwnerId}, {AmountLeft}, {InterestRate}, {_LastPaid}, {BillingInterval}, {Installment})";
 
-                SQLiteCommand command = new(update_record, cnn);
-                command.ExecuteNonQuery();
+                cnn.Execute(update_record);
                 cnn.Close();
 
             }

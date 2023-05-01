@@ -73,19 +73,19 @@ namespace DBLink
         }
 
 
-        public static void UpdatePlayer(Player player)
+        public void UpdateInDB()
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
                 cnn.Open();
                 string update_record = ($"UPDATE players SET " +
-                    $"Money='{player.Money}', " +
-                    $"Races='{player.Races}', " +
-                    $"RaceWins='{player.RaceWins}', " +
-                    $"RacePodiums='{player.RacePodiums}', " +
-                    $"KmsDriven='{player.KmsDriven}', " +
-                    $"EquippedCarId='{player.EquippedCarId}' " +
-                    $"WHERE Id='{player.Id}'");
+                    $"Money='{Money}', " +
+                    $"Races='{Races}', " +
+                    $"RaceWins='{RaceWins}', " +
+                    $"RacePodiums='{RacePodiums}', " +
+                    $"KmsDriven='{KmsDriven}', " +
+                    $"EquippedCarId='{EquippedCarId}' " +
+                    $"WHERE Id='{Id}'");
 
                 SQLiteCommand command = new(update_record, cnn);
                 command.ExecuteNonQuery();
@@ -94,6 +94,24 @@ namespace DBLink
             return;
         }
 
+        public List<Car> GetPlayerCars()
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                IEnumerable<Car>? output = cnn.Query<Car>($"select * from garage where Owner='{Id}'", new DynamicParameters());
+
+                return output.ToList();
+            }
+        }
+
+        public bool HasPlayerEnoughMoney(int price)
+        {
+            if (this.Money >= price)
+            {
+                return true;
+            }
+            return false;
+        }
 
     }
 }
