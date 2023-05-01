@@ -1,8 +1,4 @@
 ﻿using ProtoBuf;
-using System;
-using System.IO;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Utilities
 {
@@ -58,9 +54,6 @@ namespace Utilities
         {
             return Convert.ToInt32(i / x) * x;
         }
-
-
-
 
     }
 }
