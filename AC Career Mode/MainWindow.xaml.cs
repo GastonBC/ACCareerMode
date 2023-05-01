@@ -60,9 +60,9 @@ namespace AC_Career_Mode
             b_GoRacing.IsEnabled = true;
             Race SelectedRace = lv_RaceLst.SelectedItem as Race;
 
-            track_background.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
-            track_preview.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
-            car_preview.Source = Utils.RetriveImage(SelectedRace.Car.Preview);
+            track_background.Source = RetriveImage(SelectedRace.Track.PreviewPath);
+            track_preview.Source = RetriveImage(SelectedRace.Track.OutlinePath);
+            car_preview.Source = RetriveImage(SelectedRace.Car.Preview);
         }
 
 
@@ -161,7 +161,7 @@ namespace AC_Career_Mode
 
             b_BuyCar.IsEnabled = true;
             Car car = lv_CarMarket.SelectedItem as Car;
-            Img_ForSaleCar.Source = Utilities.Utilities.RetriveImage(car.Preview);
+            Img_ForSaleCar.Source = RetriveImage(car.Preview);
         }
 
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
@@ -214,7 +214,7 @@ namespace AC_Career_Mode
             {
                 b_SellCar.IsEnabled = true;
                 Car car = lv_OwnedCar.SelectedItem as Car;
-                img_OwnedCar.Source = Utilities.Utilities.RetriveImage(car.Preview);
+                img_OwnedCar.Source = RetriveImage(car.Preview);
             }
             else
             {

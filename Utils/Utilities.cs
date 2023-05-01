@@ -61,26 +61,6 @@ namespace Utilities
 
 
 
-        //public static ImageSource? RetriveImage(string imagePath)
-        //{
 
-        //    Uri myUri = new(imagePath, UriKind.Absolute);
-
-        //    try
-        //    {
-        //        BitmapDecoder decoder = BitmapDecoder.Create(myUri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None);
-        //        return decoder.Frames[0];
-        //    }
-        //    catch (System.IO.FileNotFoundException)
-        //    {
-        //        return null;
-        //    }
-        //}
-
-        public static bool IsFileBelowThreshold(string filename, int hours)
-        {
-            var threshold = DateTime.Now.AddHours(-hours);
-            return File.GetCreationTime(filename) >= threshold;
-        }
     }
 }

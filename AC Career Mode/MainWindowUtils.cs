@@ -10,6 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Utils = Utilities.Utilities;
 using GlobalVars = Utilities.GlobalVariables;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
@@ -287,6 +289,32 @@ namespace AC_Career_Mode
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
         }
-#endregion
+        #endregion
+
+
+        public static ImageSource? RetriveImage(string imagePath)
+        {
+
+            Uri myUri = new(imagePath, UriKind.Absolute);
+
+            try
+            {
+                BitmapDecoder decoder = BitmapDecoder.Create(myUri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None);
+                return decoder.Frames[0];
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                return null;
+            }
+        }
+
+        public static bool IsFileBelowThreshold(string filename, int hours)
+        {
+            var threshold = DateTime.Now.AddHours(-hours);
+            return File.GetCreationTime(filename) >= threshold;
+        }
+
+
     }
+
 }
