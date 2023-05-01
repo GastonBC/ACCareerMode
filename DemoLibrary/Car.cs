@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Dapper;
+using Newtonsoft.Json;
 using ProtoBuf;
+using System.Data.SQLite;
 using Utilities;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -94,6 +96,105 @@ namespace DBLink
             /// Maybe a json file with middle prices
 
             return car;
+        }
+
+        public Car LoadCar(int? Id)
+        {
+            if (Id != null)
+            {
+                using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+                {
+                    Car output = cnn.QuerySingleOrDefault<Car>($"select * from garage where Id={Id}", new DynamicParameters());
+                    return output;
+                }
+            }
+            else
+            {
+                throw new Exception("No id provided");
+            }
+        }
+
+        public static List<Car> GetPlayerCars(Player player)
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                IEnumerable<Car>? output = cnn.Query<Car>($"select * from garage where Owner='{player.Id}'", new DynamicParameters());
+
+                return output.ToList();
+            }
+        }
+
+        public static Car InsertCar(Car car)
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                string cmd = "INSERT INTO garage (" +
+                    "Name," +
+                    "Description," +
+                    "Year," +
+                    "Class," +
+                    "Path," +
+                    "Preview," +
+                    "TopSpeed," +
+                    "Price," +
+                    "Kms," +
+                    "Owner, " +
+                    "ForSale" +
+                    ") VALUES (" +
+                    "@Name, " +
+                    "@Description, " +
+                    "@Year, " +
+                    "@Class, " +
+                    "@Path, " +
+                    "@Preview, " +
+                    "@TopSpeed, " +
+                    "@Price, " +
+                    "@Kms, " +
+                    "@Owner, " +
+                    "@ForSale)";
+
+                cnn.Open();
+                cnn.Execute(cmd, car);
+                long car_id = cnn.LastInsertRowId;
+                cnn.Close();
+
+                return LoadCar((int)car_id);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Updates price, mileage and owner. Returns the car updated
+        /// </summary>
+        public static Car UpdateCar(Car car)
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+
+                cnn.Open();
+                string update_record = $"UPDATE garage SET " +
+                    $"Price='{car.Price}', " +
+                    $"Kms='{car.Kms}', " +
+                    $"ForSale='{car.ForSale}', " +
+                    $"Owner='{car.Owner}' " +
+                    $"WHERE Id='{car.Id}'";
+
+                SQLiteCommand command = new(update_record, cnn);
+                command.ExecuteNonQuery();
+                cnn.Close();
+
+                return LoadCar(car.Id);
+            }
+        }
+
+        public static List<Car> LoadForSaleCars()
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                var output = cnn.Query<Car>($"select * from garage where Owner=NULL OR ForSale=1", new DynamicParameters()).ToList();
+                return output;
+            }
         }
     }
 }

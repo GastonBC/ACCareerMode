@@ -20,7 +20,7 @@ namespace AC_Career_Mode
 
         private void LoadPlayerList()
         {
-            players = SqliteDataAccess.LoadAllPlayers();
+            players = Player.LoadAllPlayers();
             WireUpPlayerList();
         }
 
@@ -29,7 +29,7 @@ namespace AC_Career_Mode
             Player p = new();
             p.Name = tb_Name.Text;
 
-            p = SqliteDataAccess.SavePlayer(p);
+            p = Player.Insert(p);
 
             Record.RecordRegister(p);
 

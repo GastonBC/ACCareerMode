@@ -29,6 +29,7 @@ namespace AC_Career_Mode
         Player CurrentUser;
 
         Random RandomDaily = new(Utils.TodaysSeed());
+        List<Loan> available_loans = new();
 
         public MainWindow(Player profile)
         {
@@ -40,6 +41,23 @@ namespace AC_Career_Mode
             LoadDialogUserDetails(profile);
             PopulateRaceList();
             PopulateMarketList();
+            PopulateLoans();
+        }
+
+
+        private void PopulateLoans()
+        {
+            lv_LoansLV.Items.Clear();
+            available_loans.Clear();
+            lv_LoansLV.Items.Clear();
+
+            for (int i = 0; i < 10; i++)
+            {
+                available_loans.Add(new Loan(i));
+            }
+
+            lv_LoansLV.ItemsSource = available_loans;
+
         }
 
         #region RACE TAB
@@ -67,7 +85,7 @@ namespace AC_Career_Mode
         {
             Race race = lv_RaceLst.SelectedItem as Race;
 
-            Car EquippedCar = SqliteDataAccess.LoadCar(CurrentUser.EquippedCarId);
+            Car EquippedCar = Car.LoadCar(CurrentUser.EquippedCarId);
 
             // Player doesn't have the needed car
             if (EquippedCar == null || EquippedCar.Name != race.Car.Name)
@@ -88,10 +106,10 @@ namespace AC_Career_Mode
                 CurrentUser.Money += RaceResult.Result.PrizeAwarded;
                 CurrentUser.Races++;
                 CurrentUser.KmsDriven += Convert.ToInt32(RaceResult.Result.KmsDriven);
-                Car carUsed = SqliteDataAccess.LoadCar(CurrentUser.EquippedCarId);
+                Car carUsed = Car.LoadCar(CurrentUser.EquippedCarId);
                 carUsed.Kms += Convert.ToInt32(RaceResult.Result.KmsDriven);
 
-                SqliteDataAccess.UpdateCar(carUsed);
+                Car.UpdateCar(carUsed);
 
                 if (RaceResult.Result.Position <= 3)
                 {
@@ -132,7 +150,7 @@ namespace AC_Career_Mode
 
             if (chk_FilterRaces.IsChecked == true)
             {
-                List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(CurrentUser);
+                List<Car> owned_cars = Car.GetPlayerCars(CurrentUser);
 
                 IEnumerable<string>? names = AllRaces.Select(r => r.Car.Name).Intersect(owned_cars.Select(c => c.Name));
                 List<Race> FilteredList = AllRaces.Where(r => names.Contains(r.Car.Name)).ToList();
@@ -181,7 +199,7 @@ namespace AC_Career_Mode
 
                         selected_car.Owner = CurrentUser.Id;
                         selected_car.ForSale = 0;
-                        SqliteDataAccess.InsertCar(selected_car);
+                        Car.InsertCar(selected_car);
                     }
 
                     // else search the database and update the entry
@@ -189,7 +207,7 @@ namespace AC_Career_Mode
                     {
                         selected_car.Owner = CurrentUser.Id;
                         selected_car.ForSale = 0;
-                        SqliteDataAccess.UpdateCar(selected_car);
+                        Car.UpdateCar(selected_car);
                     }
 
                     Record.RecordBuy(CurrentUser, selected_car);
@@ -229,7 +247,7 @@ namespace AC_Career_Mode
                 selected_car.Owner = null;
                 selected_car.ForSale = 1;
                 CurrentUser.Money += selected_car.Price;
-                SqliteDataAccess.UpdateCar(selected_car);
+                Car.UpdateCar(selected_car);
 
                 Record.RecordSell(CurrentUser, selected_car);
                 RefreshMarket();

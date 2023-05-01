@@ -136,7 +136,7 @@ namespace AC_Career_Mode
             //RaceLength raceLengthType = (RaceLength)length_types.GetValue(random.Next(length_types.Length));
 
 
-            RaceLength raceLengthType = (RaceLength)length_types.GetValue(random.Next(2));
+            RaceLength raceLengthType = (RaceLength)length_types.GetValue(random.Next(1));
 
 
             Car car = cars[random.Next(cars.Count)];

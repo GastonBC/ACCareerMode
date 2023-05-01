@@ -14,6 +14,9 @@
     <Reference Include="PresentationCore">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.16\ref\net6.0\PresentationCore.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.16\ref\net6.0\PresentationFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -57,7 +57,7 @@ namespace AC_Career_Mode
                 Utils.Serialize(DailyCars, GlobalVars.DailyCarBin);
             }
 
-            List<Car> CarsForSale = SqliteDataAccess.LoadForSaleCars();
+            List<Car> CarsForSale = Car.LoadForSaleCars();
 
             lv_CarMarket.ItemsSource = CarsForSale.Concat(DailyCars);
         }
@@ -102,7 +102,7 @@ namespace AC_Career_Mode
 
         private void LoadDialogUserDetails(Player profile)
         {
-            Player profile_ = SqliteDataAccess.LoadPlayer(profile.Id);
+            Player profile_ = Player.LoadPlayer(profile.Id);
             toplabel_User.Content = profile_.Name;
             toplabel_Money.Content = profile_.Money.ToString("##,#");
             toplabel_Wins.Content = $"🏆 {profile_.RaceWins}";
@@ -113,7 +113,7 @@ namespace AC_Career_Mode
             // DB returns null as 0
             if (profile_.EquippedCarId != 0)
             {
-                toplabel_EquippedCar.Content = SqliteDataAccess.LoadCar(profile_.EquippedCarId).Name;
+                toplabel_EquippedCar.Content = Car.LoadCar(profile_.EquippedCarId).Name;
             }
             else
             {
@@ -121,7 +121,7 @@ namespace AC_Career_Mode
             }
 
 
-            List<Car> owned_cars = SqliteDataAccess.GetPlayerCars(CurrentUser);
+            List<Car> owned_cars = Car.GetPlayerCars(CurrentUser);
             lv_OwnedCar.ItemsSource = null;
             lv_OwnedCar.ItemsSource = owned_cars;
         }
@@ -130,7 +130,7 @@ namespace AC_Career_Mode
 
         private void UpdateAndRefreshPlayer(Player profile)
         {
-            SqliteDataAccess.UpdatePlayer(profile);
+            Player.UpdatePlayer(profile);
             LoadDialogUserDetails(profile);
         }
 
@@ -288,6 +288,7 @@ namespace AC_Career_Mode
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
         }
+
         #endregion
 
 
