@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Utils = Utilities.Utilities;
-using GlobalVars = Utilities.GlobalVariables;
+using Utilities;
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
 namespace AC_Career_Mode

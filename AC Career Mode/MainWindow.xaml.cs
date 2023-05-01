@@ -1,13 +1,10 @@
 ﻿using DBLink;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Utils = Utilities.Utilities;
-using GlobalVars = Utilities.GlobalVariables;
-
+using Utilities;
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 

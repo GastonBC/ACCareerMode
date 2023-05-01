@@ -8,8 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Utils = Utilities.Utilities;
-using GlobalVars = Utilities.GlobalVariables;
+using Utilities;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 
@@ -42,7 +41,7 @@ namespace AC_Career_Mode
             // GET FROM CACHE IF FILE WAS MODIFIED TODAY
             if (File.Exists(GlobalVars.DailyCarBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.DailyCarBin).Date)
             {
-                DailyCars = (List<Car>)Utilities.Utilities.Deserialize<List<Car>>(GlobalVars.DailyCarBin);
+                DailyCars = (List<Car>)Utils.Deserialize<List<Car>>(GlobalVars.DailyCarBin);
             }
 
             // CREATE CACHE FILE WITH AVAILABLE RACES

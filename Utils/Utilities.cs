@@ -1,12 +1,8 @@
 ﻿using ProtoBuf;
-using System;
-using System.IO;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Utilities
 {
-    public static class Utilities
+    public static class Utils
     {
         /// <summary>
         /// Protobuf serializer. Cars and tracks are kept as bin files to work easier and faster
@@ -58,9 +54,6 @@ namespace Utilities
         {
             return Convert.ToInt32(i / x) * x;
         }
-
-
-
 
     }
 }
