@@ -49,7 +49,7 @@ namespace DBLink
             AmountLeft = Utils.RoundX(rd.Next(10000, 3000000), 1000);
             InterestRate = Utils.RoundX(Utils.GetRandomNumber(5, 45, today_seed),5);
             LastPaid = DateTime.Today;
-            BillingInterval = rd.Next(3, 10);
+            BillingInterval = 5;
             Installment = Utils.RoundX(AmountLeft * 0.05, 1);
         }
 

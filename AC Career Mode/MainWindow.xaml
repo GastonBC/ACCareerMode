@@ -75,8 +75,6 @@
                         </ListView.View>
                     </ListView>
 
-                    <!--<ListBox x:Name="lb_RaceLst" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,6,5,10" SelectionChanged="selection_changed"/>-->
-
                     <Image x:Name="track_background" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" VerticalAlignment="Top" Height="100" />
                     <Image x:Name="track_preview" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" Height="100" VerticalAlignment="Top" />
                     <Image x:Name="car_preview" Grid.Column="1"  Grid.Row="1" Margin="2,115,2,0" Height="100" VerticalAlignment="Top" />
@@ -90,14 +88,15 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="126*"/>
+                        <RowDefinition Height="67*"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_LoansAvailable" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,5,251" Grid.Row="1" MouseDoubleClick="lv_AvailableLoans_DoubleClick" >
+                    <ListView x:Name="lv_LoansAvailable" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,30,5,0" Grid.Row="2" MouseDoubleClick="lv_AvailableLoans_DoubleClick" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding AmountLeft, StringFormat={}{0:##,#}}">
@@ -108,18 +107,14 @@
                                     <GridViewColumnHeader Content="Interest"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding BillingInterval}">
-                                    <GridViewColumnHeader Content="Interval" />
-                                </GridViewColumn>
-
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Installment, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Installment" />
+                                    <GridViewColumnHeader Content="Installments" />
                                 </GridViewColumn>
 
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListView x:Name="lv_PlayerLoans" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,193,5,0" Grid.Row="1" MouseDoubleClick="lv_PlayerLoans_DoubleClick" >
+                    <ListView x:Name="lv_PlayerLoans" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="5,30,0,0" Grid.Row="2" MouseDoubleClick="lv_PlayerLoans_DoubleClick" Grid.Column="1" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding AmountLeft, StringFormat={}{0:##,#}}">
@@ -130,12 +125,8 @@
                                     <GridViewColumnHeader Content="Interest"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding BillingInterval}">
-                                    <GridViewColumnHeader Content="Interval" />
-                                </GridViewColumn>
-
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Installment, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Installment" />
+                                    <GridViewColumnHeader Content="Installments" />
                                 </GridViewColumn>
 
                             </GridView>
@@ -185,7 +176,9 @@
             </TabItem>
 
             <TabItem Header="Team">
-                
+                <Grid>
+
+                </Grid>
             </TabItem>
 
             <TabItem Header="Profile">

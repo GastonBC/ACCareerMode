@@ -30,7 +30,7 @@ namespace AC_Career_Mode
         Player CurrentUser;
 
         Random RandomDaily = new(Utils.TodaysSeed());
-        List<Loan> available_loans = new();
+        
 
         public MainWindow(Player profile)
         {
@@ -43,13 +43,17 @@ namespace AC_Career_Mode
             PopulateRaceList();
             PopulateMarketList();
             PopulateLoans();
+
+
+
+
         }
 
 
         private void PopulateLoans()
         {
             lv_LoansAvailable.ItemsSource = null;
-            available_loans.Clear();
+            List<Loan> available_loans = new();
 
             for (int i = 0; i < 10; i++)
             {
@@ -289,16 +293,11 @@ namespace AC_Career_Mode
             }
         }
 
-
-        // BUG: Not working correctly. Only pays the last loan added
-        // Also crashes if paying a loan without taking another one 
         private void lv_PlayerLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (lv_PlayerLoans.SelectedItem != null)
             {
-                Loan loan = lv_LoansAvailable.SelectedItem as Loan;
-
-                System.Diagnostics.Trace.WriteLine(loan.Id);
+                Loan loan = lv_PlayerLoans.SelectedItem as Loan;
 
                 loan.PayInstallment(CurrentUser);
 
