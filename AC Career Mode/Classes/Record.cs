@@ -48,6 +48,23 @@ namespace AC_Career_Mode
             InsertLog(r, player);
         }
 
+
+        internal static void RecordLoanExecute(Player player, Loan loan)
+        {
+            string msg = $"{player.Name} took a loan of ${loan.AmountLeft}";
+            Record r = new Record("ExecuteLoan", player.Id, msg);
+
+            InsertLog(r, player);
+        }
+
+        internal static void RecordLoanPaid(Player player, Loan loan)
+        {
+            string msg = $"{player.Name} paid ${loan.Installment} off a loan";
+            Record r = new Record("PaidLoan", player.Id, msg);
+
+            InsertLog(r, player);
+        }
+
         internal static void RecordSell(Player player, Car car)
         {
             string msg = $"{player.Name} sold {car.Name} for ${car.Price}";

@@ -288,7 +288,7 @@ namespace AC_Career_Mode
                 Loan loan = lv_LoansAvailable.SelectedItem as Loan;
                 loan.ExecuteLoan(CurrentUser);
 
-                
+                Record.RecordLoanExecute(CurrentUser, loan);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
@@ -301,6 +301,7 @@ namespace AC_Career_Mode
 
                 loan.PayInstallment(CurrentUser);
 
+                Record.RecordLoanPaid(CurrentUser, loan);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
 
