@@ -71,6 +71,7 @@ namespace DBLink
 
         public void PayInstallment(Player player)
         {
+
             if (player.Money >= Installment)
             {
                 player.Money -= Installment;
@@ -78,10 +79,24 @@ namespace DBLink
                 LastPaid = DateTime.Today;
 
                 player.UpdateInDB();
+
+                // Loan fully paid. Delete from DB
+                if(AmountLeft <= 0)
+                {
+                    DeleteInDB();
+                    return;
+                }
+                
+                // Loan is almost paid in full
+                else if (AmountLeft < Installment)
+                {
+                    Installment = AmountLeft;
+                }
+
                 UpdateInDB();
-
-
             }
+
+
         }
 
         /// <summary>
@@ -98,6 +113,18 @@ namespace DBLink
                     $"WHERE Id={Id}");
 
                 cnn.Execute(update_record);
+                cnn.Close();
+            }
+            return;
+        }
+
+        public void DeleteInDB()
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                cnn.Open();
+                string delete_record = ($"DELETE FROM loans WHERE Id={Id}");
+                cnn.Execute(delete_record);
                 cnn.Close();
             }
             return;
