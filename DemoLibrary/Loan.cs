@@ -53,6 +53,22 @@ namespace DBLink
             Installment = Utils.RoundX(AmountLeft * 0.05, 1);
         }
 
+        public Loan LoadLoan(int id)
+        {
+            if (id != 0)
+            {
+                using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+                {
+                    Loan output = cnn.QuerySingleOrDefault<Loan>($"SELECT * FROM loans WHERE Id={id}", new DynamicParameters());
+                    return output;
+                }
+            }
+            else
+            {
+                throw new Exception("No id provided");
+            }
+        }
+
         public void PayInstallment(Player player)
         {
             if (player.Money >= Installment)
@@ -118,12 +134,11 @@ namespace DBLink
             AmountLeft += interest;
             OwnerId = player.Id;
 
-
-            this.InsertInDB();
+            Id = InsertInDB().Id;
         }
 
         // Inserts the loan executed by the player into db. Only allowed if Id = 0 (non existent in db)
-        public void InsertInDB()
+        public Loan InsertInDB()
         {
             if (this.Id != 0)
             {
@@ -136,7 +151,10 @@ namespace DBLink
                 string update_record = $"INSERT INTO loans (OwnerId, AmountLeft, InterestRate, _LastPaid, BillingInterval, Installment) VALUES ({OwnerId}, {AmountLeft}, {InterestRate}, {_LastPaid}, {BillingInterval}, {Installment})";
 
                 cnn.Execute(update_record);
+                int id = (int)cnn.LastInsertRowId;
                 cnn.Close();
+
+                return LoadLoan(id);
 
             }
         }

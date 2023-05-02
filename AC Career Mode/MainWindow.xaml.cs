@@ -61,7 +61,6 @@ namespace AC_Career_Mode
 
         private void RefreshPlayerLoans(Player player)
         {
-            lv_PlayerLoans.ItemsSource = null;
             lv_PlayerLoans.ItemsSource = player.GetPlayerLoans();
         }
 
@@ -285,17 +284,24 @@ namespace AC_Career_Mode
                 Loan loan = lv_LoansAvailable.SelectedItem as Loan;
                 loan.ExecuteLoan(CurrentUser);
 
-                RefreshPlayerLoans(CurrentUser);
+                
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
 
+
+        // BUG: Not working correctly. Only pays the last loan added
+        // Also crashes if paying a loan without taking another one 
         private void lv_PlayerLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (lv_PlayerLoans.SelectedItem != null)
             {
                 Loan loan = lv_LoansAvailable.SelectedItem as Loan;
+
+                System.Diagnostics.Trace.WriteLine(loan.Id);
+
                 loan.PayInstallment(CurrentUser);
+
                 UpdateAndRefreshPlayer(CurrentUser);
             }
 

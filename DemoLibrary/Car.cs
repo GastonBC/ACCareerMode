@@ -160,7 +160,7 @@ namespace DBLink
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
-                var output = cnn.Query<Car>($"select * from garage where Owner=NULL OR ForSale=1", new DynamicParameters()).ToList();
+                var output = cnn.Query<Car>($"SELECT * FROM garage WHERE Owner=0 OR ForSale=1", new DynamicParameters()).ToList();
                 return output;
             }
         }
