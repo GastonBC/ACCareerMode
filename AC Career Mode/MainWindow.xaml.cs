@@ -94,12 +94,19 @@ namespace AC_Career_Mode
         {
             Race race = lv_RaceLst.SelectedItem as Race;
 
+
+            if (CurrentUser.EquippedCarId == 0)
+            {
+                Utils.AlertWindow("You don't have the required car equipped!");
+                return;
+            }
+
             Car EquippedCar = Car.LoadCar(CurrentUser.EquippedCarId);
 
             // Player doesn't have the needed car
-            if (EquippedCar == null || EquippedCar.Name != race.Car.Name)
+            if (EquippedCar.Name != race.Car.Name)
             {
-                MessageBox.Show("You don't have the required car equipped!");
+                Utils.AlertWindow("You don't have the required car equipped!");
                 return;
             }
 

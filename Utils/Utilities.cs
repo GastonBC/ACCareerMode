@@ -1,4 +1,5 @@
 ﻿using ProtoBuf;
+using System.Windows;
 
 namespace Utilities
 {
@@ -28,6 +29,11 @@ namespace Utilities
             {
                 return Serializer.Deserialize<T>(fStream);
             }
+        }
+
+        public static void AlertWindow(string message) 
+        {
+            MessageBox.Show(message);
         }
 
         public static int TodaysSeed()
