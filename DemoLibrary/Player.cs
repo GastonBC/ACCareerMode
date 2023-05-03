@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using System.Data.SQLite;
+using System.Windows;
+using Utilities;
 
 namespace DBLink
 {
@@ -35,6 +37,24 @@ namespace DBLink
             }
         }
 
+
+        public void PayDueLoans()
+        {
+            int paid = 0;
+            foreach (Loan loan in GetPlayerLoans())
+            {
+                if (loan.IsInstallmentDue())
+                {
+                    paid += loan.Installment;
+                    loan.PayInstallment(this);
+                }
+            }
+
+            if (paid > 0)
+            {
+                Utils.AlertWindow($"Paid {paid} in loans");
+            }
+        }
 
         public static Player Insert(Player pName)
         {

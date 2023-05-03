@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Utilities;
 
 namespace AC_Career_Mode
 {
@@ -31,7 +32,7 @@ namespace AC_Career_Mode
                 string msg = $"Race finished!\n" +
                     $"You finished {Result.Position} and earned {Result.PrizeAwarded}";
 
-                MessageBox.Show(msg);
+                Utils.AlertWindow(msg);
             }
             this.Close();
         }

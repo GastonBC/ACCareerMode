@@ -93,17 +93,15 @@ namespace DBLink
 
         public static Car LoadCar(int? Id)
         {
-            if (Id != 0)
-            {
-                using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-                {
-                    Car output = cnn.QuerySingleOrDefault<Car>($"select * from garage where Id={Id}", new DynamicParameters());
-                    return output;
-                }
-            }
-            else
+            if (Id == 0)
             {
                 throw new Exception("No id provided");
+            }
+
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                Car output = cnn.QuerySingleOrDefault<Car>($"select * from garage where Id={Id}", new DynamicParameters());
+                return output;
             }
         }
 
@@ -111,6 +109,7 @@ namespace DBLink
 
         public void InsertInDB()
         {
+            // Id must be 0 to guarantee it's a new car in the db
             if (Id != 0)
             {
                 throw new InvalidOperationException("Car Id is not 0");

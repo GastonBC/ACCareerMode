@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using Utilities;
+using ViewUtils;
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 
@@ -44,7 +45,7 @@ namespace AC_Career_Mode
             PopulateMarketList();
             PopulateLoans();
 
-
+            ViewUtils.Utilies.new_wn();
 
 
         }
@@ -94,12 +95,19 @@ namespace AC_Career_Mode
         {
             Race race = lv_RaceLst.SelectedItem as Race;
 
+
+            if (CurrentUser.EquippedCarId == 0)
+            {
+                Utils.AlertWindow("You don't have the required car equipped!");
+                return;
+            }
+
             Car EquippedCar = Car.LoadCar(CurrentUser.EquippedCarId);
 
             // Player doesn't have the needed car
-            if (EquippedCar == null || EquippedCar.Name != race.Car.Name)
+            if (EquippedCar.Name != race.Car.Name)
             {
-                MessageBox.Show("You don't have the required car equipped!");
+                Utils.AlertWindow("You don't have the required car equipped!");
                 return;
             }
 

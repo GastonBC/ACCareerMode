@@ -69,6 +69,9 @@ namespace DBLink
             }
         }
 
+
+
+
         public void PayInstallment(Player player)
         {
 

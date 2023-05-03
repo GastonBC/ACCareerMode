@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DemoLibrary\DBLink.csproj" />
     <ProjectReference Include="..\Utils\Utilities.csproj" />
+    <ProjectReference Include="..\ViewUtils\ViewUtils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

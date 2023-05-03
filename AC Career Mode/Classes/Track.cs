@@ -20,16 +20,12 @@ namespace AC_Career_Mode
         [ProtoMember(4)]
         public double LengthKm { get; set; }
         [ProtoMember(5)]
-        public string Year { get; set; }
-        [ProtoMember(6)]
-        public List<string> Tags { get; set; }
-        [ProtoMember(7)]
         public string Path { get; set; }
-        [ProtoMember(8)]
+        [ProtoMember(6)]
         public string OutlinePath { get; set; }
-        [ProtoMember(9)]
+        [ProtoMember(7)]
         public string PreviewPath { get; set; }
-        [ProtoMember(10)]
+        [ProtoMember(8)]
         public string Author { get; set; }
 
 

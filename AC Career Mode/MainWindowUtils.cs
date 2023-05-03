@@ -132,6 +132,8 @@ namespace AC_Career_Mode
 
         private void UpdateAndRefreshPlayer(Player profile)
         {
+            profile.PayDueLoans();
+
             profile.UpdateInDB();
             LoadDialogUserDetails(profile);
         }

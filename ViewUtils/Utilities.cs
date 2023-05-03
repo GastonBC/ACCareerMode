@@ -1,10 +1,25 @@
-﻿using ProtoBuf;
+using ProtoBuf;
+using System.IO;
+using System;
 using System.Windows;
+using ViewUtils.Views;
 
-namespace Utilities
+namespace ViewUtils
 {
-    public static class Utils
+
+    
+
+    public static class Utilies
     {
+
+
+
+        public static void new_wn()
+        {
+            Window1 window1 = new Window1();
+            window1.Show();
+        }
+
         /// <summary>
         /// Protobuf serializer. Cars and tracks are kept as bin files to work easier and faster
         /// </summary>
@@ -31,7 +46,7 @@ namespace Utilities
             }
         }
 
-        public static void AlertWindow(string message) 
+        public static void AlertWindow(string message)
         {
             MessageBox.Show(message);
         }
