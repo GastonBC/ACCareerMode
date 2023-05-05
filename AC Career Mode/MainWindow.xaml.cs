@@ -43,8 +43,6 @@ namespace AC_Career_Mode
             PopulateRaceList();
             PopulateMarketList();
             PopulateLoans();
-
-            Utils.Wn();
         }
 
 
@@ -95,7 +93,7 @@ namespace AC_Career_Mode
 
             if (CurrentUser.EquippedCarId == 0)
             {
-                Utils.AlertWindow("You don't have the required car equipped!");
+                Utils.Alert("Warning!", "You don't have the required car equipped!");
                 return;
             }
 
@@ -104,7 +102,7 @@ namespace AC_Career_Mode
             // Player doesn't have the needed car
             if (EquippedCar.Name != race.Car.Name)
             {
-                Utils.AlertWindow("You don't have the required car equipped!");
+                Utils.Alert("Warning!", "You don't have the required car equipped!");
                 return;
             }
 

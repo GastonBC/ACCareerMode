@@ -19,9 +19,16 @@ namespace Utilities.Views
     /// </summary>
     public partial class Window1 : Window
     {
-        public Window1()
+        public Window1(string title, string message)
         {
             InitializeComponent();
+            lb_Title.Content = title;
+            lb_Message.Content = message;
+        }
+
+        private void Confirm_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

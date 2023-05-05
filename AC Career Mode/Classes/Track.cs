@@ -14,19 +14,25 @@ namespace AC_Career_Mode
         [ProtoMember(1)]
         public string Name { get; set; }
         [ProtoMember(2)]
-        public string Description { get; set; }
-        [ProtoMember(3)]
         public string Length { get; set; }
-        [ProtoMember(4)]
+        [ProtoMember(3)]
         public double LengthKm { get; set; }
-        [ProtoMember(5)]
+        [ProtoMember(4)]
         public string Path { get; set; }
-        [ProtoMember(6)]
+        [ProtoMember(5)]
         public string OutlinePath { get; set; }
-        [ProtoMember(7)]
+        [ProtoMember(6)]
         public string PreviewPath { get; set; }
-        [ProtoMember(8)]
+        [ProtoMember(7)]
         public string Author { get; set; }
+        [ProtoMember(8)]
+        public int Revenue { get; set; }
+        [ProtoMember(9)]
+        public int Tier { get; set; }
+        [ProtoMember(10)]
+        public int LastPaid { get; set; }
+        [ProtoMember(11)]
+        public int RevenueInterval { get; set; }
 
 
 
@@ -63,6 +69,9 @@ namespace AC_Career_Mode
             }
 
             track.LengthKm = length_m / 1000;
+
+            track.Revenue = 0;
+
 
             return track;
         }

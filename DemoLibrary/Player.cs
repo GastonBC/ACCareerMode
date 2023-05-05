@@ -52,7 +52,7 @@ namespace DBLink
 
             if (paid > 0)
             {
-                Utils.AlertWindow($"Paid {paid} in loans");
+                Utils.Alert("Loans", $"Paid {paid} in loans");
             }
         }
 

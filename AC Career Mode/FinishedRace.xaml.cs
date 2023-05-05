@@ -29,10 +29,9 @@ namespace AC_Career_Mode
 
             if (Result != null)
             {
-                string msg = $"Race finished!\n" +
-                    $"You finished {Result.Position} and earned {Result.PrizeAwarded}";
+                string msg = $"You finished {Result.Position} and earned {Result.PrizeAwarded}";
 
-                Utils.AlertWindow(msg);
+                Utils.Alert("Race finished!", msg);
             }
             this.Close();
         }

@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Utilities.Views"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        Title="Message" Height="180" Width="300" MinHeight="180" MinWidth="300">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="lb_Title" Content="Alert title" FontSize="20" Foreground="#FF72A4BF" Margin="10,0,0,0" />
+        <Label x:Name="lb_Message" Content="Alert content" Grid.Row="1" Margin="10,10,0,6"/>
+        <Button Content="Confirm" Click="Confirm_Click" Margin="0,5,10,10" Grid.Row="2" HorizontalAlignment="Right" Width="97"/>
+
     </Grid>
 </Window>

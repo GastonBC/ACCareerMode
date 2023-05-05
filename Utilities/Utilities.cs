@@ -8,9 +8,9 @@ namespace Utilities
 {
     public static class Utils
     {
-        public static void Wn()
+        public static void Alert(string title, string message)
         {
-            Window1 wn1 = new();
+            Window1 wn1 = new(title, message);
             wn1.ShowDialog();
         }
 
@@ -41,10 +41,6 @@ namespace Utilities
             }
         }
 
-        public static void AlertWindow(string message) 
-        {
-            MessageBox.Show(message);
-        }
 
         public static int TodaysSeed()
         {
