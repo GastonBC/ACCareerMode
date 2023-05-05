@@ -6,7 +6,6 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using Utilities;
-using ViewUtils;
 #pragma warning disable CS8604 // Possible null reference argument.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 
@@ -45,9 +44,7 @@ namespace AC_Career_Mode
             PopulateMarketList();
             PopulateLoans();
 
-            ViewUtils.Utilies.new_wn();
-
-
+            Utils.Wn();
         }
 
 
