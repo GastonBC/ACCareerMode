@@ -63,7 +63,7 @@ namespace AC_Career_Mode
             // If serialized current, this will load the list srlzd at the beginning
             MarketTracks = Utils.ReadWriteBin(GlobalVars.TrackMarketBin, MarketTracks);
 
-            //lv_TrackMarket.ItemsSource = MarketTracks;
+            lv_TrackMarket.ItemsSource = MarketTracks;
         }
 
         private void PopulateLoans(bool SerializeCurrent)
@@ -123,6 +123,9 @@ namespace AC_Career_Mode
             toplabel_Races.Content = $"Races: {profile.Races}";
 
             lv_PlayerLoans.ItemsSource = profile.GetPlayerLoans();
+
+            
+
             lv_HistoryRecords.ItemsSource = Record.DeserializeRecords(profile);
 
             // DB returns null as 0
@@ -202,6 +205,12 @@ namespace AC_Career_Mode
         {
             HeaderClickedHandler(sender, e, lv_RaceLst);
         }
+
+        private void MarketTracksLv_Click(object sender, RoutedEventArgs e)
+        {
+            HeaderClickedHandler(sender, e, lv_TrackMarket);
+        }
+
 
         private void MarketCarsLv_Click(object sender, RoutedEventArgs e)
         {

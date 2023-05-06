@@ -44,6 +44,7 @@ namespace AC_Career_Mode
             UpdateAndRefreshPlayer(CurrentUser);
             PopulateRaceList(false);
             PopulateCarMarket(false);
+            PopulateTrackMarket(false);
             PopulateLoans(false);
         }
 
@@ -146,12 +147,27 @@ namespace AC_Career_Mode
             {
                 b_BuyCar.IsEnabled = false;
                 Img_ForSaleCar.Source = null;
-                return;
+            }
+            else
+            {
+                b_BuyCar.IsEnabled = true;
+                Car car = lv_CarMarket.SelectedItem as Car;
+                Img_ForSaleCar.Source = RetriveImage(car.Preview);
             }
 
-            b_BuyCar.IsEnabled = true;
-            Car car = lv_CarMarket.SelectedItem as Car;
-            Img_ForSaleCar.Source = RetriveImage(car.Preview);
+            if (lv_TrackMarket.SelectedItem == null)
+            {
+                b_BuyTrack.IsEnabled = false;
+                Img_ForSaleTrack.Source = null;
+                Img_ForSaleTrackOutline.Source = null;
+            }
+            else
+            {
+                b_BuyTrack.IsEnabled = true;
+                Track track = lv_TrackMarket.SelectedItem as Track;
+                Img_ForSaleTrack.Source = RetriveImage(track.PreviewPath);
+                Img_ForSaleTrackOutline.Source = RetriveImage(track.OutlinePath);
+            }
         }
 
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
@@ -286,5 +302,12 @@ namespace AC_Career_Mode
         }
 
         #endregion
+
+        private void b_BuyTrack_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
     }
 }
