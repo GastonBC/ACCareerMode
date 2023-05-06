@@ -11,5 +11,6 @@
         public static string CarData = @".\bins\ManualCarData.bin";
 
         public static string DailyCarBin = @".\bins\Market.bin";
+        public static string DailyLoansBin = @".\bins\Loans.bin";
     }
 }

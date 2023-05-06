@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -14,22 +15,30 @@ using Utilities;
 namespace DBLink
 {
     // Loans are generated each day randomly and stored to db only once the player selected it
-    
+
+    [ProtoContract]
     public class Loan
     {
+        [ProtoMember(1)]
         public int Id { get; set; }
+        [ProtoMember(2)]
         public int OwnerId { get; set; }
+        [ProtoMember(3)]
         public int AmountLeft { get; set; }
+        [ProtoMember(4)]
         public double InterestRate { get; set; }
 
         // Dates in DB are stored as UNIX (int) and converted to string YYYY-MM-DD
+        [ProtoMember(5)]
         private long _LastPaid { get; set; }
+        [ProtoMember(6)]
         public DateTime LastPaid
         {
             get { return Utils.UnixTimeStampToDateTime(_LastPaid); }
             set { _LastPaid = ((DateTimeOffset)value).ToUnixTimeSeconds(); }
         }
         public int BillingInterval { get; set; }
+        [ProtoMember(7)]
         public int Installment { get; set; }
 
 

@@ -62,8 +62,6 @@ namespace DBLink
             }
             car.TopSpeed = top_speed;
 
-
-
             ManualCarData manual_values = ManualCarData.LoadCarValues().Find(c => c.Name == car.Name);
 
 

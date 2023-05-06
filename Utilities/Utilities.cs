@@ -1,5 +1,6 @@
 ﻿using ProtoBuf;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using Utilities.Views;
@@ -14,6 +15,27 @@ namespace Utilities
             wn1.ShowDialog();
         }
 
+
+        /// <summary>
+        /// Checks if a bin file exists for the current day. If it does, it returns elements
+        /// from there. Else will create a bin file with the objects provided by the second parameter
+        /// and return that
+        /// </summary>
+        public static T ReadCreateBin<T>(string path, T objectToSave)
+        {
+            // Get objects from cache
+            if (File.Exists(path) && DateTime.Today == File.GetLastWriteTime(path).Date)
+            {
+                return (T)Deserialize<T>(path);
+            }
+
+            // Create cache with given list
+            else
+            {
+                Serialize(objectToSave, path);
+                return objectToSave;
+            }
+        }
 
         /// <summary>
         /// Protobuf serializer. Cars and tracks are kept as bin files to work easier and faster

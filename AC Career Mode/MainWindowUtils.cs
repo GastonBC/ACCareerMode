@@ -11,6 +11,7 @@ using System.Windows.Data;
 using Utilities;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Numerics;
 
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
@@ -25,117 +26,119 @@ namespace AC_Career_Mode
 
     public partial class MainWindow : Window
     {
-        /// <summary>
-        /// Serializes the dailycar list, loads it and joins with DB cars for sale, then 
-        /// </summary>
-        public void RefreshMarket()
+        #region POPULATE
+        private void PopulateMarketList(bool SerializeCurrent)
         {
-            Utils.Serialize(DailyCars, GlobalVars.DailyCarBin);
-            PopulateMarketList();
-        }
+            // Called when a car was bought
+            if (SerializeCurrent) Utils.Serialize(DailyCars, GlobalVars.DailyCarBin);
 
-        private void PopulateMarketList()
-        {
             lv_CarMarket.ItemsSource = null;
             DailyCars.Clear();
-            // GET FROM CACHE IF FILE WAS MODIFIED TODAY
-            if (File.Exists(GlobalVars.DailyCarBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.DailyCarBin).Date)
+
+            // Using a seed so cars are changed daily
+            for (int i = 0; i < 25; i++)
             {
-                DailyCars = (List<Car>)Utils.Deserialize<List<Car>>(GlobalVars.DailyCarBin);
+                int index = RandomDaily.Next(CarMarketSource.Count);
+                DailyCars.Add(CarMarketSource[index]);
             }
 
-            // CREATE CACHE FILE WITH AVAILABLE RACES
-            else
-            {
-                // Using a seed so cars are changed daily
-                for (int i = 0; i < 25; i++)
-                {
-                    int index = RandomDaily.Next(AvailableCars.Count);
-                    DailyCars.Add(AvailableCars[index]);
-                }
-
-                Utils.Serialize(DailyCars, GlobalVars.DailyCarBin);
-            }
+            CarMarketSource = Utils.ReadCreateBin(GlobalVars.DailyCarBin, CarMarketSource);
 
             List<Car> CarsForSale = Car.LoadForSaleCars();
 
             lv_CarMarket.ItemsSource = CarsForSale.Concat(DailyCars);
         }
 
+        private void PopulateLoans(bool SerializeCurrent)
+        {
+            // Called when a loan was taken
+            if (SerializeCurrent) Utils.Serialize(LoanSource, GlobalVars.DailyLoansBin);
+
+            lv_LoansAvailable.ItemsSource = null;
+
+            for (int i = 0; i < 10; i++)
+            {
+                LoanSource.Add(new Loan(i));
+            }
+
+            LoanSource = Utils.ReadCreateBin(GlobalVars.DailyLoansBin, LoanSource);
+
+            lv_LoansAvailable.ItemsSource = LoanSource;
+        }
+
         private void PopulateRaceList()
         {
-
-            // GET FROM CACHE IF FILE WAS MODIFIED TODAY
-            if (File.Exists(GlobalVars.RacesBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.RacesBin).Date)
-            {
-                AllRaces = (List<Race>)Utils.Deserialize<List<Race>>(GlobalVars.RacesBin);
-            }
-
-            // CREATE CACHE FILE WITH AVAILABLE RACES
-            else
-            {
-                // Create 200 random races each day
-                for (int i = 0; i < 200; i++)
-                {
-                    Race race = Race.RaceFromList(AvailableTracks, AvailableCars, i);
-
-                    AllRaces.Add(race);
-                }
-
-                Utils.Serialize(AllRaces, GlobalVars.RacesBin);
-            }
-            RefreshRaceList();
-        }
-        private void RefreshRaceList()
-        {
             lv_RaceLst.ItemsSource = null;
-            //lv_RaceLst.ItemsSource = AllRaces.Where(rc => rc.Completed == false);
+
+            // Create 200 random races each day
+            for (int i = 0; i < 200; i++)
+            {
+                Race race = Race.RaceFromList(AvailableTracks, CarMarketSource, i);
+                RaceSource.Add(race);
+            }
+
+            RaceSource = Utils.ReadCreateBin(GlobalVars.RacesBin, RaceSource);
+
             if (chk_FilterRaces.IsChecked == true)
             {
                 FilterRaces();
             }
             else
             {
-                lv_RaceLst.ItemsSource = AllRaces;
+                lv_RaceLst.ItemsSource = RaceSource;
             }
         }
 
-        private void LoadDialogUserDetails(Player profile)
+        private void UpdateAndRefreshPlayer(Player profile)
         {
-            Player profile_ = Player.LoadPlayer(profile.Id);
-            toplabel_User.Content = profile_.Name;
-            toplabel_Money.Content = profile_.Money.ToString("##,#");
-            toplabel_Wins.Content = $"🏆 {profile_.RaceWins}";
-            toplabel_Races.Content = $"Races: {profile_.Races}";
+            profile.PayDueLoans();
+            profile.UpdateInDB();
 
-            RefreshPlayerLoans(profile);
 
+            // Update UI
+            profile = Player.LoadPlayer(profile.Id);
+            toplabel_User.Content = profile.Name;
+            toplabel_Money.Content = profile.Money.ToString("##,#");
+            toplabel_Wins.Content = $"🏆 {profile.RaceWins}";
+            toplabel_Races.Content = $"Races: {profile.Races}";
+
+            lv_PlayerLoans.ItemsSource = profile.GetPlayerLoans();
             lv_HistoryRecords.ItemsSource = Record.DeserializeRecords(profile);
 
             // DB returns null as 0
-            if (profile_.EquippedCarId != 0)
+            if (profile.EquippedCarId != 0)
             {
-                toplabel_EquippedCar.Content = Car.LoadCar(profile_.EquippedCarId).Name;
+                toplabel_EquippedCar.Content = Car.LoadCar(profile.EquippedCarId).Name;
             }
             else
             {
                 toplabel_EquippedCar.Content = "";
             }
 
-
-            List<Car> owned_cars = CurrentUser.GetPlayerCars();
             lv_OwnedCar.ItemsSource = null;
-            lv_OwnedCar.ItemsSource = owned_cars;
+            lv_OwnedCar.ItemsSource = CurrentUser.GetPlayerCars();
         }
+        #endregion
 
+        #region RACES
 
-
-        private void UpdateAndRefreshPlayer(Player profile)
+        private void FilterRaces()
         {
-            profile.PayDueLoans();
+            List<Race> FilteredRaces = new();
 
-            profile.UpdateInDB();
-            LoadDialogUserDetails(profile);
+            if (chk_FilterRaces.IsChecked == true)
+            {
+                List<Car> owned_cars = CurrentUser.GetPlayerCars();
+
+                IEnumerable<string>? names = RaceSource.Select(r => r.Car.Name).Intersect(owned_cars.Select(c => c.Name));
+                List<Race> FilteredList = RaceSource.Where(r => names.Contains(r.Car.Name)).ToList();
+
+                lv_RaceLst.ItemsSource = FilteredList;
+            }
+            else
+            {
+                lv_RaceLst.ItemsSource = RaceSource;
+            }
         }
 
         private void GetAvailableCarsAndTracks()
@@ -187,21 +190,20 @@ namespace AC_Career_Mode
                 foreach (string ui_car in Directory.GetFiles(GlobalVars.CARS_PATH, "ui_car.json", SearchOption.AllDirectories))
                 {
                     Car car = Car.LoadCarJson(ui_car);
-                    AvailableCars.Add(car);
+                    CarMarketSource.Add(car);
                 }
 
                 Utils.Serialize(AvailableTracks, GlobalVars.TracksBin);
-                Utils.Serialize(AvailableCars, GlobalVars.CarsBin);
+                Utils.Serialize(CarMarketSource, GlobalVars.CarsBin);
             }
 
             #endregion
         }
 
+        #endregion
 
 
-
-
-        #region Header clicks
+        #region OTHER
 
         void RaceLv_Clicked(object sender, RoutedEventArgs e)
         {
@@ -286,9 +288,7 @@ namespace AC_Career_Mode
             dataView.Refresh();
         }
 
-        #endregion
-
-
+        
         public static ImageSource? RetriveImage(string imagePath)
         {
 
@@ -311,7 +311,7 @@ namespace AC_Career_Mode
             return File.GetCreationTime(filename) >= threshold;
         }
 
-
+        #endregion
     }
 
 }

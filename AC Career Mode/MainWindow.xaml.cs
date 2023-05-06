@@ -23,9 +23,10 @@ namespace AC_Career_Mode
         List<Car> DailyCars = new();
 
         List<Track> AvailableTracks = new();
-        List<Car> AvailableCars = new();
 
-        List<Race> AllRaces = new();
+        List<Car> CarMarketSource = new();
+        List<Race> RaceSource = new();
+        List<Loan> LoanSource = new();
 
         Player CurrentUser;
 
@@ -39,29 +40,10 @@ namespace AC_Career_Mode
             InitializeComponent();
 
             GetAvailableCarsAndTracks();
-            LoadDialogUserDetails(profile);
+            UpdateAndRefreshPlayer(CurrentUser);
             PopulateRaceList();
-            PopulateMarketList();
-            PopulateLoans();
-        }
-
-
-        private void PopulateLoans()
-        {
-            lv_LoansAvailable.ItemsSource = null;
-            List<Loan> available_loans = new();
-
-            for (int i = 0; i < 10; i++)
-            {
-                available_loans.Add(new Loan(i));
-            }
-
-            lv_LoansAvailable.ItemsSource = available_loans;
-        }
-
-        private void RefreshPlayerLoans(Player player)
-        {
-            lv_PlayerLoans.ItemsSource = player.GetPlayerLoans();
+            PopulateMarketList(false);
+            PopulateLoans(false);
         }
 
 
@@ -84,7 +66,6 @@ namespace AC_Career_Mode
             track_preview.Source = RetriveImage(SelectedRace.Track.OutlinePath);
             car_preview.Source = RetriveImage(SelectedRace.Car.Preview);
         }
-
 
         private void b_GoRacing_Click(object sender, RoutedEventArgs e)
         {
@@ -133,15 +114,15 @@ namespace AC_Career_Mode
                 }
 
                 // Update race completed status and save to bin file
-                int idx = AllRaces.IndexOf(race);
+                int idx = RaceSource.IndexOf(race);
                 race.Completed = true;
-                AllRaces[idx] = race;
+                RaceSource[idx] = race;
 
-                Utils.Serialize(AllRaces, GlobalVars.RacesBin);
+                Utils.Serialize(RaceSource, GlobalVars.RacesBin);
 
                 Record.RecordRace(CurrentUser, RaceResult.Result);
 
-                RefreshRaceList();
+                PopulateRaceList();
                 UpdateAndRefreshPlayer(CurrentUser);
             }
 
@@ -156,24 +137,7 @@ namespace AC_Career_Mode
 
         #endregion
 
-        private void FilterRaces()
-        {
-            List<Race> FilteredRaces = new();
-
-            if (chk_FilterRaces.IsChecked == true)
-            {
-                List<Car> owned_cars = CurrentUser.GetPlayerCars();
-
-                IEnumerable<string>? names = AllRaces.Select(r => r.Car.Name).Intersect(owned_cars.Select(c => c.Name));
-                List<Race> FilteredList = AllRaces.Where(r => names.Contains(r.Car.Name)).ToList();
-
-                lv_RaceLst.ItemsSource = FilteredList;
-            }
-            else
-            {
-                lv_RaceLst.ItemsSource = AllRaces;
-            }
-        }
+        
 
 
         #region MARKET TAB
@@ -224,7 +188,7 @@ namespace AC_Career_Mode
 
                     Record.RecordBuy(CurrentUser, selected_car);
                 }
-                RefreshMarket();
+                PopulateMarketList(true);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
@@ -262,7 +226,8 @@ namespace AC_Career_Mode
                 selected_car.UpdateInDB();
 
                 Record.RecordSell(CurrentUser, selected_car);
-                RefreshMarket();
+
+                PopulateMarketList(true);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
                 
@@ -280,27 +245,40 @@ namespace AC_Career_Mode
         }
 
 
-
-
         #endregion
 
+
+        #region FINANCE TAB
         private void lv_AvailableLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (lv_LoansAvailable.SelectedItem != null)
             {
                 Loan loan = lv_LoansAvailable.SelectedItem as Loan;
-                loan.ExecuteLoan(CurrentUser);
 
+                int idx = LoanSource.IndexOf(loan);
+                LoanSource.RemoveAt(idx);
+
+                loan.ExecuteLoan(CurrentUser);
                 Record.RecordLoanExecute(CurrentUser, loan);
+
+                PopulateLoans(true);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
 
         private void lv_PlayerLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+
+
+
             if (lv_PlayerLoans.SelectedItem != null)
             {
                 Loan loan = lv_PlayerLoans.SelectedItem as Loan;
+
+
+
+
+
 
                 loan.PayInstallment(CurrentUser);
 
@@ -309,5 +287,7 @@ namespace AC_Career_Mode
             }
 
         }
+
+        #endregion
     }
 }
