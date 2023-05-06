@@ -20,13 +20,14 @@ namespace AC_Career_Mode
 {
     public partial class MainWindow : Window
     {
-        List<Car> MarketCars = new();
-
+        
         List<Track> TracksSource = new();
-
         List<Car> CarsSource = new();
         List<Race> RaceSource = new();
         List<Loan> LoanSource = new();
+
+        List<Car> MarketCars = new();
+        List<Track> MarketTracks = new();
 
         Player CurrentUser;
 
@@ -42,7 +43,7 @@ namespace AC_Career_Mode
             GetAvailableCarsAndTracks();
             UpdateAndRefreshPlayer(CurrentUser);
             PopulateRaceList(false);
-            PopulateMarketList(false);
+            PopulateCarMarket(false);
             PopulateLoans(false);
         }
 
@@ -186,7 +187,7 @@ namespace AC_Career_Mode
 
                     Record.RecordBuy(CurrentUser, selected_car);
                 }
-                PopulateMarketList(true);
+                PopulateCarMarket(true);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
@@ -218,14 +219,12 @@ namespace AC_Career_Mode
             {
                 Car selected_car = lv_OwnedCar.SelectedItem as Car;
 
-                selected_car.Owner = 0;
-                selected_car.ForSale = 1;
                 CurrentUser.Money += selected_car.Price;
-                selected_car.UpdateInDB();
+                selected_car.DeleteInDB();
 
                 Record.RecordSell(CurrentUser, selected_car);
 
-                PopulateMarketList(true);
+                PopulateCarMarket(true);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
                 

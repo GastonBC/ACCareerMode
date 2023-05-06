@@ -103,6 +103,17 @@ namespace DBLink
             }
         }
 
+        public void DeleteInDB()
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                cnn.Open();
+                string delete_record = ($"DELETE FROM garage WHERE Id={Id}");
+                cnn.Execute(delete_record);
+                cnn.Close();
+            }
+            return;
+        }
 
 
         public void InsertInDB()
@@ -150,15 +161,6 @@ namespace DBLink
 
                 cnn.Execute(update_record);
                 cnn.Close();
-            }
-        }
-
-        public static List<Car> LoadForSaleCars()
-        {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                var output = cnn.Query<Car>($"SELECT * FROM garage WHERE Owner=0 OR ForSale=1", new DynamicParameters()).ToList();
-                return output;
             }
         }
     }

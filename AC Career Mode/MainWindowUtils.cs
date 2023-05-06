@@ -27,10 +27,10 @@ namespace AC_Career_Mode
     public partial class MainWindow : Window
     {
         #region POPULATE
-        private void PopulateMarketList(bool SerializeCurrent)
+        private void PopulateCarMarket(bool SerializeCurrent)
         {
             // Called when a car was bought
-            if (SerializeCurrent) Utils.ProtoSerialize(MarketCars, GlobalVars.DailyCarBin);
+            if (SerializeCurrent) Utils.ProtoSerialize(MarketCars, GlobalVars.CarMarketBin);
 
             lv_CarMarket.ItemsSource = null;
             MarketCars.Clear();
@@ -42,17 +42,34 @@ namespace AC_Career_Mode
                 MarketCars.Add(CarsSource[index]);
             }
 
-            CarsSource = Utils.ReadWriteBin(GlobalVars.DailyCarBin, CarsSource);
+            // If serialized current, this will load the list srlzd at the beginning
+            MarketCars = Utils.ReadWriteBin(GlobalVars.CarMarketBin, MarketCars);
 
-            List<Car> CarsForSale = Car.LoadForSaleCars();
+            lv_CarMarket.ItemsSource = MarketCars;
+        }
 
-            lv_CarMarket.ItemsSource = CarsForSale.Concat(MarketCars);
+        private void PopulateTrackMarket(bool SerializeCurrent)
+        {
+            // Called when a track was bought
+            if (SerializeCurrent) Utils.ProtoSerialize(MarketTracks, GlobalVars.TrackMarketBin);
+
+            // Using a seed so tracks are changed daily
+            for (int i = 0; i < 5; i++)
+            {
+                int index = RandomDaily.Next(TracksSource.Count);
+                MarketTracks.Add(TracksSource[index]);
+            }
+
+            // If serialized current, this will load the list srlzd at the beginning
+            MarketTracks = Utils.ReadWriteBin(GlobalVars.TrackMarketBin, MarketTracks);
+
+            //lv_TrackMarket.ItemsSource = MarketTracks;
         }
 
         private void PopulateLoans(bool SerializeCurrent)
         {
             // Called when a loan was taken
-            if (SerializeCurrent) Utils.ProtoSerialize(LoanSource, GlobalVars.DailyLoansBin);
+            if (SerializeCurrent) Utils.ProtoSerialize(LoanSource, GlobalVars.LoanMarketBin);
 
             lv_LoansAvailable.ItemsSource = null;
 
@@ -61,7 +78,7 @@ namespace AC_Career_Mode
                 LoanSource.Add(new Loan(i));
             }
 
-            LoanSource = Utils.ReadWriteBin(GlobalVars.DailyLoansBin, LoanSource);
+            LoanSource = Utils.ReadWriteBin(GlobalVars.LoanMarketBin, LoanSource);
 
             lv_LoansAvailable.ItemsSource = LoanSource;
         }
