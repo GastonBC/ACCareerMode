@@ -30,29 +30,29 @@ namespace AC_Career_Mode
         private void PopulateMarketList(bool SerializeCurrent)
         {
             // Called when a car was bought
-            if (SerializeCurrent) Utils.Serialize(DailyCars, GlobalVars.DailyCarBin);
+            if (SerializeCurrent) Utils.ProtoSerialize(MarketCars, GlobalVars.DailyCarBin);
 
             lv_CarMarket.ItemsSource = null;
-            DailyCars.Clear();
+            MarketCars.Clear();
 
             // Using a seed so cars are changed daily
             for (int i = 0; i < 25; i++)
             {
-                int index = RandomDaily.Next(CarMarketSource.Count);
-                DailyCars.Add(CarMarketSource[index]);
+                int index = RandomDaily.Next(CarsSource.Count);
+                MarketCars.Add(CarsSource[index]);
             }
 
-            CarMarketSource = Utils.ReadCreateBin(GlobalVars.DailyCarBin, CarMarketSource);
+            CarsSource = Utils.ReadWriteBin(GlobalVars.DailyCarBin, CarsSource);
 
             List<Car> CarsForSale = Car.LoadForSaleCars();
 
-            lv_CarMarket.ItemsSource = CarsForSale.Concat(DailyCars);
+            lv_CarMarket.ItemsSource = CarsForSale.Concat(MarketCars);
         }
 
         private void PopulateLoans(bool SerializeCurrent)
         {
             // Called when a loan was taken
-            if (SerializeCurrent) Utils.Serialize(LoanSource, GlobalVars.DailyLoansBin);
+            if (SerializeCurrent) Utils.ProtoSerialize(LoanSource, GlobalVars.DailyLoansBin);
 
             lv_LoansAvailable.ItemsSource = null;
 
@@ -61,23 +61,26 @@ namespace AC_Career_Mode
                 LoanSource.Add(new Loan(i));
             }
 
-            LoanSource = Utils.ReadCreateBin(GlobalVars.DailyLoansBin, LoanSource);
+            LoanSource = Utils.ReadWriteBin(GlobalVars.DailyLoansBin, LoanSource);
 
             lv_LoansAvailable.ItemsSource = LoanSource;
         }
 
-        private void PopulateRaceList()
+        private void PopulateRaceList(bool SerializeCurrent)
         {
+            // Called when a race was raced
+            if (SerializeCurrent) Utils.ProtoSerialize(RaceSource, GlobalVars.RacesBin);
+
             lv_RaceLst.ItemsSource = null;
 
             // Create 200 random races each day
             for (int i = 0; i < 200; i++)
             {
-                Race race = Race.RaceFromList(AvailableTracks, CarMarketSource, i);
+                Race race = Race.RaceFromList(TracksSource, CarsSource, i);
                 RaceSource.Add(race);
             }
 
-            RaceSource = Utils.ReadCreateBin(GlobalVars.RacesBin, RaceSource);
+            RaceSource = Utils.ReadWriteBin(GlobalVars.RacesBin, RaceSource);
 
             if (chk_FilterRaces.IsChecked == true)
             {
@@ -143,61 +146,34 @@ namespace AC_Career_Mode
 
         private void GetAvailableCarsAndTracks()
         {
+            TracksSource.Clear();
+            CarsSource.Clear();
 
             /// Race track exceptions
             string[] InvalidTracks = { "drag", "drift", "indoor karting", "yatabe" };
 
-            #region GET CARS AND TRACKS
-#if RELEASE
-            // GET ALL TRACKS AND CARS FROM CACHE IF FILE WAS MODIFIED TODAY
-            if (File.Exists(GlobalVars.TracksBin) && DateTime.Today == File.GetLastWriteTime(GlobalVars.TracksBin).Date)
+            foreach (string ui_track in Directory.GetFiles(GlobalVars.TRACKS_PATH, "ui_track.json", SearchOption.AllDirectories))
             {
-                AvailableTracks = (List<Track>)Utils.Deserialize<List<Track>>(GlobalVars.TracksBin);
-                AvailableCars = (List<Car>)Utils.Deserialize<List<Car>>(GlobalVars.CarsBin);
-            }
-#endif
+                Track track = Track.LoadTrackJson(ui_track);
 
-#if DEBUG
-            // Jump to else statement to create new files every time
-            if (false)
-            {
-            }
-#endif
+                if (InvalidTracks.Any(InvalidTrack => track.Name.ToLower().Contains(InvalidTrack)))
+                { continue; }
 
 
-            // CREATE CACHE FILE WITH AVAILABLE CARS AND TRACKS
-            else
-            {
-                foreach (string ui_track in Directory.GetFiles(GlobalVars.TRACKS_PATH, "ui_track.json", SearchOption.AllDirectories))
-                {
-                    Track track = Track.LoadTrackJson(ui_track);
+                DirectoryInfo ui_folder = Directory.GetParent(ui_track);
+                track.OutlinePath = ui_folder.ToString() + @"\" + "outline.png";
 
-                    if (InvalidTracks.Any(InvalidTrack => track.Name.ToLower().Contains(InvalidTrack)))
-                    { continue; }
-
-
-                    // City tracks
-                    if (track.Author != null && track.Author.Contains("Soyo"))
-                    { continue; }
-
-                    DirectoryInfo ui_folder = Directory.GetParent(ui_track);
-                    string map_outline = ui_folder.ToString() + @"\" + "outline.png";
-                    track.OutlinePath = map_outline;
-
-                    AvailableTracks.Add(track);
-                }
-
-                foreach (string ui_car in Directory.GetFiles(GlobalVars.CARS_PATH, "ui_car.json", SearchOption.AllDirectories))
-                {
-                    Car car = Car.LoadCarJson(ui_car);
-                    CarMarketSource.Add(car);
-                }
-
-                Utils.Serialize(AvailableTracks, GlobalVars.TracksBin);
-                Utils.Serialize(CarMarketSource, GlobalVars.CarsBin);
+                TracksSource.Add(track);
             }
 
-            #endregion
+            foreach (string ui_car in Directory.GetFiles(GlobalVars.CARS_PATH, "ui_car.json", SearchOption.AllDirectories))
+            {
+                Car car = Car.LoadCarJson(ui_car);
+                CarsSource.Add(car);
+            }
+
+            TracksSource = Utils.ReadWriteBin(GlobalVars.TracksBin, TracksSource);
+            CarsSource = Utils.ReadWriteBin(GlobalVars.CarsBin, CarsSource);
         }
 
         #endregion
@@ -288,7 +264,7 @@ namespace AC_Career_Mode
             dataView.Refresh();
         }
 
-        
+
         public static ImageSource? RetriveImage(string imagePath)
         {
 

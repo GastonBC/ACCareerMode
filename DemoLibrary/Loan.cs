@@ -81,13 +81,13 @@ namespace DBLink
 
 
 
-        public void PayInstallment(Player player)
+        public void PayInstallment(Player player, int multiplier = 1)
         {
-
-            if (player.Money >= Installment)
+            int amount = Installment * multiplier;
+            if (player.Money >= amount)
             {
-                player.Money -= Installment;
-                AmountLeft -= Installment;
+                player.Money -= amount;
+                AmountLeft -= amount;
                 LastPaid = DateTime.Today;
 
                 player.UpdateInDB();
@@ -142,7 +142,10 @@ namespace DBLink
             return;
         }
 
-        public bool IsInstallmentDue()
+        /// <summary>
+        /// Returns te amount of installments to pay
+        /// </summary>
+        public int IsInstallmentDue()
         {
             DateTime today = DateTime.Today;
 
@@ -151,11 +154,13 @@ namespace DBLink
             int interval = (int)(today - this.LastPaid).TotalDays;
 
 
-            if (this.BillingInterval < interval)
+            if (BillingInterval < interval)
             {
-                return true;
+                double p = interval / BillingInterval;
+
+                return Convert.ToInt32(Math.Floor(p));
             }
-            return false;
+            return 0;
         }
 
 

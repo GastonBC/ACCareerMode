@@ -20,11 +20,11 @@ namespace AC_Career_Mode
 {
     public partial class MainWindow : Window
     {
-        List<Car> DailyCars = new();
+        List<Car> MarketCars = new();
 
-        List<Track> AvailableTracks = new();
+        List<Track> TracksSource = new();
 
-        List<Car> CarMarketSource = new();
+        List<Car> CarsSource = new();
         List<Race> RaceSource = new();
         List<Loan> LoanSource = new();
 
@@ -41,7 +41,7 @@ namespace AC_Career_Mode
 
             GetAvailableCarsAndTracks();
             UpdateAndRefreshPlayer(CurrentUser);
-            PopulateRaceList();
+            PopulateRaceList(false);
             PopulateMarketList(false);
             PopulateLoans(false);
         }
@@ -118,11 +118,9 @@ namespace AC_Career_Mode
                 race.Completed = true;
                 RaceSource[idx] = race;
 
-                Utils.Serialize(RaceSource, GlobalVars.RacesBin);
-
                 Record.RecordRace(CurrentUser, RaceResult.Result);
 
-                PopulateRaceList();
+                PopulateRaceList(true);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
 
@@ -170,8 +168,8 @@ namespace AC_Career_Mode
                     // Insert to database
                     if (selected_car.Id == 0)
                     {
-                        int idx = DailyCars.IndexOf(selected_car);
-                        DailyCars.RemoveAt(idx);
+                        int idx = MarketCars.IndexOf(selected_car);
+                        MarketCars.RemoveAt(idx);
 
                         selected_car.Owner = CurrentUser.Id;
                         selected_car.ForSale = 0;

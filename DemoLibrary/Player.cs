@@ -37,16 +37,16 @@ namespace DBLink
             }
         }
 
-
         public void PayDueLoans()
         {
             int paid = 0;
             foreach (Loan loan in GetPlayerLoans())
             {
-                if (loan.IsInstallmentDue())
+                int dueInst = loan.IsInstallmentDue();
+                if (dueInst > 0)
                 {
-                    paid += loan.Installment;
-                    loan.PayInstallment(this);
+                    paid += loan.Installment * dueInst;
+                    loan.PayInstallment(this, dueInst);
                 }
             }
 

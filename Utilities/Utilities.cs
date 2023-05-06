@@ -21,30 +21,27 @@ namespace Utilities
         /// from there. Else will create a bin file with the objects provided by the second parameter
         /// and return that
         /// </summary>
-        public static T ReadCreateBin<T>(string path, T objectToSave)
+        public static T ReadWriteBin<T>(string path, T objectToSave)
         {
-            // Get objects from cache
+            // Get objects from cache if they are from the same day
             if (File.Exists(path) && DateTime.Today == File.GetLastWriteTime(path).Date)
             {
-                return (T)Deserialize<T>(path);
+                return (T)ProtoDeserialize<T>(path);
             }
 
             // Create cache with given list
-            else
-            {
-                Serialize(objectToSave, path);
-                return objectToSave;
-            }
+            ProtoSerialize(objectToSave, path);
+            return objectToSave;
         }
 
         /// <summary>
         /// Protobuf serializer. Cars and tracks are kept as bin files to work easier and faster
         /// </summary>
-        public static void Serialize(object value, string path)
+        public static void ProtoSerialize(object value, string path)
         {
             using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                Serializer.Serialize(fStream, value);
+                ProtoBuf.Serializer.Serialize(fStream, value);
             }
         }
 
@@ -52,29 +49,26 @@ namespace Utilities
         /// <summary>
         /// Protobuf deserializer
         /// </summary>
-        public static object Deserialize<T>(string path)
+        public static object ProtoDeserialize<T>(string path)
         {
             if (!File.Exists(path)) { throw new FileNotFoundException(); }
 
 
             using (Stream fStream = File.OpenRead(path))
             {
-                return Serializer.Deserialize<T>(fStream);
+                return ProtoBuf.Serializer.Deserialize<T>(fStream);
             }
         }
 
 
         public static int TodaysSeed()
         {
-            string date = DateTime.Today.ToString();
-
             int Year = DateTime.Now.Year;
             int Month = DateTime.Now.Month;
             int Day = DateTime.Now.Day;
             int DateAsSeed = Year * Month * Day;
 
-            // DateAsSeed makes sure the race is changed daily
-            // RaceType and group flavour the seed according to the type of race
+            // DateAsSeed makes sure the the seed is daily
             return DateAsSeed;
         }
 

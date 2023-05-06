@@ -76,6 +76,16 @@ namespace AC_Career_Mode
             return track;
         }
 
+
+        public void IsRevenueDue()
+        {
+            // TODO: check interval for the amount of 
+            // payments possible. ie 20 days passed so
+            // 5 installments have to be paid
+            // This could be possible returning an int
+            // which indicates how many times you have to pay
+        }
+
     }
 }
 
