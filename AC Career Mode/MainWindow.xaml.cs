@@ -1,4 +1,5 @@
-﻿using DBLink;
+﻿using AC_Career_Mode.controls;
+using DBLink;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,6 +41,7 @@ namespace AC_Career_Mode
             CurrentUser = profile;
 
             InitializeComponent();
+            uc_RaceTab.GoRacing_Click += new RoutedEventHandler(uc_RaceTab_GoRacing_Click);
 
             GetAvailableCarsAndTracks();
             UpdateAndRefreshPlayer(CurrentUser);
@@ -48,36 +50,15 @@ namespace AC_Career_Mode
             PopulateTrackMarket(false);
             PopulateLoans(false);
 
+            
 
-            //test_records.Records = new ObservableCollection<Record>(Record.DeserializeRecords(profile));
             //lb_test_itemcontrol.ItemsSource = MarketTracks;
         }
 
 
-        #region RACE TAB
-        private void RaceLv_SelChanged(object sender, SelectionChangedEventArgs e)
+        void uc_RaceTab_GoRacing_Click(object sender, EventArgs e)
         {
-            if (lv_RaceLst.SelectedItem == null)
-            {
-                b_GoRacing.IsEnabled = false;
-                track_background.Source = null;
-                track_preview.Source = null;
-                car_preview.Source = null;
-                return;
-            }
-
-            b_GoRacing.IsEnabled = true;
-            Race SelectedRace = lv_RaceLst.SelectedItem as Race;
-
-            track_background.Source = RetriveImage(SelectedRace.Track.PreviewPath);
-            track_preview.Source = RetriveImage(SelectedRace.Track.OutlinePath);
-            car_preview.Source = RetriveImage(SelectedRace.Car.Preview);
-        }
-
-        private void b_GoRacing_Click(object sender, RoutedEventArgs e)
-        {
-            Race race = lv_RaceLst.SelectedItem as Race;
-
+            Race race = sender as Race;
 
             if (CurrentUser.EquippedCarId == 0)
             {
@@ -134,13 +115,8 @@ namespace AC_Career_Mode
             this.ShowDialog();
 
         }
-
-        private void chk_FilterRaces_Click(object sender, RoutedEventArgs e)
-        {
-            FilterRaces();
-        }
-
-        #endregion
+    
+        
 
         
 

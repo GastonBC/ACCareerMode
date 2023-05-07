@@ -138,7 +138,7 @@ namespace DBLink
                     $"Price='{Price}', " +
                     $"Kms='{Kms}', " +
                     $"ForSale='{ForSale}', " +
-                    $"Owner='{OwnerId}' " +
+                    $"OwnerId='{OwnerId}' " +
                     $"WHERE Id='{Id}'";
 
                 SqliteDataAccess.ExecCmd(cmd);

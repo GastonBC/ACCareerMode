@@ -21,68 +21,7 @@
         </Grid.RowDefinitions>
         <TabControl Grid.Row="1" Grid.ColumnSpan="5">
             <TabItem Header="Race">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="200"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition/>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
-
-                    <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,5,0" SelectionChanged="RaceLv_SelChanged" Grid.RowSpan="2" >
-                        <ListView.View>
-                            <GridView>
-
-                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding Car.Name}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="RaceLv_Clicked">Car</GridViewColumnHeader>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Track.Name}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="RaceLv_Clicked">Track</GridViewColumnHeader>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="90" DisplayMemberBinding="{Binding Prize, StringFormat={}{0:##,#}}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="RaceLv_Clicked">Prize</GridViewColumnHeader>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Laps}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="RaceLv_Clicked">Laps</GridViewColumnHeader>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthKm, StringFormat=G4}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="RaceLv_Clicked">Race length (km)</GridViewColumnHeader>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthMinutes, StringFormat=G4}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="RaceLv_Clicked">Race length (minutes)</GridViewColumnHeader>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-
-                    <Image x:Name="track_background" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" VerticalAlignment="Top" Height="100" />
-                    <Image x:Name="track_preview" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" Height="100" VerticalAlignment="Top" />
-                    <Image x:Name="car_preview" Grid.Column="1"  Grid.Row="1" Margin="2,115,2,0" Height="100" VerticalAlignment="Top" />
-                    <Button x:Name="b_GoRacing" IsEnabled="False" Content="Race!" Grid.Row="2" Click="b_GoRacing_Click" Grid.Column="1" />
-                    <CheckBox x:Name="chk_FilterRaces" Content="Show races I can take" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="chk_FilterRaces_Click"/>
-
-                </Grid>
+                <uControl:RaceLvControl x:Name="uc_RaceTab" />
 
             </TabItem>
             <TabItem Header="Finance">
@@ -270,30 +209,7 @@
             </TabItem>
 
             <TabItem Header="History">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="200"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition/>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
-                    <ListView x:Name="lv_HistoryRecords"   SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="MarketLv_SelChanged" Grid.RowSpan="2" Grid.Row="1" Grid.ColumnSpan="2" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Date, StringFormat=dd-MM-yyyy}">
-                                    <GridViewColumnHeader Tag="Date" Content="Date" />
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="600" DisplayMemberBinding="{Binding Description}">
-                                    <GridViewColumnHeader Tag="Description" Content="Description"/>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
+                <uControl:HistoryTab x:Name="uc_Records"  />
             </TabItem>
 
             <TabItem Header="Test" >
@@ -305,9 +221,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </TabItem>
-            <TabItem Header="Test">
-                <uControl:HistoryTab x:Name="test_records" />
-            </TabItem>
+            
         </TabControl>
 
 

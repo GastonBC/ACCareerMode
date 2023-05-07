@@ -90,7 +90,6 @@ namespace AC_Career_Mode
             // Called when a race was raced
             if (SerializeCurrent) Utils.ProtoSerialize(RaceSource, GlobalVars.RacesBin);
 
-            lv_RaceLst.ItemsSource = null;
 
             // Create 200 random races each day
             for (int i = 0; i < 200; i++)
@@ -101,14 +100,10 @@ namespace AC_Career_Mode
 
             RaceSource = Utils.ReadWriteBin(GlobalVars.RacesBin, RaceSource);
 
-            if (chk_FilterRaces.IsChecked == true)
-            {
-                FilterRaces();
-            }
-            else
-            {
-                lv_RaceLst.ItemsSource = RaceSource;
-            }
+
+            uc_RaceTab.RaceList = new ObservableCollection<Race>(RaceSource);
+            uc_RaceTab.CurrentUser = CurrentUser;
+
         }
 
         private void UpdateAndRefreshPlayer(Player profile)
@@ -130,7 +125,7 @@ namespace AC_Career_Mode
 
             lv_OwnedTracks.ItemsSource = profile.GetPlayerTracks();
 
-            lv_HistoryRecords.ItemsSource = Record.DeserializeRecords(profile);
+            uc_Records.Records =  Record.DeserializeRecords(profile);
 
             // DB returns null as 0
             if (profile.EquippedCarId != 0)
@@ -149,24 +144,6 @@ namespace AC_Career_Mode
 
         #region RACES
 
-        private void FilterRaces()
-        {
-            List<Race> FilteredRaces = new();
-
-            if (chk_FilterRaces.IsChecked == true)
-            {
-                List<Car> owned_cars = CurrentUser.GetPlayerCars();
-
-                IEnumerable<string>? names = RaceSource.Select(r => r.Car.Name).Intersect(owned_cars.Select(c => c.Name));
-                List<Race> FilteredList = RaceSource.Where(r => names.Contains(r.Car.Name)).ToList();
-
-                lv_RaceLst.ItemsSource = FilteredList;
-            }
-            else
-            {
-                lv_RaceLst.ItemsSource = RaceSource;
-            }
-        }
 
         private void GetAvailableCarsAndTracks()
         {
@@ -205,10 +182,6 @@ namespace AC_Career_Mode
 
         #region OTHER
 
-        void RaceLv_Clicked(object sender, RoutedEventArgs e)
-        {
-            HeaderClickedHandler(sender, e, lv_RaceLst);
-        }
 
         private void MarketTracksLv_Click(object sender, RoutedEventArgs e)
         {

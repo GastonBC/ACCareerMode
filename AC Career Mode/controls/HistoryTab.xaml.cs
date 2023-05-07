@@ -15,13 +15,13 @@ namespace AC_Career_Mode.controls
     /// </summary>
     public partial class HistoryTab : UserControl
     {
-        public ObservableCollection<Record> Records 
+        public List<Record> Records 
         { 
-            get { return (ObservableCollection<Record>)GetValue(RecordsProperty); }
+            get { return (List<Record>)GetValue(RecordsProperty); }
             set { SetValue(RecordsProperty, value); }
         }
 
-        public static readonly DependencyProperty RecordsProperty = DependencyProperty.Register("Records", typeof(ObservableCollection<Record>),
+        public static readonly DependencyProperty RecordsProperty = DependencyProperty.Register("Records", typeof(List<Record>),
                                                                                                             typeof(HistoryTab),
                                                                                                             new PropertyMetadata());
 
@@ -30,7 +30,6 @@ namespace AC_Career_Mode.controls
         public HistoryTab()
         {
             InitializeComponent();
-            DataContext = this;
         }
 
 
