@@ -42,6 +42,8 @@ namespace AC_Career_Mode
 
             InitializeComponent();
             uc_RaceTab.GoRacing_Click += new RoutedEventHandler(uc_RaceTab_GoRacing_Click);
+            uc_AvailableLoans.Loan_DoubleClick += new RoutedEventHandler(uc_AvailableLoans_DoubleClick);
+            uc_PlayerLoans.Loan_DoubleClick += new RoutedEventHandler(uc_PlayerLoans_DoubleClick);
 
             GetAvailableCarsAndTracks();
             UpdateAndRefreshPlayer(CurrentUser);
@@ -54,6 +56,7 @@ namespace AC_Career_Mode
 
             //lb_test_itemcontrol.ItemsSource = MarketTracks;
         }
+
 
 
         void uc_RaceTab_GoRacing_Click(object sender, EventArgs e)
@@ -115,10 +118,32 @@ namespace AC_Career_Mode
             this.ShowDialog();
 
         }
-    
-        
 
-        
+
+        // BUG: removeat is working but not updating the control
+        void uc_AvailableLoans_DoubleClick(object sender, EventArgs e)
+        {
+            Loan loan = (Loan)sender;
+
+            int idx = LoanSource.IndexOf(loan);
+            LoanSource.RemoveAt(idx);
+
+            loan.ExecuteLoan(CurrentUser);
+            Record.RecordLoanExecute(CurrentUser, loan);
+
+            PopulateLoans(true);
+            UpdateAndRefreshPlayer(CurrentUser);
+        }
+
+        void uc_PlayerLoans_DoubleClick(object sender, EventArgs e)
+        {
+                Loan loan = (Loan)sender;
+
+                loan.PayInstallment(CurrentUser);
+
+                Record.RecordLoanPaid(CurrentUser, loan);
+                UpdateAndRefreshPlayer(CurrentUser);
+        }
 
 
         #region MARKET TAB
@@ -254,50 +279,6 @@ namespace AC_Career_Mode
 
 
         #endregion
-
-
-        #region FINANCE TAB
-        private void lv_AvailableLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (lv_LoansAvailable.SelectedItem != null)
-            {
-                Loan loan = lv_LoansAvailable.SelectedItem as Loan;
-
-                int idx = LoanSource.IndexOf(loan);
-                LoanSource.RemoveAt(idx);
-
-                loan.ExecuteLoan(CurrentUser);
-                Record.RecordLoanExecute(CurrentUser, loan);
-
-                PopulateLoans(true);
-                UpdateAndRefreshPlayer(CurrentUser);
-            }
-        }
-
-        private void lv_PlayerLoans_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
-
-
-            if (lv_PlayerLoans.SelectedItem != null)
-            {
-                Loan loan = lv_PlayerLoans.SelectedItem as Loan;
-
-
-
-
-
-
-                loan.PayInstallment(CurrentUser);
-
-                Record.RecordLoanPaid(CurrentUser, loan);
-                UpdateAndRefreshPlayer(CurrentUser);
-            }
-
-        }
-
-        #endregion
-
 
 
 

@@ -73,7 +73,7 @@ namespace AC_Career_Mode
             // Called when a loan was taken
             if (SerializeCurrent) Utils.ProtoSerialize(LoanSource, GlobalVars.LoanMarketBin);
 
-            lv_LoansAvailable.ItemsSource = null;
+            uc_AvailableLoans.LoansLst = null;
 
             for (int i = 0; i < 10; i++)
             {
@@ -82,7 +82,7 @@ namespace AC_Career_Mode
 
             LoanSource = Utils.ReadWriteBin(GlobalVars.LoanMarketBin, LoanSource);
 
-            lv_LoansAvailable.ItemsSource = LoanSource;
+            uc_AvailableLoans.LoansLst = LoanSource;
         }
 
         private void PopulateRaceList(bool SerializeCurrent)
@@ -121,7 +121,8 @@ namespace AC_Career_Mode
             toplabel_Wins.Content = $"🏆 {profile.RaceWins}";
             toplabel_Races.Content = $"Races: {profile.Races}";
 
-            lv_PlayerLoans.ItemsSource = profile.GetPlayerLoans();
+
+            uc_PlayerLoans.LoansLst = profile.GetPlayerLoans();
 
             lv_OwnedTracks.ItemsSource = profile.GetPlayerTracks();
 

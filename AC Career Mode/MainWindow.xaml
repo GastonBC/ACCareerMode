@@ -36,42 +36,9 @@
                         <RowDefinition Height="67*"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_LoansAvailable" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,30,5,0" Grid.Row="2" MouseDoubleClick="lv_AvailableLoans_DoubleClick" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding AmountLeft, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Amount"/>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding InterestRate, StringFormat={}{0}%}">
-                                    <GridViewColumnHeader Content="Interest"/>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Installment, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Installments" />
-                                </GridViewColumn>
-
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <ListView x:Name="lv_PlayerLoans" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="5,30,0,0" Grid.Row="2" MouseDoubleClick="lv_PlayerLoans_DoubleClick" Grid.Column="1" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding AmountLeft, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Amount"/>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding InterestRate, StringFormat={}{0}%}">
-                                    <GridViewColumnHeader Content="Interest"/>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Installment, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Installments" />
-                                </GridViewColumn>
-
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                    <uControl:LoanLvControl x:Name="uc_AvailableLoans" Margin="0,10,5,0" Grid.Row="2"  />
+                    <uControl:LoanLvControl x:Name="uc_PlayerLoans" Margin="5,10,0,0" Grid.Row="2" Grid.Column="1"  />
+                    
                 </Grid>
             </TabItem>
 
@@ -221,7 +188,10 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </TabItem>
-            
+
+            <TabItem Header="loan test">
+
+            </TabItem>
         </TabControl>
 
 

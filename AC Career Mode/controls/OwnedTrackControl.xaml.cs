@@ -24,7 +24,6 @@ namespace AC_Career_Mode.controls
         public OwnedTrackControl()
         {
             InitializeComponent();
-            DataContext = this;
         }
     }
 }
