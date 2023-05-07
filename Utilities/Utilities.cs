@@ -90,5 +90,27 @@ namespace Utilities
             dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dateTime;
         }
+
+
+        /// <summary>
+        /// Returns te amount of installments to pay
+        /// </summary>
+        public static int IsPaymentDue(DateTime lastPaid, int paymentInterval)
+        {
+            DateTime today = DateTime.Today;
+
+            // ie 25th - 13th = 12 days
+            // loan interval must be smaller than 12
+            int interval = (int)(today - lastPaid).TotalDays;
+
+
+            if (paymentInterval < interval)
+            {
+                double p = interval / paymentInterval;
+
+                return Convert.ToInt32(Math.Floor(p));
+            }
+            return 0;
+        }
     }
 }

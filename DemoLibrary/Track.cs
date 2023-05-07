@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ProtoBuf;
 using System.Data.SQLite;
+using System.Numerics;
 using Utilities;
 
 namespace DBLink
@@ -92,13 +93,23 @@ namespace DBLink
         }
 
 
-            public void IsRevenueDue()
+        public void PayRevenue(Player player, int multiplier)
         {
-            // TODO: check interval for the amount of 
-            // payments possible. ie 20 days passed so
-            // 5 installments have to be paid
-            // This could be possible returning an int
-            // which indicates how many times you have to pay
+            int amount = Revenue * multiplier;
+
+            player.Money += amount;
+            LastPaid = DateTime.Today;
+
+            player.UpdateInDB();
+
+            UpdateInDB();
+
+        }
+
+        public void UpdateInDB()
+        {
+            string cmd = $"UPDATE tracks SET _LastPaid={_LastPaid} WHERE Id={Id}";
+            SqliteDataAccess.ExecCmd(cmd);
         }
 
         public void InsertInDB()

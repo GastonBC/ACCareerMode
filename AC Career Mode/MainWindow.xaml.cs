@@ -49,8 +49,8 @@ namespace AC_Career_Mode
             PopulateLoans(false);
 
 
-            test_records.Records = new ObservableCollection<Record>(Record.DeserializeRecords(profile));
-            lb_test_itemcontrol.ItemsSource = MarketTracks;
+            //test_records.Records = new ObservableCollection<Record>(Record.DeserializeRecords(profile));
+            //lb_test_itemcontrol.ItemsSource = MarketTracks;
         }
 
 
@@ -179,34 +179,21 @@ namespace AC_Career_Mode
         {
             if (lv_CarMarket.SelectedItem != null)
             {
-                Car selected_car = lv_CarMarket.SelectedItem as Car;
+                Car car = lv_CarMarket.SelectedItem as Car;
 
-                if (CurrentUser.HasPlayerEnoughMoney(selected_car.Price))
+                if (CurrentUser.HasPlayerEnoughMoney(car.Price))
                 {
-                    CurrentUser.Money -= selected_car.Price;
+                    CurrentUser.Money -= car.Price;
 
-                    // Car comes from DailyCar list (bin object)
-                    // Remove the car from DailyCar, serialize the list
-                    // Insert to database
-                    if (selected_car.Id == 0)
-                    {
-                        int idx = MarketCars.IndexOf(selected_car);
-                        MarketCars.RemoveAt(idx);
+                    int idx = MarketCars.IndexOf(car);
+                    MarketCars.RemoveAt(idx);
 
-                        selected_car.Owner = CurrentUser.Id;
-                        selected_car.ForSale = 0;
-                        selected_car.InsertInDB();
-                    }
+                    car.Owner = CurrentUser.Id;
+                    car.ForSale = 0;
+                    car.InsertInDB();
+                    
 
-                    // else search the database and update the entry
-                    else
-                    {
-                        selected_car.Owner = CurrentUser.Id;
-                        selected_car.ForSale = 0;
-                        selected_car.UpdateInDB();
-                    }
-
-                    Record.RecordBuyCar(CurrentUser, selected_car);
+                    Record.RecordBuyCar(CurrentUser, car);
                 }
                 PopulateCarMarket(true);
                 UpdateAndRefreshPlayer(CurrentUser);
@@ -228,7 +215,7 @@ namespace AC_Career_Mode
                     // Insert to database
                     
                     int idx = MarketTracks.IndexOf(track);
-                    MarketCars.RemoveAt(idx);
+                    MarketTracks.RemoveAt(idx);
 
                     track.OwnerId = CurrentUser.Id;
                     track.InsertInDB();

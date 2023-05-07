@@ -42,7 +42,7 @@ namespace DBLink
             int paid = 0;
             foreach (Loan loan in GetPlayerLoans())
             {
-                int dueInst = loan.IsInstallmentDue();
+                int dueInst = Utils.IsPaymentDue(loan.LastPaid, loan.BillingInterval);
                 if (dueInst > 0)
                 {
                     paid += loan.Installment * dueInst;
@@ -53,6 +53,26 @@ namespace DBLink
             if (paid > 0)
             {
                 Utils.Alert("Loans", $"Paid {paid} in loans");
+            }
+        }
+
+        public void PayRevenue()
+        {
+            int paid = 0;
+            foreach (Track track in GetPlayerTracks())
+            {
+                int dueInst = Utils.IsPaymentDue(track.LastPaid, track.RevenueInterval);
+                if (dueInst > 0)
+                {
+                    paid += track.Revenue * dueInst;
+
+                    track.PayRevenue(this, dueInst);
+                }
+            }
+
+            if (paid > 0)
+            {
+                Utils.Alert("Loans", $"Received {paid} in track revenue");
             }
         }
 
@@ -124,11 +144,11 @@ namespace DBLink
             }
         }
 
-        public List<Car> GetPlayerTracks()
+        public List<Track> GetPlayerTracks()
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
-                IEnumerable<Car>? output = cnn.Query<Car>($"select * from tracks where OwnerId='{Id}'", new DynamicParameters());
+                IEnumerable<Track>? output = cnn.Query<Track>($"select * from tracks where OwnerId='{Id}'", new DynamicParameters());
 
                 return output.ToList();
             }

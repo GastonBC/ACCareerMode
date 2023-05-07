@@ -258,7 +258,7 @@
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Revenue}">
                                     <GridViewColumnHeader Content="Revenue" />
                                 </GridViewColumn>
-                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Tier}">
+                                <GridViewColumn Width="40" DisplayMemberBinding="{Binding Tier}">
                                     <GridViewColumnHeader Content="Tier"/>
                                 </GridViewColumn>
                             </GridView>
@@ -300,7 +300,7 @@
                 <ListBox x:Name="lb_test_itemcontrol" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <uControl:OwnedTrackControl />
+                            <uControl:OwnedTrackControl Width="654" Height="24" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

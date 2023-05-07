@@ -130,26 +130,7 @@ namespace DBLink
             SqliteDataAccess.ExecCmd(cmd);
         }
 
-        /// <summary>
-        /// Returns te amount of installments to pay
-        /// </summary>
-        public int IsInstallmentDue()
-        {
-            DateTime today = DateTime.Today;
 
-            // ie 25th - 13th = 12 days
-            // loan interval must be smaller than 12
-            int interval = (int)(today - this.LastPaid).TotalDays;
-
-
-            if (BillingInterval < interval)
-            {
-                double p = interval / BillingInterval;
-
-                return Convert.ToInt32(Math.Floor(p));
-            }
-            return 0;
-        }
 
 
 
