@@ -31,5 +31,21 @@ namespace DBLink
                 return id;
             }
         }
+
+        public static List<T> QueryByOwnerId<T>(string table, int OwnerId = 0)
+        {
+            // Select all in table
+            string cmd = $"SELECT * FROM {table}";
+
+            // Filter by OwnerId
+            if (OwnerId > 0) cmd = $"SELECT * FROM {table} where OwnerId={OwnerId}";
+
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                IEnumerable<T> output = cnn.Query<T>(cmd, new DynamicParameters());
+
+                return output.ToList();
+            }
+        }
     }
 }

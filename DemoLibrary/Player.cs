@@ -30,11 +30,7 @@ namespace DBLink
 
         public static List<Player> LoadAllPlayers()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                var output = cnn.Query<Player>("SELECT * FROM players", new DynamicParameters());
-                return output.ToList();
-            }
+            return SqliteDataAccess.QueryByOwnerId<Player>("players");
         }
 
         public void PayDueLoans()
@@ -82,35 +78,16 @@ namespace DBLink
 #if !DEBUG
             money = 50000;
 #endif
-            int new_player_id = 0;
 
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                cnn.Open();
-                cnn.Execute($"INSERT INTO players (Name, Money) VALUES (@Name, {money})", pName);
+            string cmd = $"INSERT INTO players (Name, Money) VALUES ('{pName.Name}', {money})";
+            int id = SqliteDataAccess.ExecCmd(cmd);
 
-                new_player_id = (int)cnn.LastInsertRowId;
-                cnn.Close();
+            return LoadPlayer(id);
 
-                return LoadPlayer(new_player_id);
-            }
         }
 
 
-        /// <summary>
-        /// Loads all player loans from DB
-        /// </summary>
-        public List<Loan> GetPlayerLoans()
-        {
-            List<Loan> loans = new();
 
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                IEnumerable<Loan> output = cnn.Query<Loan>($"SELECT * FROM loans where OwnerId={this.Id}", new DynamicParameters());
-
-                return output.ToList();
-            }
-        }
 
 
         public void UpdateInDB()
@@ -136,22 +113,17 @@ namespace DBLink
 
         public List<Car> GetPlayerCars()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                IEnumerable<Car>? output = cnn.Query<Car>($"select * from garage where Owner='{Id}'", new DynamicParameters());
+            return SqliteDataAccess.QueryByOwnerId<Car>("garage", Id);
+        }
 
-                return output.ToList();
-            }
+        public List<Loan> GetPlayerLoans()
+        {
+            return SqliteDataAccess.QueryByOwnerId<Loan>("loans", Id);
         }
 
         public List<Track> GetPlayerTracks()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                IEnumerable<Track>? output = cnn.Query<Track>($"select * from tracks where OwnerId='{Id}'", new DynamicParameters());
-
-                return output.ToList();
-            }
+            return SqliteDataAccess.QueryByOwnerId<Track>("tracks", Id);
         }
 
         public bool HasPlayerEnoughMoney(int price)

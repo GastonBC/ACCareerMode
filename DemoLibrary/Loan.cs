@@ -116,13 +116,13 @@ namespace DBLink
         /// </summary>
         public void UpdateInDB()
         {
-                string cmd = ($"UPDATE loans SET " +
-                    $"AmountLeft={AmountLeft}, " +
-                    $"_LastPaid={_LastPaid} " +
-                    $"WHERE Id={Id}");
+            string cmd = ($"UPDATE loans SET " +
+                $"AmountLeft={AmountLeft}, " +
+                $"_LastPaid={_LastPaid} " +
+                $"WHERE Id={Id}");
 
-                SqliteDataAccess.ExecCmd(cmd);
-            }
+            SqliteDataAccess.ExecCmd(cmd);
+        }
 
         public void DeleteInDB()
         {
