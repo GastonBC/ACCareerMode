@@ -12,8 +12,8 @@
             <RowDefinition Height="7*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="263*"/>
-            <ColumnDefinition Width="137*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <ListView x:Name="lv_Tracks" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="2" 
                   ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TrackList}" SelectionChanged="lv_Tracks_SelectionChanged">

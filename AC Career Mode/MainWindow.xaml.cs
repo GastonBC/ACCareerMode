@@ -156,7 +156,7 @@ namespace AC_Career_Mode
         {
             Car car = (Car)sender;
 
-            if (CurrentUser.HasPlayerEnoughMoney(car.Price))
+            if (CurrentUser.Money >= car.Price)
             {
                 CurrentUser.Money -= car.Price;
 

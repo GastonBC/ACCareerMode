@@ -122,14 +122,6 @@ namespace DBLink
             return SqliteDataAccess.QueryByOwnerId<Track>("tracks", Id);
         }
 
-        public bool HasPlayerEnoughMoney(int price)
-        {
-            if (this.Money >= price)
-            {
-                return true;
-            }
-            return false;
-        }
 
     }
 }

@@ -105,9 +105,74 @@ namespace DBLink
             UpdateInDB();
         }
 
+        public void Upgrade(Player player)
+        {
+            // Max tier
+            if (Tier == 5)
+            {
+                throw new InvalidOperationException("Max tier reached");
+            }
+
+            if (player.Money >= GetUpgradeCost())
+            {
+                player.Money -= GetUpgradeCost();
+                Tier++;
+
+                switch (Tier)
+                {
+                    case 2:
+                        Price = Utils.RoundX(Price * 1.15, 10000);
+                        Revenue = Utils.RoundX(Revenue * 1.20, 1000); 
+                        break;
+
+                    case 3:
+                        Price = Utils.RoundX(Price * 1.18, 10000);
+                        Revenue = Utils.RoundX(Revenue * 1.25, 1000);
+                        break;
+
+                    case 4:
+                        Price = Utils.RoundX(Price * 1.25, 10000);
+                        Revenue = Utils.RoundX(Revenue * 1.30, 1000);
+                        break;
+
+                    case 5:
+                        Price = Utils.RoundX(Price * 1.30, 10000);
+                        Revenue = Utils.RoundX(Revenue * 1.40, 1000);
+                        break;
+                }
+
+                player.UpdateInDB();
+                UpdateInDB();
+            }
+
+
+        }
+
+        public int GetUpgradeCost()
+        {
+            double TierCost = 0;
+            switch (Tier)
+            {
+                case 1:
+                    TierCost = Price * 0.25;
+                    break;
+                case 2:
+                    TierCost = Price * 0.55;
+                    break;
+                case 3:
+                    TierCost = Price * 1.20;
+                    break;
+                case 4:
+                    TierCost = Price * 1.50;
+                    break;
+            }
+            return Utils.RoundX(TierCost, 1000);
+        }
+
+
         public void UpdateInDB()
         {
-            string cmd = $"UPDATE tracks SET _LastPaid={_LastPaid} WHERE Id={Id}";
+            string cmd = $"UPDATE tracks SET _LastPaid={_LastPaid}, Revenue={Revenue}, Tier={Tier}, Price={Price} WHERE Id={Id}";
             SqliteDataAccess.ExecCmd(cmd);
         }
 
