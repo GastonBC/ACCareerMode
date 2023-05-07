@@ -43,7 +43,7 @@ namespace AC_Career_Mode.controls
         private static void OnRaceListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             RaceLvControl control = (RaceLvControl)d;
-            control.lv_RaceLst.ItemsSource = (List<Race>)e.NewValue;
+            control.lv_Races.ItemsSource = (List<Race>)e.NewValue;
 
             if(control.chk_FilterRaces.IsChecked == true)
             {
@@ -70,7 +70,7 @@ namespace AC_Career_Mode.controls
 
         private void RaceLv_SelChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lv_RaceLst.SelectedItem == null)
+            if (lv_Races.SelectedItem == null)
             {
                 b_GoRacing.IsEnabled = false;
                 img_track_bkg.Source = null;
@@ -80,7 +80,7 @@ namespace AC_Career_Mode.controls
             }
 
             b_GoRacing.IsEnabled = true;
-            Race SelectedRace = lv_RaceLst.SelectedItem as Race;
+            Race SelectedRace = lv_Races.SelectedItem as Race;
 
             img_track_bkg.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
             img_track_outline.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
@@ -93,7 +93,7 @@ namespace AC_Career_Mode.controls
         {
             if (this.GoRacing_Click != null)
             {
-                Race race = lv_RaceLst.SelectedItem as Race;
+                Race race = lv_Races.SelectedItem as Race;
                 this.GoRacing_Click(race, e);
             }
         }
@@ -118,88 +118,18 @@ namespace AC_Career_Mode.controls
                 IEnumerable<string>? names = RaceList.Select(r => r.Car.Name).Intersect(owned_cars.Select(c => c.Name));
                 List<Race> FilteredList = RaceList.Where(r => names.Contains(r.Car.Name)).ToList();
 
-                lv_RaceLst.ItemsSource = FilteredList;
+                lv_Races.ItemsSource = FilteredList;
             }
             else
             {
-                lv_RaceLst.ItemsSource = RaceList;
+                lv_Races.ItemsSource = RaceList;
             }
         }
 
-        void RaceLvHeader_Click(object sender, RoutedEventArgs e)
+        void lv_RacesHeader_Click(object sender, RoutedEventArgs e)
         {
-            HeaderClickedHandler(sender, e, lv_RaceLst);
+            Utils.HeaderClickedHandler(sender, e, lv_Races);
         }
 
-        GridViewColumnHeader _lastHeaderClicked = null;
-        ListSortDirection _lastDirection = ListSortDirection.Ascending;
-
-        void HeaderClickedHandler(object sender, RoutedEventArgs e, ListView lv)
-        {
-            GridViewColumnHeader? headerClicked = e.OriginalSource as GridViewColumnHeader;
-
-            ListSortDirection direction;
-
-            if (headerClicked != null)
-            {
-                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
-                {
-                    if (headerClicked != _lastHeaderClicked)
-                    {
-                        direction = ListSortDirection.Ascending;
-                    }
-                    else
-                    {
-                        if (_lastDirection == ListSortDirection.Ascending)
-                        {
-                            direction = ListSortDirection.Descending;
-                        }
-                        else
-                        {
-                            direction = ListSortDirection.Ascending;
-                        }
-                    }
-
-                    var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
-                    var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-
-                    Sort(sortBy, direction, lv);
-
-                    if (direction == ListSortDirection.Ascending)
-                    {
-                        headerClicked.Column.HeaderTemplate =
-                          Resources["HeaderTemplateArrowUp"] as DataTemplate;
-                    }
-                    else
-                    {
-                        headerClicked.Column.HeaderTemplate =
-                          Resources["HeaderTemplateArrowDown"] as DataTemplate;
-                    }
-
-                    // Remove arrow from previously sorted header
-                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
-                    {
-                        _lastHeaderClicked.Column.HeaderTemplate = null;
-                    }
-
-                    _lastHeaderClicked = headerClicked;
-                    _lastDirection = direction;
-                }
-            }
-        }
-
-        private void Sort(string sortBy, ListSortDirection direction, ListView lv)
-        {
-            ICollectionView dataView =
-              CollectionViewSource.GetDefaultView(lv.ItemsSource);
-
-            dataView.SortDescriptions.Clear();
-            SortDescription sd = new SortDescription(sortBy, direction);
-            dataView.SortDescriptions.Add(sd);
-            dataView.Refresh();
-        }
-
-
-        
     }
 }

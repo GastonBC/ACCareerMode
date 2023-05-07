@@ -118,6 +118,7 @@ namespace DBLink
                 new ManualCarData("Formula Hybrid 2022 S", CarGroup.F1, 40000000),
                 new ManualCarData("Formula RSS 2 V6 2020", CarGroup.Formula, 4000000),
                 new ManualCarData("Formula RSS 4", CarGroup.Formula, 250000),
+                new ManualCarData("Formula Hybrid® 2023", CarGroup.F1, 25000000),
 
                 new ManualCarData("Kart 50", CarGroup.Kart, 5000),
                 new ManualCarData("Kart 100", CarGroup.Kart, 7000),

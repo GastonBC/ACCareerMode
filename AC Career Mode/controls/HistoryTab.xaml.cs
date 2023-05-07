@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Utilities;
 
 namespace AC_Career_Mode.controls
 {
@@ -32,6 +33,9 @@ namespace AC_Career_Mode.controls
             InitializeComponent();
         }
 
-
+        void lv_HistoryHeader_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.HeaderClickedHandler(sender, e, lv_History);
+        }
     }
 }

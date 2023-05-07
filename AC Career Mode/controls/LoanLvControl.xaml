@@ -12,15 +12,15 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding AmountLeft, StringFormat={}{0:##,#}}">
-                        <GridViewColumnHeader Content="Amount"/>
+                        <GridViewColumnHeader Click="lv_LoansHeader_Click" Content="Amount"/>
                     </GridViewColumn>
 
                     <GridViewColumn Width="50" DisplayMemberBinding="{Binding InterestRate, StringFormat={}{0}%}">
-                        <GridViewColumnHeader Content="Interest"/>
+                        <GridViewColumnHeader Click="lv_LoansHeader_Click" Content="Interest"/>
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Installment, StringFormat={}{0:##,#}}">
-                        <GridViewColumnHeader Content="Installments" />
+                        <GridViewColumnHeader Click="lv_LoansHeader_Click" Content="Installments" />
                     </GridViewColumn>
 
                 </GridView>

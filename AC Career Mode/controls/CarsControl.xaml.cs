@@ -84,5 +84,10 @@ namespace AC_Career_Mode.controls
                 this.ListItem_DoubleClick(car, e);
             }
         }
+
+        void lv_CarsHeader_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.HeaderClickedHandler(sender, e, lv_CarMarket);
+        }
     }
 }

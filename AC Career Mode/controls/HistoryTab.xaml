@@ -8,16 +8,16 @@
              x:Name="RecordsUC"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Records}" 
+        <ListView x:Name="lv_History" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Records}" 
                   SelectionMode="Single" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Date, StringFormat=dd-MM-yyyy}">
-                        <GridViewColumnHeader Content="Date" />
+                        <GridViewColumnHeader Click="lv_HistoryHeader_Click" Content="Date" />
                     </GridViewColumn>
 
                     <GridViewColumn Width="600" DisplayMemberBinding="{Binding Description}">
-                        <GridViewColumnHeader Content="Description"/>
+                        <GridViewColumnHeader Click="lv_HistoryHeader_Click" Content="Description"/>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>

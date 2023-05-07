@@ -69,5 +69,10 @@ namespace AC_Career_Mode.controls
                 this.BuySell_Click(track, e);
             }
         }
+
+        void lv_TracksHeader_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.HeaderClickedHandler(sender, e, lv_Tracks);
+        }
     }
 }

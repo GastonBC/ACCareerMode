@@ -22,19 +22,19 @@
 
                     <GridViewColumn Width="180" DisplayMemberBinding="{Binding Name}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="Car"/>
+                            <GridViewColumnHeader Click="lv_CarsHeader_Click" Content="Car"/>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader>Price</GridViewColumnHeader>
+                            <GridViewColumnHeader Click="lv_CarsHeader_Click">Price</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Kms, StringFormat=G4}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="Mileage (kms)"/>
+                            <GridViewColumnHeader Click="lv_CarsHeader_Click" Content="Mileage (kms)"/>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                 </GridView>

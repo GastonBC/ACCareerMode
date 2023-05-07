@@ -20,18 +20,18 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="180" DisplayMemberBinding="{Binding Name}">
-                        <GridViewColumnHeader Content="Track" />
+                        <GridViewColumnHeader Click="lv_TracksHeader_Click" Content="Track" />
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
-                        <GridViewColumnHeader Content="Value" />
+                        <GridViewColumnHeader Click="lv_TracksHeader_Click" Content="Value" />
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Revenue}">
-                        <GridViewColumnHeader Content="Revenue" />
+                        <GridViewColumnHeader Click="lv_TracksHeader_Click" Content="Revenue" />
                     </GridViewColumn>
                     <GridViewColumn Width="40" DisplayMemberBinding="{Binding Tier}">
-                        <GridViewColumnHeader Content="Tier"/>
+                        <GridViewColumnHeader Click="lv_TracksHeader_Click" Content="Tier"/>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>

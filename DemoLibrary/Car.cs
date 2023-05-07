@@ -65,11 +65,13 @@ namespace DBLink
             ManualCarData manual_values = ManualCarData.LoadCarValues().Find(c => c.Name == car.Name);
 
 
-                
             
             if (manual_values == null)
             {
+#if !RELEASE
                 throw new Exception($"Car not manually inputted. {car.Name}");
+#endif
+
             }
 
 

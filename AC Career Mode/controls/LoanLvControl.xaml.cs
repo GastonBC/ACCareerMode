@@ -47,5 +47,9 @@ namespace AC_Career_Mode.controls
             }
         }
 
+        void lv_LoansHeader_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.HeaderClickedHandler(sender, e, lv_Loans);
+        }
     }
 }

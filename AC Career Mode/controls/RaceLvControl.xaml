@@ -17,44 +17,44 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
+        <ListView x:Name="lv_Races" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
                   SelectionChanged="RaceLv_SelChanged" Grid.RowSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}"  >
             <ListView.View>
                 <GridView>
 
                     <GridViewColumn Width="150" DisplayMemberBinding="{Binding Car.Name}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="RaceLvHeader_Click">Car</GridViewColumnHeader>
+                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Car</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Track.Name}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="RaceLvHeader_Click">Track</GridViewColumnHeader>
+                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Track</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
                     <GridViewColumn Width="90" DisplayMemberBinding="{Binding Prize, StringFormat={}{0:##,#}}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="RaceLvHeader_Click">Prize</GridViewColumnHeader>
+                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Prize</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Laps}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="RaceLvHeader_Click">Laps</GridViewColumnHeader>
+                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Laps</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthKm, StringFormat=G4}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="RaceLvHeader_Click">Race length (km)</GridViewColumnHeader>
+                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Race length (km)</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthMinutes, StringFormat=G4}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="RaceLvHeader_Click">Race length (minutes)</GridViewColumnHeader>
+                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Race length (minutes)</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
 
