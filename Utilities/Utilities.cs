@@ -3,12 +3,35 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 using Utilities.Views;
+using System.ComponentModel;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Resources;
 
 namespace Utilities
 {
     public static class Utils
     {
+
+        public static ImageSource? RetriveImage(string imagePath)
+        {
+
+            Uri myUri = new(imagePath, UriKind.Absolute);
+
+            try
+            {
+                BitmapDecoder decoder = BitmapDecoder.Create(myUri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None);
+                return decoder.Frames[0];
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                return null;
+            }
+        }
+
         public static void Alert(string title, string message)
         {
             Window1 wn1 = new(title, message);
@@ -112,5 +135,7 @@ namespace Utilities
             }
             return 0;
         }
+
     }
+
 }

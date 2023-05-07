@@ -1,19 +1,9 @@
 ﻿using DBLink;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Utilities;
 
 namespace AC_Career_Mode.controls
@@ -33,8 +23,14 @@ namespace AC_Career_Mode.controls
 
         public static readonly DependencyProperty LoansLstProperty = DependencyProperty.Register("LoansLstProperty", typeof(List<Loan>),
                                                                                                             typeof(LoanLvControl),
-                                                                                                            new PropertyMetadata(null));
-        
+                                                                                                            new PropertyMetadata(null, new PropertyChangedCallback(OnLoansLstChanged)));
+
+        private static void OnLoansLstChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            LoanLvControl control = (LoanLvControl)d;
+            control.lv_Loans.ItemsSource = (List<Loan>)e.NewValue;
+        }
+
         public LoanLvControl()
         {
             InitializeComponent();

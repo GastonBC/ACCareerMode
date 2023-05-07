@@ -38,79 +38,18 @@
                     </Grid.RowDefinitions>
                     <uControl:LoanLvControl x:Name="uc_AvailableLoans" Margin="0,10,5,0" Grid.Row="2"  />
                     <uControl:LoanLvControl x:Name="uc_PlayerLoans" Margin="5,10,0,0" Grid.Row="2" Grid.Column="1"  />
-                    
+
                 </Grid>
             </TabItem>
 
             <TabItem Header="Market" >
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="200"/>
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_CarMarket" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,5" SelectionChanged="MarketLv_SelChanged" Grid.Row="1" >
-                        <ListView.View>
-                            <GridView>
-
-                                <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="MarketCarsLv_Click" Content="Car"/>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="MarketCarsLv_Click">Price</GridViewColumnHeader>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Kms, StringFormat=G4}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="MarketCarsLv_Click" Content="Mileage (kms)"/>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-
-                    <ListView x:Name="lv_TrackMarket" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,5,0,0" SelectionChanged="MarketLv_SelChanged" Grid.Row="2" >
-                        <ListView.View>
-                            <GridView>
-
-                                <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="MarketCarsLv_Click" Content="Track"/>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="MarketCarsLv_Click" Content="Price"/>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Revenue, StringFormat={}{0:##,#}}">
-                                    <GridViewColumn.Header>
-                                        <GridViewColumnHeader Click="MarketTracksLv_Click" Content="Revenue"/>
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-
-
-                    <Image x:Name="Img_ForSaleTrack" Grid.Column="1"  Margin="10,5,10,0" VerticalAlignment="Top" Height="151" Grid.Row="2" />
-                    <Image x:Name="Img_ForSaleTrackOutline" Grid.Column="1"  Margin="10,5,10,0" VerticalAlignment="Top" Height="151" Grid.Row="2" />
-
-                    <Image x:Name="Img_ForSaleCar" Grid.Column="1" VerticalAlignment="Top" Height="150" Grid.Row="1" Margin="10,0,10,0" />
-                    <Button x:Name="b_BuyCar" Grid.Column="1" Content="Buy" IsEnabled="False" Grid.Row="1" Click="b_BuyCar_Click" Margin="10,0,10,5" Height="29" VerticalAlignment="Bottom"/>
-                    <Button x:Name="b_BuyTrack" Grid.Column="1" Content="Buy" IsEnabled="False" Grid.Row="2" Click="b_BuyTrack_Click" Margin="10,0,10,0" Height="29" VerticalAlignment="Bottom"/>
+                    <uControl:CarsControl x:Name="uc_MarketCars" ButtonContent="Buy" Margin="0,10,0,5" />
+                    <uControl:TracksControl x:Name="uc_MarketTracks" ButtonContent="Buy" Margin="0,5,0,0" Grid.Row="1" />
                 </Grid>
             </TabItem>
 
@@ -124,54 +63,14 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="193*"/>
+                        <RowDefinition Height="223*"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_OwnedCar" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="OwnedCars_SelChanged" Margin="0,0,5,5" Grid.Row="1" MouseDoubleClick="lv_OwnedCars_DoubleClick" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
-                                    <GridViewColumnHeader Content="Car" Click="OwnedCarsLv_Clicked"/>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Price" Click="OwnedCarsLv_Clicked"/>
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Kms, StringFormat=G4}">
-                                    <GridViewColumnHeader Content="Mileage (kms)" Click="OwnedCarsLv_Clicked"/>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-
-                    <ListView x:Name="lv_OwnedTracks" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,5,5,0" Grid.Row="2" Grid.RowSpan="2" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
-                                    <GridViewColumnHeader Content="Track" />
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Content="Value" />
-                                </GridViewColumn>
-
-                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Revenue}">
-                                    <GridViewColumnHeader Content="Revenue" />
-                                </GridViewColumn>
-                                <GridViewColumn Width="40" DisplayMemberBinding="{Binding Tier}">
-                                    <GridViewColumnHeader Content="Tier"/>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <Image x:Name="img_OwnedCar" Grid.Column="1"  Margin="2,0,2,0" VerticalAlignment="Top" Height="100" Grid.Row="1" />
-                    <Button x:Name="b_SellCar" Grid.Column="1" Content="Sell" IsEnabled="False" Grid.Row="3" Click="b_SellCar_Click" Margin="0,8,0,0"/>
+                    <uControl:CarsControl x:Name="uc_PlayerCars" ButtonContent="Sell" Grid.Row="1" Margin="0,0,0,5"  />
+                    <uControl:TracksControl x:Name="uc_PlayerTracks" ButtonContent="Sell" Grid.Row="2" Margin="0,5,0,0" />
                 </Grid>
             </TabItem>
 

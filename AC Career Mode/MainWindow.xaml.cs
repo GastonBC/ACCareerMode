@@ -44,6 +44,10 @@ namespace AC_Career_Mode
             uc_RaceTab.GoRacing_Click += new RoutedEventHandler(uc_RaceTab_GoRacing_Click);
             uc_AvailableLoans.Loan_DoubleClick += new RoutedEventHandler(uc_AvailableLoans_DoubleClick);
             uc_PlayerLoans.Loan_DoubleClick += new RoutedEventHandler(uc_PlayerLoans_DoubleClick);
+            uc_MarketCars.BuySell_Click += new RoutedEventHandler(b_BuyCar_Click);
+            uc_PlayerCars.BuySell_Click += new RoutedEventHandler(b_SellCar_Click);
+            uc_MarketTracks.BuySell_Click += new RoutedEventHandler(b_BuyTrack_Click);
+
 
             GetAvailableCarsAndTracks();
             UpdateAndRefreshPlayer(CurrentUser);
@@ -57,7 +61,10 @@ namespace AC_Career_Mode
             //lb_test_itemcontrol.ItemsSource = MarketTracks;
         }
 
-
+        private void Uc_MarketTracks_BuySell_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         void uc_RaceTab_GoRacing_Click(object sender, EventArgs e)
         {
@@ -147,85 +154,53 @@ namespace AC_Career_Mode
 
 
         #region MARKET TAB
-        private void MarketLv_SelChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lv_CarMarket.SelectedItem == null)
-            {
-                b_BuyCar.IsEnabled = false;
-                Img_ForSaleCar.Source = null;
-            }
-            else
-            {
-                b_BuyCar.IsEnabled = true;
-                Car car = lv_CarMarket.SelectedItem as Car;
-                Img_ForSaleCar.Source = RetriveImage(car.Preview);
-            }
-
-            if (lv_TrackMarket.SelectedItem == null)
-            {
-                b_BuyTrack.IsEnabled = false;
-                Img_ForSaleTrack.Source = null;
-                Img_ForSaleTrackOutline.Source = null;
-            }
-            else
-            {
-                b_BuyTrack.IsEnabled = true;
-                Track track = lv_TrackMarket.SelectedItem as Track;
-                Img_ForSaleTrack.Source = RetriveImage(track.PreviewPath);
-                Img_ForSaleTrackOutline.Source = RetriveImage(track.OutlinePath);
-            }
-        }
 
         private void b_BuyCar_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_CarMarket.SelectedItem != null)
+            Car car = (Car)sender;
+
+            if (CurrentUser.HasPlayerEnoughMoney(car.Price))
             {
-                Car car = lv_CarMarket.SelectedItem as Car;
+                CurrentUser.Money -= car.Price;
 
-                if (CurrentUser.HasPlayerEnoughMoney(car.Price))
-                {
-                    CurrentUser.Money -= car.Price;
+                int idx = MarketCars.IndexOf(car);
+                MarketCars.RemoveAt(idx);
 
-                    int idx = MarketCars.IndexOf(car);
-                    MarketCars.RemoveAt(idx);
+                car.OwnerId = CurrentUser.Id;
+                car.ForSale = 0;
+                car.InsertInDB();
 
-                    car.OwnerId = CurrentUser.Id;
-                    car.ForSale = 0;
-                    car.InsertInDB();
-                    
 
-                    Record.RecordBuyCar(CurrentUser, car);
-                }
-                PopulateCarMarket(true);
-                UpdateAndRefreshPlayer(CurrentUser);
+                Record.RecordBuyCar(CurrentUser, car);
             }
+            PopulateCarMarket(true);
+            UpdateAndRefreshPlayer(CurrentUser);
+
         }
 
         private void b_BuyTrack_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_TrackMarket.SelectedItem != null)
+            Track track = (Track)sender;
+
+            if (CurrentUser.Money >= track.Price)
             {
-                Track track = lv_TrackMarket.SelectedItem as Track;
+                CurrentUser.Money -= track.Price;
 
-                if (CurrentUser.Money >= track.Price)
-                {
-                    CurrentUser.Money -= track.Price;
+                // Car comes from DailyCar list (bin object)
+                // Remove the car from DailyCar, serialize the list
+                // Insert to database
 
-                    // Car comes from DailyCar list (bin object)
-                    // Remove the car from DailyCar, serialize the list
-                    // Insert to database
-                    
-                    int idx = MarketTracks.IndexOf(track);
-                    MarketTracks.RemoveAt(idx);
+                int idx = MarketTracks.IndexOf(track);
+                MarketTracks.RemoveAt(idx);
 
-                    track.OwnerId = CurrentUser.Id;
-                    track.InsertInDB();
+                track.OwnerId = CurrentUser.Id;
+                track.InsertInDB();
 
-                    Record.RecordBuyTrack(CurrentUser, track);
-                }
-                PopulateTrackMarket(true);
-                UpdateAndRefreshPlayer(CurrentUser);
+                Record.RecordBuyTrack(CurrentUser, track);
             }
+            PopulateTrackMarket(true);
+            UpdateAndRefreshPlayer(CurrentUser);
+
         }
 
         #endregion
@@ -234,48 +209,20 @@ namespace AC_Career_Mode
 
         #region PROFILE TAB
 
-        private void OwnedCars_SelChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lv_OwnedCar.SelectedItem != null)
-            {
-                b_SellCar.IsEnabled = true;
-                Car car = lv_OwnedCar.SelectedItem as Car;
-                img_OwnedCar.Source = RetriveImage(car.Preview);
-            }
-            else
-            {
-                b_SellCar.IsEnabled = false;
-                img_OwnedCar.Source = null;
-            }
-        }
+
 
         private void b_SellCar_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_OwnedCar.SelectedItem != null)
-            {
-                Car selected_car = lv_OwnedCar.SelectedItem as Car;
+            Car car = (Car)sender;
+            CurrentUser.Money += car.Price;
+            car.DeleteInDB();
 
-                CurrentUser.Money += selected_car.Price;
-                selected_car.DeleteInDB();
+            Record.RecordSell(CurrentUser, car);
 
-                Record.RecordSell(CurrentUser, selected_car);
-
-                PopulateCarMarket(true);
-                UpdateAndRefreshPlayer(CurrentUser);
-            }
-                
-            
+            PopulateCarMarket(true);
+            UpdateAndRefreshPlayer(CurrentUser);
         }
-        private void lv_OwnedCars_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (lv_OwnedCar.SelectedItem != null)
-            {
-                Car SelCar = lv_OwnedCar.SelectedItem as Car;
-                CurrentUser.EquippedCarId = SelCar.Id;
 
-                UpdateAndRefreshPlayer(CurrentUser);
-            }
-        }
 
 
         #endregion

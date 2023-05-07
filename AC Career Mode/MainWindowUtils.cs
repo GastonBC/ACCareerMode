@@ -34,7 +34,6 @@ namespace AC_Career_Mode
             // Called when a car was bought
             if (SerializeCurrent) Utils.ProtoSerialize(MarketCars, GlobalVars.CarMarketBin);
 
-            lv_CarMarket.ItemsSource = null;
             MarketCars.Clear();
 
             // Using a seed so cars are changed daily
@@ -47,7 +46,7 @@ namespace AC_Career_Mode
             // If serialized current, this will load the list srlzd at the beginning
             MarketCars = Utils.ReadWriteBin(GlobalVars.CarMarketBin, MarketCars);
 
-            lv_CarMarket.ItemsSource = MarketCars;
+            uc_MarketCars.CarList = MarketCars;
         }
 
         private void PopulateTrackMarket(bool SerializeCurrent)
@@ -65,7 +64,7 @@ namespace AC_Career_Mode
             // If serialized current, this will load the list srlzd at the beginning
             MarketTracks = Utils.ReadWriteBin(GlobalVars.TrackMarketBin, MarketTracks);
 
-            lv_TrackMarket.ItemsSource = MarketTracks;
+            uc_MarketTracks.TrackList = MarketTracks;
         }
 
         private void PopulateLoans(bool SerializeCurrent)
@@ -101,7 +100,7 @@ namespace AC_Career_Mode
             RaceSource = Utils.ReadWriteBin(GlobalVars.RacesBin, RaceSource);
 
 
-            uc_RaceTab.RaceList = new ObservableCollection<Race>(RaceSource);
+            uc_RaceTab.RaceList = RaceSource;
             uc_RaceTab.CurrentUser = CurrentUser;
 
         }
@@ -124,7 +123,7 @@ namespace AC_Career_Mode
 
             uc_PlayerLoans.LoansLst = profile.GetPlayerLoans();
 
-            lv_OwnedTracks.ItemsSource = profile.GetPlayerTracks();
+            //uc_tra.ItemsSource = profile.GetPlayerTracks();
 
             uc_Records.Records =  Record.DeserializeRecords(profile);
 
@@ -138,8 +137,7 @@ namespace AC_Career_Mode
                 toplabel_EquippedCar.Content = "";
             }
 
-            lv_OwnedCar.ItemsSource = null;
-            lv_OwnedCar.ItemsSource = CurrentUser.GetPlayerCars();
+            uc_PlayerCars.CarList = CurrentUser.GetPlayerCars();
         }
         #endregion
 
@@ -181,24 +179,7 @@ namespace AC_Career_Mode
         #endregion
 
 
-        #region OTHER
 
-
-        private void MarketTracksLv_Click(object sender, RoutedEventArgs e)
-        {
-            HeaderClickedHandler(sender, e, lv_TrackMarket);
-        }
-
-
-        private void MarketCarsLv_Click(object sender, RoutedEventArgs e)
-        {
-            HeaderClickedHandler(sender, e, lv_CarMarket);
-        }
-
-        void OwnedCarsLv_Clicked(object sender, RoutedEventArgs e)
-        {
-            HeaderClickedHandler(sender, e, lv_OwnedCar);
-        }
 
         GridViewColumnHeader _lastHeaderClicked = null;
         ListSortDirection _lastDirection = ListSortDirection.Ascending;
@@ -291,7 +272,6 @@ namespace AC_Career_Mode
             return File.GetCreationTime(filename) >= threshold;
         }
 
-        #endregion
     }
 
 }

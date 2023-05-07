@@ -30,15 +30,22 @@ namespace AC_Career_Mode.controls
     public partial class RaceLvControl : UserControl
     {
 
-        public ObservableCollection<Race> RaceList
+        public List<Race> RaceList
         {
-            get { return (ObservableCollection<Race>)GetValue(RaceListProperty); }
+            get { return (List<Race>)GetValue(RaceListProperty); }
             set { SetValue(RaceListProperty, value); }
         }
 
-        public static readonly DependencyProperty RaceListProperty = DependencyProperty.Register("RaceListProperty", typeof(ObservableCollection<Race>),
+        public static readonly DependencyProperty RaceListProperty = DependencyProperty.Register("RaceListProperty", typeof(List<Race>),
                                                                                                             typeof(RaceLvControl),
-                                                                                                            new PropertyMetadata(null));
+                                                                                                            new PropertyMetadata(null, new PropertyChangedCallback(OnRaceListChanged)));
+
+        private static void OnRaceListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            RaceLvControl control = (RaceLvControl)d;
+            control.lv_RaceLst.ItemsSource = (List<Race>)e.NewValue;
+        }
+
 
         public Player CurrentUser
         {
@@ -70,9 +77,9 @@ namespace AC_Career_Mode.controls
             b_GoRacing.IsEnabled = true;
             Race SelectedRace = lv_RaceLst.SelectedItem as Race;
 
-            track_background.Source = RetriveImage(SelectedRace.Track.PreviewPath);
-            track_preview.Source = RetriveImage(SelectedRace.Track.OutlinePath);
-            car_preview.Source = RetriveImage(SelectedRace.Car.Preview);
+            track_background.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
+            track_preview.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
+            car_preview.Source = Utils.RetriveImage(SelectedRace.Car.Preview);
         }
 
 
@@ -188,20 +195,6 @@ namespace AC_Career_Mode.controls
         }
 
 
-        public static ImageSource? RetriveImage(string imagePath)
-        {
-
-            Uri myUri = new(imagePath, UriKind.Absolute);
-
-            try
-            {
-                BitmapDecoder decoder = BitmapDecoder.Create(myUri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None);
-                return decoder.Frames[0];
-            }
-            catch (System.IO.FileNotFoundException)
-            {
-                return null;
-            }
-        }
+        
     }
 }
