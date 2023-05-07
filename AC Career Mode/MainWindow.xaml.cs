@@ -51,7 +51,6 @@ namespace AC_Career_Mode
 
             uc_MarketTracks.BuySell_Click += new RoutedEventHandler(b_BuyTrack_Click);
 
-
             GetAvailableCarsAndTracks();
             UpdateAndRefreshPlayer(CurrentUser);
             PopulateRaceList(false);
@@ -59,6 +58,8 @@ namespace AC_Career_Mode
             PopulateTrackMarket(false);
             PopulateLoans(false);
         }
+
+
 
         void OwnedCars_DoubleClick(object sender, RoutedEventArgs e)
         {
@@ -127,8 +128,6 @@ namespace AC_Career_Mode
 
         }
 
-
-        // BUG: removeat is working but not updating the control
         void uc_AvailableLoans_DoubleClick(object sender, EventArgs e)
         {
             Loan loan = (Loan)sender;
@@ -153,10 +152,7 @@ namespace AC_Career_Mode
                 UpdateAndRefreshPlayer(CurrentUser);
         }
 
-
-        #region MARKET TAB
-
-        private void b_BuyCar_Click(object sender, RoutedEventArgs e)
+        void b_BuyCar_Click(object sender, RoutedEventArgs e)
         {
             Car car = (Car)sender;
 
@@ -179,7 +175,7 @@ namespace AC_Career_Mode
 
         }
 
-        private void b_BuyTrack_Click(object sender, RoutedEventArgs e)
+        void b_BuyTrack_Click(object sender, RoutedEventArgs e)
         {
             Track track = (Track)sender;
 
@@ -204,15 +200,7 @@ namespace AC_Career_Mode
 
         }
 
-        #endregion
-
-
-
-        #region PROFILE TAB
-
-
-
-        private void b_SellCar_Click(object sender, RoutedEventArgs e)
+        void b_SellCar_Click(object sender, RoutedEventArgs e)
         {
             Car car = (Car)sender;
             CurrentUser.Money += car.Price;
@@ -223,10 +211,6 @@ namespace AC_Career_Mode
             PopulateCarMarket(true);
             UpdateAndRefreshPlayer(CurrentUser);
         }
-
-
-
-        #endregion
 
 
 
