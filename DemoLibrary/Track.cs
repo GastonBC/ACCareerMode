@@ -103,7 +103,6 @@ namespace DBLink
             player.UpdateInDB();
 
             UpdateInDB();
-
         }
 
         public void UpdateInDB()

@@ -38,11 +38,11 @@ namespace DBLink
             int paid = 0;
             foreach (Loan loan in GetPlayerLoans())
             {
-                int dueInst = Utils.IsPaymentDue(loan.LastPaid, loan.BillingInterval);
-                if (dueInst > 0)
+                int multiplier = Utils.IsPaymentDue(loan.LastPaid, loan.BillingInterval);
+                if (multiplier > 0)
                 {
-                    paid += loan.Installment * dueInst;
-                    loan.PayInstallment(this, dueInst);
+                    paid += loan.Installment * multiplier;
+                    loan.PayInstallment(this, multiplier);
                 }
             }
 
@@ -57,12 +57,12 @@ namespace DBLink
             int paid = 0;
             foreach (Track track in GetPlayerTracks())
             {
-                int dueInst = Utils.IsPaymentDue(track.LastPaid, track.RevenueInterval);
-                if (dueInst > 0)
+                int multiplier = Utils.IsPaymentDue(track.LastPaid, track.RevenueInterval);
+                if (multiplier > 0)
                 {
-                    paid += track.Revenue * dueInst;
+                    paid += track.Revenue * multiplier;
 
-                    track.PayRevenue(this, dueInst);
+                    track.PayRevenue(this, multiplier);
                 }
             }
 
@@ -72,7 +72,7 @@ namespace DBLink
             }
         }
 
-        public static Player Insert(Player pName)
+        public static Player InsertInDB(Player pName)
         {
             int money = 100000000;
 #if !DEBUG
@@ -85,10 +85,6 @@ namespace DBLink
             return LoadPlayer(id);
 
         }
-
-
-
-
 
         public void UpdateInDB()
         {

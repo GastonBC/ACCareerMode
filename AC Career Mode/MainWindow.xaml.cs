@@ -188,7 +188,7 @@ namespace AC_Career_Mode
                     int idx = MarketCars.IndexOf(car);
                     MarketCars.RemoveAt(idx);
 
-                    car.Owner = CurrentUser.Id;
+                    car.OwnerId = CurrentUser.Id;
                     car.ForSale = 0;
                     car.InsertInDB();
                     

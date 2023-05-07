@@ -29,7 +29,7 @@ namespace AC_Career_Mode
             Player p = new();
             p.Name = tb_Name.Text;
 
-            p = Player.Insert(p);
+            p = Player.InsertInDB(p);
 
             Record.RecordRegister(p);
 

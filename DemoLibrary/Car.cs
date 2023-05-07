@@ -33,7 +33,7 @@ namespace DBLink
         [ProtoMember(10)]
         public int Price { get; set; }
         [ProtoMember(11)]
-        public int Owner { get; set; }
+        public int OwnerId { get; set; }
 
         public static Car LoadCarJson(string json_path)
         {
@@ -79,7 +79,7 @@ namespace DBLink
 
             car.Group = manual_values.Group;
             car.Kms = 0;
-            car.Owner = 0;
+            car.OwnerId = 0;
             car.ForSale = 1;
             car.Id = 0;
 
@@ -118,8 +118,8 @@ namespace DBLink
                 throw new InvalidOperationException("Car Id is not 0");
             }
 
-            string cmd = $"INSERT INTO garage (Name, Path, Preview, TopSpeed, Price, Kms, Owner, ForSale) " +
-                $"VALUES ('{Name}', '{Path}', '{Preview}', {TopSpeed}, {Price}, {Kms}, {Owner}, {ForSale})";
+            string cmd = $"INSERT INTO garage (Name, Path, Preview, TopSpeed, Price, Kms, OwnerId, ForSale) " +
+                $"VALUES ('{Name}', '{Path}', '{Preview}', {TopSpeed}, {Price}, {Kms}, {OwnerId}, {ForSale})";
 
             SqliteDataAccess.ExecCmd(cmd);
         }
@@ -138,7 +138,7 @@ namespace DBLink
                     $"Price='{Price}', " +
                     $"Kms='{Kms}', " +
                     $"ForSale='{ForSale}', " +
-                    $"Owner='{Owner}' " +
+                    $"Owner='{OwnerId}' " +
                     $"WHERE Id='{Id}'";
 
                 SqliteDataAccess.ExecCmd(cmd);
