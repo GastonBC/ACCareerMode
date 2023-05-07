@@ -99,7 +99,6 @@ namespace AC_Career_Mode
 
             RaceSource = Utils.ReadWriteBin(GlobalVars.RacesBin, RaceSource);
 
-
             uc_RaceTab.RaceList = RaceSource;
             uc_RaceTab.CurrentUser = CurrentUser;
 
@@ -109,7 +108,6 @@ namespace AC_Career_Mode
         {
             profile.PayDueLoans();
             profile.PayRevenue();
-
             profile.UpdateInDB();
 
 
@@ -122,9 +120,7 @@ namespace AC_Career_Mode
 
 
             uc_PlayerLoans.LoansLst = profile.GetPlayerLoans();
-
-            //uc_tra.ItemsSource = profile.GetPlayerTracks();
-
+            uc_PlayerTracks.TrackList = profile.GetPlayerTracks();
             uc_Records.Records =  Record.DeserializeRecords(profile);
 
             // DB returns null as 0

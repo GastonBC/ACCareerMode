@@ -44,6 +44,11 @@ namespace AC_Career_Mode.controls
         {
             RaceLvControl control = (RaceLvControl)d;
             control.lv_RaceLst.ItemsSource = (List<Race>)e.NewValue;
+
+            if(control.chk_FilterRaces.IsChecked == true)
+            {
+                control.FilterRaces();
+            }
         }
 
 
@@ -68,18 +73,18 @@ namespace AC_Career_Mode.controls
             if (lv_RaceLst.SelectedItem == null)
             {
                 b_GoRacing.IsEnabled = false;
-                track_background.Source = null;
-                track_preview.Source = null;
-                car_preview.Source = null;
+                img_track_bkg.Source = null;
+                img_track_outline.Source = null;
+                img_car_preview.Source = null;
                 return;
             }
 
             b_GoRacing.IsEnabled = true;
             Race SelectedRace = lv_RaceLst.SelectedItem as Race;
 
-            track_background.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
-            track_preview.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
-            car_preview.Source = Utils.RetriveImage(SelectedRace.Car.Preview);
+            img_track_bkg.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
+            img_track_outline.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
+            img_car_preview.Source = Utils.RetriveImage(SelectedRace.Car.Preview);
         }
 
 

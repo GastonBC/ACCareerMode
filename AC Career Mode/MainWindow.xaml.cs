@@ -45,7 +45,10 @@ namespace AC_Career_Mode
             uc_AvailableLoans.Loan_DoubleClick += new RoutedEventHandler(uc_AvailableLoans_DoubleClick);
             uc_PlayerLoans.Loan_DoubleClick += new RoutedEventHandler(uc_PlayerLoans_DoubleClick);
             uc_MarketCars.BuySell_Click += new RoutedEventHandler(b_BuyCar_Click);
+
             uc_PlayerCars.BuySell_Click += new RoutedEventHandler(b_SellCar_Click);
+            uc_PlayerCars.ListItem_DoubleClick += new RoutedEventHandler(OwnedCars_DoubleClick);
+
             uc_MarketTracks.BuySell_Click += new RoutedEventHandler(b_BuyTrack_Click);
 
 
@@ -55,15 +58,13 @@ namespace AC_Career_Mode
             PopulateCarMarket(false);
             PopulateTrackMarket(false);
             PopulateLoans(false);
-
-            
-
-            //lb_test_itemcontrol.ItemsSource = MarketTracks;
         }
 
-        private void Uc_MarketTracks_BuySell_Click(object sender, RoutedEventArgs e)
+        void OwnedCars_DoubleClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Car car = (Car)sender;
+            CurrentUser.EquippedCarId = car.Id;
+            UpdateAndRefreshPlayer(CurrentUser);
         }
 
         void uc_RaceTab_GoRacing_Click(object sender, EventArgs e)

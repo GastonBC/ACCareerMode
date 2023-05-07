@@ -75,5 +75,14 @@ namespace AC_Career_Mode.controls
             }
         }
 
+        public event RoutedEventHandler ListItem_DoubleClick;
+        private void lv_CarMarket_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lv_CarMarket.SelectedItem != null)
+            {
+                Car car = (Car)lv_CarMarket.SelectedItem;
+                this.ListItem_DoubleClick(car, e);
+            }
+        }
     }
 }

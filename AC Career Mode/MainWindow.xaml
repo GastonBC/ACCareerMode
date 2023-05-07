@@ -77,20 +77,6 @@
             <TabItem Header="History">
                 <uControl:HistoryTab x:Name="uc_Records"  />
             </TabItem>
-
-            <TabItem Header="Test" >
-                <ListBox x:Name="lb_test_itemcontrol" d:ItemsSource="{d:SampleData ItemCount=5}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <uControl:OwnedTrackControl Width="654" Height="24" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </TabItem>
-
-            <TabItem Header="loan test">
-
-            </TabItem>
         </TabControl>
 
 

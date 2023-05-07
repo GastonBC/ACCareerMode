@@ -17,7 +17,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,5,0" 
+        <ListView x:Name="lv_RaceLst" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
                   SelectionChanged="RaceLv_SelChanged" Grid.RowSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}"  >
             <ListView.View>
                 <GridView>
@@ -62,10 +62,10 @@
             </ListView.View>
         </ListView>
 
-        <Image x:Name="track_background" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" VerticalAlignment="Top" Height="100" />
-        <Image x:Name="track_preview" Grid.Column="1"  Grid.Row="1" Margin="2,6,2,0" Height="100" VerticalAlignment="Top" />
-        <Image x:Name="car_preview" Grid.Column="1"  Grid.Row="1" Margin="2,115,2,0" Height="100" VerticalAlignment="Top" />
-        <Button x:Name="b_GoRacing" IsEnabled="False" Content="Race!" Grid.Row="2" Click="b_GoRacing_Click" Grid.Column="1" />
+        <Image x:Name="img_track_bkg" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
+        <Image x:Name="img_track_outline" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
+        <Image x:Name="img_car_preview" Grid.Column="1"  Grid.Row="1" Margin="5,130,0,0" Height="130" VerticalAlignment="Top" />
+        <Button x:Name="b_GoRacing" IsEnabled="False" Content="Race!" Grid.Row="2" Click="b_GoRacing_Click" Grid.Column="1" Margin="5,0,0,0" />
         <CheckBox x:Name="chk_FilterRaces" Content="Show races I can take" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="chk_FilterRaces_Click"/>
 
     </Grid>
