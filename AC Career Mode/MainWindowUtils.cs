@@ -12,6 +12,8 @@ using Utilities;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Numerics;
+using System.Collections.ObjectModel;
+using System.Windows.Documents;
 
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
@@ -124,7 +126,7 @@ namespace AC_Career_Mode
 
             lv_PlayerLoans.ItemsSource = profile.GetPlayerLoans();
 
-            
+            lv_OwnedTracks.ItemsSource = profile.GetPlayerTracks();
 
             lv_HistoryRecords.ItemsSource = Record.DeserializeRecords(profile);
 

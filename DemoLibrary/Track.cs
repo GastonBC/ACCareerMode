@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Dapper;
+using Newtonsoft.Json;
 using ProtoBuf;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
+using System.Data.SQLite;
 using Utilities;
 
 namespace DBLink
@@ -104,6 +101,14 @@ namespace DBLink
             // which indicates how many times you have to pay
         }
 
+        public void InsertInDB()
+        {
+            string cmd = $"INSERT INTO tracks (Name, OwnerId, Revenue, Tier, _LastPaid, RevenueInterval, Price, LengthKm, OutlinePath, PreviewPath) " +
+                $"VALUES ('{Name}', {OwnerId}, {Revenue}, {Tier}, {_LastPaid}, {RevenueInterval}, {Price}, {LengthKm}, '{OutlinePath}', '{PreviewPath}')";
+
+            SqliteDataAccess.ExecCmd(cmd);
+
+        }
     }
 }
 

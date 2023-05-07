@@ -124,6 +124,16 @@ namespace DBLink
             }
         }
 
+        public List<Car> GetPlayerTracks()
+        {
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                IEnumerable<Car>? output = cnn.Query<Car>($"select * from tracks where OwnerId='{Id}'", new DynamicParameters());
+
+                return output.ToList();
+            }
+        }
+
         public bool HasPlayerEnoughMoney(int price)
         {
             if (this.Money >= price)

@@ -40,9 +40,17 @@ namespace AC_Career_Mode
             InsertLog(r, player);
         }
 
-        internal static void RecordBuy(Player player, Car car)
+        internal static void RecordBuyCar(Player player, Car car)
         {
             string msg = $"{player.Name} bought {car.Name} for ${car.Price}";
+            Record r = new Record("BuyCar", player.Id, msg);
+
+            InsertLog(r, player);
+        }
+
+        internal static void RecordBuyTrack(Player player, Track track)
+        {
+            string msg = $"{player.Name} bought {track.Name} for ${track.Price}";
             Record r = new Record("BuyCar", player.Id, msg);
 
             InsertLog(r, player);

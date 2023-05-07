@@ -105,14 +105,8 @@ namespace DBLink
 
         public void DeleteInDB()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                cnn.Open();
-                string delete_record = ($"DELETE FROM garage WHERE Id={Id}");
-                cnn.Execute(delete_record);
-                cnn.Close();
-            }
-            return;
+            string cmd = $"DELETE FROM garage WHERE Id={Id}";
+            SqliteDataAccess.ExecCmd(cmd);
         }
 
 
@@ -124,21 +118,10 @@ namespace DBLink
                 throw new InvalidOperationException("Car Id is not 0");
             }
 
-            try
-            {
-                using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-                {
-                    cnn.Open();
-                    string cmd = $"INSERT INTO garage (Name, Path, Preview, TopSpeed, Price, Kms, Owner, ForSale) " +
-                        $"VALUES ('{Name}', '{Path}', '{Preview}', {TopSpeed}, {Price}, {Kms}, {Owner}, {ForSale})";
+            string cmd = $"INSERT INTO garage (Name, Path, Preview, TopSpeed, Price, Kms, Owner, ForSale) " +
+                $"VALUES ('{Name}', '{Path}', '{Preview}', {TopSpeed}, {Price}, {Kms}, {Owner}, {ForSale})";
 
-                    SQLiteCommand command = new(cmd, cnn);
-                    cnn.Execute(cmd);
-                    Id = (int)cnn.LastInsertRowId;
-                    cnn.Close();
-                }
-            }
-            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex.Message); }
+            SqliteDataAccess.ExecCmd(cmd);
         }
 
 
@@ -151,16 +134,14 @@ namespace DBLink
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
 
-                cnn.Open();
-                string update_record = $"UPDATE garage SET " +
+                string cmd = $"UPDATE garage SET " +
                     $"Price='{Price}', " +
                     $"Kms='{Kms}', " +
                     $"ForSale='{ForSale}', " +
                     $"Owner='{Owner}' " +
                     $"WHERE Id='{Id}'";
 
-                cnn.Execute(update_record);
-                cnn.Close();
+                SqliteDataAccess.ExecCmd(cmd);
             }
         }
     }

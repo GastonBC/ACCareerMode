@@ -1,6 +1,7 @@
 ﻿using DBLink;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Numerics;
 using System.Windows;
@@ -46,6 +47,10 @@ namespace AC_Career_Mode
             PopulateCarMarket(false);
             PopulateTrackMarket(false);
             PopulateLoans(false);
+
+
+            test_records.Records = new ObservableCollection<Record>(Record.DeserializeRecords(profile));
+            lb_test_itemcontrol.ItemsSource = MarketTracks;
         }
 
 
@@ -201,9 +206,36 @@ namespace AC_Career_Mode
                         selected_car.UpdateInDB();
                     }
 
-                    Record.RecordBuy(CurrentUser, selected_car);
+                    Record.RecordBuyCar(CurrentUser, selected_car);
                 }
                 PopulateCarMarket(true);
+                UpdateAndRefreshPlayer(CurrentUser);
+            }
+        }
+
+        private void b_BuyTrack_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_TrackMarket.SelectedItem != null)
+            {
+                Track track = lv_TrackMarket.SelectedItem as Track;
+
+                if (CurrentUser.Money >= track.Price)
+                {
+                    CurrentUser.Money -= track.Price;
+
+                    // Car comes from DailyCar list (bin object)
+                    // Remove the car from DailyCar, serialize the list
+                    // Insert to database
+                    
+                    int idx = MarketTracks.IndexOf(track);
+                    MarketCars.RemoveAt(idx);
+
+                    track.OwnerId = CurrentUser.Id;
+                    track.InsertInDB();
+
+                    Record.RecordBuyTrack(CurrentUser, track);
+                }
+                PopulateTrackMarket(true);
                 UpdateAndRefreshPlayer(CurrentUser);
             }
         }
@@ -303,10 +335,7 @@ namespace AC_Career_Mode
 
         #endregion
 
-        private void b_BuyTrack_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
 
 
     }

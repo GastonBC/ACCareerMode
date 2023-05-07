@@ -223,27 +223,49 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                         <RowDefinition/>
+                        <RowDefinition/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <ListView x:Name="lv_OwnedCar" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="OwnedCars_SelChanged" Margin="0,0,5,0" Grid.RowSpan="2" Grid.Row="1" MouseDoubleClick="lv_OwnedCars_DoubleClick" >
+                    <ListView x:Name="lv_OwnedCar" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="OwnedCars_SelChanged" Margin="0,0,5,5" Grid.Row="1" MouseDoubleClick="lv_OwnedCars_DoubleClick" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
-                                    <GridViewColumnHeader Tag="Car" Content="Car" Click="OwnedCarsLv_Clicked"/>
+                                    <GridViewColumnHeader Content="Car" Click="OwnedCarsLv_Clicked"/>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
-                                    <GridViewColumnHeader Tag="Price" Content="Price" Click="OwnedCarsLv_Clicked"/>
+                                    <GridViewColumnHeader Content="Price" Click="OwnedCarsLv_Clicked"/>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="100" DisplayMemberBinding="{Binding Kms, StringFormat=G4}">
-                                    <GridViewColumnHeader Tag="Mileage" Content="Mileage (kms)" Click="OwnedCarsLv_Clicked"/>
+                                    <GridViewColumnHeader Content="Mileage (kms)" Click="OwnedCarsLv_Clicked"/>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <ListView x:Name="lv_OwnedTracks" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,5,5,0" Grid.Row="2" Grid.RowSpan="2" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="200" DisplayMemberBinding="{Binding Name}">
+                                    <GridViewColumnHeader Content="Track" />
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:##,#}}">
+                                    <GridViewColumnHeader Content="Value" />
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="100" DisplayMemberBinding="{Binding Revenue}">
+                                    <GridViewColumnHeader Content="Revenue" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Tier}">
+                                    <GridViewColumnHeader Content="Tier"/>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <Image x:Name="img_OwnedCar" Grid.Column="1"  Margin="2,0,2,0" VerticalAlignment="Top" Height="100" Grid.Row="1" />
-                    <Button x:Name="b_SellCar" Grid.Column="1" Content="Sell" IsEnabled="False" Grid.Row="2" Click="b_SellCar_Click"/>
+                    <Button x:Name="b_SellCar" Grid.Column="1" Content="Sell" IsEnabled="False" Grid.Row="3" Click="b_SellCar_Click" Margin="0,8,0,0"/>
                 </Grid>
             </TabItem>
 
@@ -274,8 +296,17 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Test" >
+                <ListBox x:Name="lb_test_itemcontrol" d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <uControl:OwnedTrackControl />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
             <TabItem Header="Test">
-                <uControl:HistoryTab />
+                <uControl:HistoryTab x:Name="test_records" />
             </TabItem>
         </TabControl>
 

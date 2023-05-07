@@ -116,30 +116,18 @@ namespace DBLink
         /// </summary>
         public void UpdateInDB()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                cnn.Open();
-                string update_record = ($"UPDATE loans SET " +
+                string cmd = ($"UPDATE loans SET " +
                     $"AmountLeft={AmountLeft}, " +
                     $"_LastPaid={_LastPaid} " +
                     $"WHERE Id={Id}");
 
-                cnn.Execute(update_record);
-                cnn.Close();
+                SqliteDataAccess.ExecCmd(cmd);
             }
-            return;
-        }
 
         public void DeleteInDB()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                cnn.Open();
-                string delete_record = ($"DELETE FROM loans WHERE Id={Id}");
-                cnn.Execute(delete_record);
-                cnn.Close();
-            }
-            return;
+            string cmd = ($"DELETE FROM loans WHERE Id={Id}");
+            SqliteDataAccess.ExecCmd(cmd);
         }
 
         /// <summary>
@@ -184,23 +172,11 @@ namespace DBLink
         // Inserts the loan executed by the player into db. Only allowed if Id = 0 (non existent in db)
         public Loan InsertInDB()
         {
-            if (this.Id != 0)
-            {
-                throw new InvalidOperationException("New loan alredy has an id");
-            }
+            string cmd = $"INSERT INTO loans (OwnerId, AmountLeft, InterestRate, _LastPaid, BillingInterval, Installment) VALUES " +
+                                        $"({OwnerId}, {AmountLeft}, {InterestRate}, {_LastPaid}, {BillingInterval}, {Installment})";
 
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                cnn.Open();
-                string update_record = $"INSERT INTO loans (OwnerId, AmountLeft, InterestRate, _LastPaid, BillingInterval, Installment) VALUES ({OwnerId}, {AmountLeft}, {InterestRate}, {_LastPaid}, {BillingInterval}, {Installment})";
-
-                cnn.Execute(update_record);
-                int id = (int)cnn.LastInsertRowId;
-                cnn.Close();
-
-                return LoadLoan(id);
-
-            }
+            int id = SqliteDataAccess.ExecCmd(cmd);
+            return LoadLoan(id);
         }
 
     }
