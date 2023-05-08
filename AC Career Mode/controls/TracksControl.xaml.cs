@@ -51,12 +51,20 @@ namespace AC_Career_Mode.controls
                 img_TrackOutline.Source = Utils.RetriveImage(track.OutlinePath);
                 img_TrackPreview.Source = Utils.RetriveImage(track.PreviewPath);
                 b_BuySell.IsEnabled = true;
+
+                if (track.OwnerId != 0)
+                {
+                    b_Upgrade.Content = $"Upgrade: ${track.GetUpgradeCost()}";
+                    b_Upgrade.IsEnabled = true; 
+                }
             }
             else
             {
                 img_TrackOutline.Source = null;
                 img_TrackPreview.Source = null;
                 b_BuySell.IsEnabled = false;
+                b_Upgrade.Content = $"Upgrade";
+                b_Upgrade.IsEnabled = false;
             }
         }
 
@@ -70,9 +78,21 @@ namespace AC_Career_Mode.controls
             }
         }
 
+        public event RoutedEventHandler Upgrade_Click;
+        private void b_Upgrade_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_Tracks.SelectedItem != null)
+            {
+                Track track = (Track)lv_Tracks.SelectedItem;
+                this.Upgrade_Click(track, e);
+            }
+        }
+
         void lv_TracksHeader_Click(object sender, RoutedEventArgs e)
         {
             Utils.HeaderClickedHandler(sender, e, lv_Tracks);
         }
+
+
     }
 }

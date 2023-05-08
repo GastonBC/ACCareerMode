@@ -48,6 +48,22 @@ namespace AC_Career_Mode
             InsertLog(r, player);
         }
 
+        internal static void RecordUpgradeTrack(Player player, Track track, int cost)
+        {
+            string msg = $"{player.Name} upgraded {track.Name} to tier {track.Tier} for ${cost}";
+            Record r = new Record("UpgradeTrack", player.Id, msg);
+
+            InsertLog(r, player);
+        }
+
+        internal static void RecordSellTrack(Player player, Track track)
+        {
+            string msg = $"{player.Name} sold {track.Name} for ${track.Price}";
+            Record r = new Record("SellTrack", player.Id, msg);
+
+            InsertLog(r, player);
+        }
+
         internal static void RecordBuyTrack(Player player, Track track)
         {
             string msg = $"{player.Name} bought {track.Name} for ${track.Price}";

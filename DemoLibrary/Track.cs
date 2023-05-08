@@ -122,27 +122,31 @@ namespace DBLink
                 {
                     case 2:
                         Price = Utils.RoundX(Price * 1.15, 10000);
-                        Revenue = Utils.RoundX(Revenue * 1.20, 1000); 
+                        Revenue = Utils.RoundX(Revenue * 1.30, 1000); 
                         break;
 
                     case 3:
-                        Price = Utils.RoundX(Price * 1.18, 10000);
-                        Revenue = Utils.RoundX(Revenue * 1.25, 1000);
+                        Price = Utils.RoundX(Price * 1.20, 10000);
+                        Revenue = Utils.RoundX(Revenue * 1.50, 1000);
                         break;
 
                     case 4:
                         Price = Utils.RoundX(Price * 1.25, 10000);
-                        Revenue = Utils.RoundX(Revenue * 1.30, 1000);
+                        Revenue = Utils.RoundX(Revenue * 2.00, 1000);
                         break;
 
                     case 5:
                         Price = Utils.RoundX(Price * 1.30, 10000);
-                        Revenue = Utils.RoundX(Revenue * 1.40, 1000);
+                        Revenue = Utils.RoundX(Revenue * 2.50, 1000);
                         break;
                 }
 
                 player.UpdateInDB();
                 UpdateInDB();
+            }
+            else
+            {
+                Utils.Alert("Warning!", $"Not enough money, needed {GetUpgradeCost()}");
             }
 
 
@@ -160,7 +164,7 @@ namespace DBLink
                     TierCost = Price * 0.55;
                     break;
                 case 3:
-                    TierCost = Price * 1.20;
+                    TierCost = Price * 0.80;
                     break;
                 case 4:
                     TierCost = Price * 1.50;
@@ -173,6 +177,12 @@ namespace DBLink
         public void UpdateInDB()
         {
             string cmd = $"UPDATE tracks SET _LastPaid={_LastPaid}, Revenue={Revenue}, Tier={Tier}, Price={Price} WHERE Id={Id}";
+            SqliteDataAccess.ExecCmd(cmd);
+        }
+
+        public void DeleteInDB()
+        {
+            string cmd = $"DELETE FROM tracks WHERE Id={Id}";
             SqliteDataAccess.ExecCmd(cmd);
         }
 

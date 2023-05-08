@@ -137,9 +137,6 @@ namespace AC_Career_Mode
         }
         #endregion
 
-        #region RACES
-
-
         private void GetAvailableCarsAndTracks()
         {
             TracksSource.Clear();
@@ -172,7 +169,6 @@ namespace AC_Career_Mode
             CarsSource = Utils.ReadWriteBin(GlobalVars.CarsBin, CarsSource);
         }
 
-        #endregion
 
     }
 

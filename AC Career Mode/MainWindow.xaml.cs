@@ -42,14 +42,18 @@ namespace AC_Career_Mode
 
             InitializeComponent();
             uc_RaceTab.GoRacing_Click += new RoutedEventHandler(uc_RaceTab_GoRacing_Click);
+
             uc_AvailableLoans.Loan_DoubleClick += new RoutedEventHandler(uc_AvailableLoans_DoubleClick);
             uc_PlayerLoans.Loan_DoubleClick += new RoutedEventHandler(uc_PlayerLoans_DoubleClick);
+
             uc_MarketCars.BuySell_Click += new RoutedEventHandler(b_BuyCar_Click);
+            uc_MarketTracks.BuySell_Click += new RoutedEventHandler(b_BuyTrack_Click);
 
             uc_PlayerCars.BuySell_Click += new RoutedEventHandler(b_SellCar_Click);
             uc_PlayerCars.ListItem_DoubleClick += new RoutedEventHandler(OwnedCars_DoubleClick);
 
-            uc_MarketTracks.BuySell_Click += new RoutedEventHandler(b_BuyTrack_Click);
+            uc_PlayerTracks.Upgrade_Click += new RoutedEventHandler(b_Upgrade_Click);
+            uc_PlayerTracks.BuySell_Click += new RoutedEventHandler(SellTrack);
 
             GetAvailableCarsAndTracks();
             UpdateAndRefreshPlayer(CurrentUser);
@@ -59,7 +63,31 @@ namespace AC_Career_Mode
             PopulateLoans(false);
         }
 
+        void b_Upgrade_Click(object sender, RoutedEventArgs e)
+        {
+            Track track = (Track)sender;
+            if (track.Tier < 5)
+            {
+                Record.RecordUpgradeTrack(CurrentUser, track, track.GetUpgradeCost());
+                track.Upgrade(CurrentUser);
 
+                UpdateAndRefreshPlayer(CurrentUser);
+            }
+            else
+            {
+                Utils.Alert("", "Track fully upgraded");
+            }
+        }
+
+        void SellTrack(object sender, RoutedEventArgs e)
+        {
+            Track track = (Track)sender;
+            CurrentUser.Money += track.Price;
+
+            Record.RecordSellTrack(CurrentUser, track);
+            track.DeleteInDB();
+            UpdateAndRefreshPlayer(CurrentUser);
+        }
 
         void OwnedCars_DoubleClick(object sender, RoutedEventArgs e)
         {
@@ -182,10 +210,6 @@ namespace AC_Career_Mode
             if (CurrentUser.Money >= track.Price)
             {
                 CurrentUser.Money -= track.Price;
-
-                // Car comes from DailyCar list (bin object)
-                // Remove the car from DailyCar, serialize the list
-                // Insert to database
 
                 int idx = MarketTracks.IndexOf(track);
                 MarketTracks.RemoveAt(idx);

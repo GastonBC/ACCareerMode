@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <ListView x:Name="lv_CarMarket" SelectionMode="Single"  d:ItemsSource="{d:SampleData ItemCount=5}"  SelectionChanged="MarketLv_SelChanged" Grid.RowSpan="2" 
                    ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=CarList}" MouseDoubleClick="lv_CarMarket_DoubleClick"  >
@@ -42,7 +42,7 @@
         </ListView>
 
         <Image x:Name="img_Car" VerticalAlignment="Top" Height="217" Margin="5,0,5,0" Grid.Column="1" />
-        <Button x:Name="b_BuySell" d:Content="Buy" IsEnabled="False" Click="b_BuySell_Click" Margin="10,0,10,0" Height="30" VerticalAlignment="Bottom" Grid.RowSpan="2" Grid.Column="1"/>
+        <Button x:Name="b_BuySell" d:Content="Buy" IsEnabled="False" Click="b_BuySell_Click" Margin="5,0,0,0" Height="30" VerticalAlignment="Bottom" Grid.RowSpan="2" Grid.Column="1"/>
 
     </Grid>
 </UserControl>
