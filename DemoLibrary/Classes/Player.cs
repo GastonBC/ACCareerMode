@@ -3,7 +3,7 @@ using System.Data.SQLite;
 using System.Windows;
 using Utilities;
 
-namespace DBLink
+namespace DBLink.Classes
 {
     public class Player
     {
@@ -91,14 +91,14 @@ namespace DBLink
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
                 cnn.Open();
-                string update_record = ($"UPDATE players SET " +
+                string update_record = $"UPDATE players SET " +
                     $"Money='{Money}', " +
                     $"Races='{Races}', " +
                     $"RaceWins='{RaceWins}', " +
                     $"RacePodiums='{RacePodiums}', " +
                     $"KmsDriven='{KmsDriven}', " +
                     $"EquippedCarId='{EquippedCarId}' " +
-                    $"WHERE Id='{Id}'");
+                    $"WHERE Id='{Id}'";
 
                 SQLiteCommand command = new(update_record, cnn);
                 command.ExecuteNonQuery();

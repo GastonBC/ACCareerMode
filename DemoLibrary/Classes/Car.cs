@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DBLink.Services;
 using Newtonsoft.Json;
 using ProtoBuf;
 using System.Data.SQLite;
@@ -7,7 +8,7 @@ using Utilities;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-namespace DBLink
+namespace DBLink.Classes
 {
     [ProtoContract]
     public class Car
@@ -56,7 +57,7 @@ namespace DBLink
             // Try to get it's top speed for race time calculations
             // Most cars dont have it or it's badly formatted
 
-            if (!Int32.TryParse(new string(car.Specs["topspeed"].Where(char.IsDigit).ToArray()), out int top_speed))
+            if (!int.TryParse(new string(car.Specs["topspeed"].Where(char.IsDigit).ToArray()), out int top_speed))
             {
                 top_speed = 200;
             }
@@ -65,7 +66,7 @@ namespace DBLink
             ManualCarData manual_values = ManualCarData.LoadCarValues().Find(c => c.Name == car.Name);
 
 
-            
+
             if (manual_values == null)
             {
 #if !RELEASE

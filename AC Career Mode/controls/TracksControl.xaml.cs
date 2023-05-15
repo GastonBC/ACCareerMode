@@ -1,4 +1,4 @@
-﻿using DBLink;
+﻿using DBLink.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace AC_Career_Mode.controls
             set { SetValue(TrackListProperty, value); }
         }
 
-        public static readonly DependencyProperty TrackListProperty = DependencyProperty.Register("TrackListProperty", typeof(List<Track>),
+        public static readonly DependencyProperty TrackListProperty = DependencyProperty.Register("TrackList", typeof(List<Track>),
                                                                                                             typeof(TracksControl),
                                                                                                             new PropertyMetadata(null, new PropertyChangedCallback(OnTrackListChanged)));
 

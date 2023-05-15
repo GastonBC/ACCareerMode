@@ -1,4 +1,4 @@
-﻿using DBLink;
+﻿using DBLink.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,7 +36,7 @@ namespace AC_Career_Mode.controls
             set { SetValue(RaceListProperty, value); }
         }
 
-        public static readonly DependencyProperty RaceListProperty = DependencyProperty.Register("RaceListProperty", typeof(List<Race>),
+        public static readonly DependencyProperty RaceListProperty = DependencyProperty.Register("RaceList", typeof(List<Race>),
                                                                                                             typeof(RaceLvControl),
                                                                                                             new PropertyMetadata(null, new PropertyChangedCallback(OnRaceListChanged)));
 
@@ -58,7 +58,7 @@ namespace AC_Career_Mode.controls
             set { SetValue(CurrentUserProperty, value); }
         }
 
-        public static readonly DependencyProperty CurrentUserProperty = DependencyProperty.Register("CurrentUserProperty", typeof(Player),
+        public static readonly DependencyProperty CurrentUserProperty = DependencyProperty.Register("CurrentUser", typeof(Player),
                                                                                                             typeof(RaceLvControl),
                                                                                                             new PropertyMetadata(null));
 

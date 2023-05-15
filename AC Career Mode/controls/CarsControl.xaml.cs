@@ -1,4 +1,4 @@
-﻿using DBLink;
+﻿using DBLink.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +34,7 @@ namespace AC_Career_Mode.controls
             set { SetValue(CarListProperty, value); }
         }
 
-        public static readonly DependencyProperty CarListProperty = DependencyProperty.Register("CarListProperty", typeof(List<Car>),
+        public static readonly DependencyProperty CarListProperty = DependencyProperty.Register("CarList", typeof(List<Car>),
                                                                                                             typeof(CarsControl),
                                                                                                             new PropertyMetadata(null, new PropertyChangedCallback(OnCarListChanged)));
 

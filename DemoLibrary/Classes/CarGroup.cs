@@ -1,5 +1,5 @@
-﻿namespace DBLink
-{ 
+﻿namespace DBLink.Classes
+{
     public enum CarGroup
     {
         GT,

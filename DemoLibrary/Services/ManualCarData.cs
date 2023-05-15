@@ -1,6 +1,6 @@
-﻿
+﻿using DBLink.Classes;
 
-namespace DBLink
+namespace DBLink.Services
 {
     // Loads manual values for cars like price and type
     internal class ManualCarData
@@ -149,9 +149,9 @@ namespace DBLink
                 new ManualCarData("Formula Americas 2020 Oval", CarGroup.Oval, 10000),
                 new ManualCarData("Hyperion 2020", CarGroup.Oval, 10000),
 
-                
-                
-                
+
+
+
             };
 
             return output;

@@ -5,7 +5,7 @@ using System.Data.SQLite;
 using System.Numerics;
 using Utilities;
 
-namespace DBLink
+namespace DBLink.Classes
 {
     [ProtoContract]
     public class Track
@@ -81,7 +81,7 @@ namespace DBLink
 
             double length_m;
 
-            if (!Double.TryParse(lengthM, out length_m))
+            if (!double.TryParse(lengthM, out length_m))
             {
                 length_m = 1;
             }
@@ -122,7 +122,7 @@ namespace DBLink
                 {
                     case 2:
                         Price = Utils.RoundX(Price * 1.15, 10000);
-                        Revenue = Utils.RoundX(Revenue * 1.30, 1000); 
+                        Revenue = Utils.RoundX(Revenue * 1.30, 1000);
                         break;
 
                     case 3:

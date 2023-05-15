@@ -1,5 +1,4 @@
-﻿using DBLink;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,6 +13,7 @@ using System.Windows.Media;
 using System.Numerics;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
+using DBLink.Classes;
 
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
@@ -110,6 +110,8 @@ namespace AC_Career_Mode
             profile.PayRevenue();
             profile.UpdateInDB();
 
+            OwnedCars_lv.Cars = new ObservableCollection<Car>(profile.GetPlayerCars());
+            OwnedCars_lv.Player = profile;
 
             // Update UI
             profile = Player.LoadPlayer(profile.Id);

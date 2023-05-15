@@ -1,5 +1,5 @@
 ﻿using AC_Career_Mode.controls;
-using DBLink;
+using DBLink.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -61,6 +61,8 @@ namespace AC_Career_Mode
             PopulateCarMarket(false);
             PopulateTrackMarket(false);
             PopulateLoans(false);
+
+            
         }
 
         void b_Upgrade_Click(object sender, RoutedEventArgs e)

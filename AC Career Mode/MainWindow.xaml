@@ -55,6 +55,7 @@
 
             <TabItem Header="Team">
                 <Grid>
+                    <uControl:OwnedCarsLV x:Name="OwnedCars_lv"/>
 
                 </Grid>
             </TabItem>

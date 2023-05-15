@@ -1,4 +1,4 @@
-﻿using DBLink;
+﻿using DBLink.Classes;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -21,7 +21,7 @@ namespace AC_Career_Mode.controls
             set { SetValue(LoansLstProperty, value); }
         }
 
-        public static readonly DependencyProperty LoansLstProperty = DependencyProperty.Register("LoansLstProperty", typeof(List<Loan>),
+        public static readonly DependencyProperty LoansLstProperty = DependencyProperty.Register("LoansLst", typeof(List<Loan>),
                                                                                                             typeof(LoanLvControl),
                                                                                                             new PropertyMetadata(null, new PropertyChangedCallback(OnLoansLstChanged)));
 

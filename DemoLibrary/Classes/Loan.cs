@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Utilities;
 
-namespace DBLink
+namespace DBLink.Classes
 {
     // Loans are generated each day randomly and stored to db only once the player selected it
 
@@ -53,10 +53,10 @@ namespace DBLink
             int today_seed = Utils.TodaysSeed() + seed;
             Random rd = new Random(today_seed);
 
-            Id = 0; 
+            Id = 0;
             OwnerId = 0;
             AmountLeft = Utils.RoundX(rd.Next(10000, 3000000), 1000);
-            InterestRate = Utils.RoundX(Utils.GetRandomNumber(5, 45, today_seed),5);
+            InterestRate = Utils.RoundX(Utils.GetRandomNumber(5, 45, today_seed), 5);
             LastPaid = DateTime.Today;
             BillingInterval = 5;
             Installment = Utils.RoundX(AmountLeft * 0.05, 1);
@@ -93,12 +93,12 @@ namespace DBLink
                 player.UpdateInDB();
 
                 // Loan fully paid. Delete from DB
-                if(AmountLeft <= 0)
+                if (AmountLeft <= 0)
                 {
                     DeleteInDB();
                     return;
                 }
-                
+
                 // Loan is almost paid in full
                 else if (AmountLeft < Installment)
                 {
@@ -116,17 +116,17 @@ namespace DBLink
         /// </summary>
         public void UpdateInDB()
         {
-            string cmd = ($"UPDATE loans SET " +
+            string cmd = $"UPDATE loans SET " +
                 $"AmountLeft={AmountLeft}, " +
                 $"_LastPaid={_LastPaid} " +
-                $"WHERE Id={Id}");
+                $"WHERE Id={Id}";
 
             SqliteDataAccess.ExecCmd(cmd);
         }
 
         public void DeleteInDB()
         {
-            string cmd = ($"DELETE FROM loans WHERE Id={Id}");
+            string cmd = $"DELETE FROM loans WHERE Id={Id}";
             SqliteDataAccess.ExecCmd(cmd);
         }
 
@@ -136,7 +136,7 @@ namespace DBLink
 
         public void ExecuteLoan(Player player)
         {
-            if (this.Id != 0)
+            if (Id != 0)
             {
                 throw new InvalidOperationException("New loan alredy has an id");
             }

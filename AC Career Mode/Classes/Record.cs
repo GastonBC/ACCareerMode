@@ -1,4 +1,4 @@
-﻿using DBLink;
+﻿using DBLink.Classes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

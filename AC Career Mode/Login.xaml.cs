@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-using DBLink;
+using DBLink.Classes;
 
 namespace AC_Career_Mode
 {
