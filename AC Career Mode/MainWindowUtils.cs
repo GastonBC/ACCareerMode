@@ -112,6 +112,7 @@ namespace AC_Career_Mode
 
             OwnedCars_lv.Cars = new ObservableCollection<Car>(profile.GetPlayerCars());
             OwnedCars_lv.Player = profile;
+            OwnedCars_lv.Drivers = new ObservableCollection<string>(new string[] { "None", "Mike" });
 
             // Update UI
             profile = Player.LoadPlayer(profile.Id);

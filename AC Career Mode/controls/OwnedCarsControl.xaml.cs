@@ -37,6 +37,7 @@ namespace AC_Career_Mode.controls
         public OwnedCarsControl()
         {
             InitializeComponent();
+
         }
     }
 }

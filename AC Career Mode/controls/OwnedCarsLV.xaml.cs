@@ -53,16 +53,21 @@ namespace AC_Career_Mode.controls
                                                                                                             typeof(OwnedCarsLV),
                                                                                                             new PropertyMetadata());
 
-        public ObservableCollection<string> Drivers { get; set; }
+
+        public ObservableCollection<string> Drivers
+        {
+            get { return (ObservableCollection<string>)GetValue(DriversProperty); }
+            set { SetValue(DriversProperty, value); }
+        }
+
+        public static readonly DependencyProperty DriversProperty = DependencyProperty.Register("Drivers", typeof(ObservableCollection<string>),
+                                                                                                            typeof(OwnedCarsLV),
+                                                                                                            new PropertyMetadata());
 
         public OwnedCarsLV()
         {
             InitializeComponent();
-
-
-
-            Drivers = new ObservableCollection<string>(new string[] { "Mike" });
-            //DriverNames.Concat(AIDrivers.Select(x => x.Name));
+            
         }
     }
 }

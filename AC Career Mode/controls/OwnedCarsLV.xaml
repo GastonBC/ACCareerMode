@@ -11,7 +11,7 @@
                  d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch">
             <ListBox.Resources>
                 <DataTemplate x:Key="CarTemplate" >
-                    <local:OwnedCarsControl Drivers="{Binding ElementName=uc_OwnedCarsLV, Path=DataContext.Drivers}" CarName="{Binding Name}" />
+                    <local:OwnedCarsControl Drivers="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Drivers}" CarName="{Binding Name}" />
                 </DataTemplate>
             </ListBox.Resources>
             <ListBox.ItemTemplate>
