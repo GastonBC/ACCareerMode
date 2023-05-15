@@ -5,15 +5,13 @@ using Utilities;
 
 namespace DBLink.Classes
 {
-    public class Player
+    public class Player : Driver
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public int Money { get; set; }
         public int Races { get; set; }
         public int RaceWins { get; set; }
         public int RacePodiums { get; set; }
-        public int KmsDriven { get; set; }
         public int EquippedCarId { get; set; }
 
 

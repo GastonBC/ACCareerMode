@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DBLink.Classes
 {
-    public class AIDriver : Driver
+    public class Driver
     {
-        public int CarId { get; set; }
-
+        public string Name { get; set; }
+        public int XP { get; set; }
+        public int KmsDriven { get; set; }
     }
 }
