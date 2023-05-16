@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using Utilities;
 
 namespace DBLink.Classes
@@ -14,21 +16,34 @@ namespace DBLink.Classes
         public int RacePodiums { get; set; }
         public int EquippedCarId { get; set; }
 
+        public Player() { }
 
+        public Player(string name)
+        {
+            Name = name;
+            Money = 50000;
+            IsAI = false;
+
+            this.InsertInDB();
+        }
 
         // Load player from DB given an Id
         public static Player LoadPlayer(int Id)
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
-                Player output = cnn.QuerySingleOrDefault<Player>($"select * from players where Id={Id}", new DynamicParameters());
+                Player output = cnn.QuerySingleOrDefault<Player>($"SELECT * FROM drivers WHERE Id={Id}", new DynamicParameters());
                 return output;
             }
         }
 
         public static List<Player> LoadAllPlayers()
         {
-            return SqliteDataAccess.QueryByOwnerId<Player>("players");
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                List<Player> output = cnn.Query<Player>($"SELECT * FROM drivers WHERE _IsAI=0").ToList();
+                return output;
+            }
         }
 
         public void PayDueLoans()
@@ -70,14 +85,15 @@ namespace DBLink.Classes
             }
         }
 
-        public static Player InsertInDB(Player pName)
+        public Player InsertInDB()
         {
-            int money = 100000000;
-#if !DEBUG
-            money = 50000;
-#endif
+            // Id must be 0 to guarantee it's a new car in the db
+            if (Id != 0)
+            {
+                throw new InvalidOperationException("Player Id is not 0");
+            }
 
-            string cmd = $"INSERT INTO players (Name, Money) VALUES ('{pName.Name}', {money})";
+            string cmd = $"INSERT INTO drivers (Name, Money, _IsAI) VALUES ('{Name}', {Money}, {_IsAI})";
             int id = SqliteDataAccess.ExecCmd(cmd);
 
             return LoadPlayer(id);
@@ -89,7 +105,7 @@ namespace DBLink.Classes
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
                 cnn.Open();
-                string update_record = $"UPDATE players SET " +
+                string update_record = $"UPDATE drivers SET " +
                     $"Money='{Money}', " +
                     $"Races='{Races}', " +
                     $"RaceWins='{RaceWins}', " +

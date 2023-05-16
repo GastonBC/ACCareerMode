@@ -26,15 +26,11 @@ namespace AC_Career_Mode
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Player p = new();
-            p.Name = tb_Name.Text;
-
-            p = Player.InsertInDB(p);
+            Player p = new(tb_Name.Text);
 
             Record.RecordRegister(p);
 
             tb_Name.Text = "";
-
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
