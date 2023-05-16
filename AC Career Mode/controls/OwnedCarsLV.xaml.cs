@@ -33,15 +33,6 @@ namespace AC_Career_Mode.controls
         public static readonly DependencyProperty CarsProperty = DependencyProperty.Register("Cars", typeof(ObservableCollection<Car>),
                                                                                                             typeof(OwnedCarsLV),
                                                                                                             new PropertyMetadata());
-        public ObservableCollection<AIDriver> AIDrivers
-        {
-            get { return (ObservableCollection<AIDriver>)GetValue(AIDriversProperty); }
-            set { SetValue(AIDriversProperty, value); }
-        }
-
-        public static readonly DependencyProperty AIDriversProperty = DependencyProperty.Register("AIDrivers", typeof(ObservableCollection<AIDriver>),
-                                                                                                            typeof(OwnedCarsLV),
-                                                                                                            new PropertyMetadata());
 
         public Player Player
         {
@@ -54,13 +45,13 @@ namespace AC_Career_Mode.controls
                                                                                                             new PropertyMetadata());
 
 
-        public ObservableCollection<string> Drivers
+        public ObservableCollection<Driver?> Drivers
         {
-            get { return (ObservableCollection<string>)GetValue(DriversProperty); }
+            get { return (ObservableCollection<Driver?>)GetValue(DriversProperty); }
             set { SetValue(DriversProperty, value); }
         }
 
-        public static readonly DependencyProperty DriversProperty = DependencyProperty.Register("Drivers", typeof(ObservableCollection<string>),
+        public static readonly DependencyProperty DriversProperty = DependencyProperty.Register("Drivers", typeof(ObservableCollection<Driver?>),
                                                                                                             typeof(OwnedCarsLV),
                                                                                                             new PropertyMetadata());
 

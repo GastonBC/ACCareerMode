@@ -12,7 +12,9 @@
         </Grid.ColumnDefinitions>
         <Label x:Name="lb_Car" Content="{Binding CarName}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="592" />
         <ComboBox x:Name="cb_Driver" Margin="0,3,3,3" HorizontalAlignment="Right" Width="200"
-                  ItemsSource="{Binding Drivers}" />
+                  ItemsSource="{Binding Drivers}"
+                  SelectedValue="{Binding SelectedDriver}"
+                  DisplayMemberPath="Name" />
         <Button Content="Sell" Margin="0,3,273,3" HorizontalAlignment="Right" Width="60"/>
         <Button Content="Button"  Margin="0,3,208,3" HorizontalAlignment="Right" Width="60"/>
 

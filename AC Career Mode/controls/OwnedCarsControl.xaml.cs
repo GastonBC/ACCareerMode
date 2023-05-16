@@ -15,15 +15,24 @@ namespace AC_Career_Mode.controls
     /// </summary>
     public partial class OwnedCarsControl : UserControl
     {
-        public ObservableCollection<string> Drivers
+        public ObservableCollection<Driver?> Drivers
         {
-            get { return (ObservableCollection<string>)GetValue(DriversProperty); }
+            get { return (ObservableCollection<Driver?>)GetValue(DriversProperty); }
             set { SetValue(DriversProperty, value); }
         }
 
-        public static readonly DependencyProperty DriversProperty = DependencyProperty.Register("Drivers", typeof(ObservableCollection<string>),
+        public static readonly DependencyProperty DriversProperty = DependencyProperty.Register("Drivers", typeof(ObservableCollection<Driver?>),
                                                                                                             typeof(OwnedCarsControl),
                                                                                                             new PropertyMetadata());
+
+        public Driver? SelectedDriver
+        {
+            get { return (Driver?)GetValue(SelectedDriverProperty); }
+            set { SetValue(SelectedDriverProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedDriverProperty = DependencyProperty.Register(
+            "SelectedDriver", typeof(Driver), typeof(OwnedCarsControl), new PropertyMetadata(null));
 
         public string CarName
         {

@@ -78,6 +78,7 @@
             <TabItem Header="History">
                 <uControl:HistoryTab x:Name="uc_Records"  />
             </TabItem>
+
         </TabControl>
 
 
