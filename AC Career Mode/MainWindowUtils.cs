@@ -125,7 +125,7 @@ namespace AC_Career_Mode
 
 
             // Update UI
-            profile = Player.LoadPlayer(profile.Id);
+            profile = Player.LoadDriver(profile.Id) as Player;
             toplabel_User.Content = profile.Name;
             toplabel_Money.Content = profile.Money.ToString("##,#");
             toplabel_Wins.Content = $"🏆 {profile.RaceWins}";

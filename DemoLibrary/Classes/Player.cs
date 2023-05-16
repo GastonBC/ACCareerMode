@@ -9,32 +9,30 @@ namespace DBLink.Classes
 {
     public class Player : Driver
     {
-        public int Id { get; set; }
+        
         public int Money { get; set; }
-        public int Races { get; set; }
-        public int RaceWins { get; set; }
-        public int RacePodiums { get; set; }
-        public int EquippedCarId { get; set; }
+
 
         public Player() { }
 
         public Player(string name)
         {
             Name = name;
+            Money = 50000000;
+#if RELEASE
             Money = 50000;
+#endif
             IsAI = false;
 
             this.InsertInDB();
         }
 
-        // Load player from DB given an Id
-        public static Player LoadPlayer(int Id)
+        public Player InsertInDB()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                Player output = cnn.QuerySingleOrDefault<Player>($"SELECT * FROM drivers WHERE Id={Id}", new DynamicParameters());
-                return output;
-            }
+            string cmd = $"INSERT INTO drivers (Name, Money, _IsAI) VALUES ('{Name}', {Money}, {_IsAI})";
+            int id = SqliteDataAccess.ExecCmd(cmd);
+
+            return LoadDriver(id) as Player;
         }
 
         public static List<Player> LoadAllPlayers()
@@ -85,34 +83,16 @@ namespace DBLink.Classes
             }
         }
 
-        public Player InsertInDB()
-        {
-            // Id must be 0 to guarantee it's a new car in the db
-            if (Id != 0)
-            {
-                throw new InvalidOperationException("Player Id is not 0");
-            }
 
-            string cmd = $"INSERT INTO drivers (Name, Money, _IsAI) VALUES ('{Name}', {Money}, {_IsAI})";
-            int id = SqliteDataAccess.ExecCmd(cmd);
-
-            return LoadPlayer(id);
-
-        }
 
         public void UpdateInDB()
         {
+            base.UpdateInDB();
+
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
                 cnn.Open();
-                string update_record = $"UPDATE drivers SET " +
-                    $"Money='{Money}', " +
-                    $"Races='{Races}', " +
-                    $"RaceWins='{RaceWins}', " +
-                    $"RacePodiums='{RacePodiums}', " +
-                    $"KmsDriven='{KmsDriven}', " +
-                    $"EquippedCarId='{EquippedCarId}' " +
-                    $"WHERE Id='{Id}'";
+                string update_record = $"UPDATE drivers SET Money='{Money}' WHERE Id='{Id}'";
 
                 SQLiteCommand command = new(update_record, cnn);
                 command.ExecuteNonQuery();
