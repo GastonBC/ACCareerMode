@@ -24,7 +24,14 @@ namespace DBLink.Classes
 #endif
             IsAI = false;
 
-            this.InsertInDB();
+            Id = this.InsertInDB().Id;
+        }
+
+
+        // Load player from DB given an Id
+        public static Player LoadFromDB(int id)
+        {
+            return SqliteDataAccess.QuerySingleById<Player>(id, "drivers"); ;
         }
 
         public Player InsertInDB()
@@ -32,7 +39,7 @@ namespace DBLink.Classes
             string cmd = $"INSERT INTO drivers (Name, Money, _IsAI) VALUES ('{Name}', {Money}, {_IsAI})";
             int id = SqliteDataAccess.ExecCmd(cmd);
 
-            return LoadDriver(id) as Player;
+            return LoadFromDB(id) as Player;
         }
 
         public static List<Player> LoadAllPlayers()
@@ -89,31 +96,25 @@ namespace DBLink.Classes
         {
             base.UpdateInDB();
 
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                cnn.Open();
-                string update_record = $"UPDATE drivers SET Money='{Money}' WHERE Id='{Id}'";
+            string update_record = $"UPDATE drivers SET Money='{Money}' WHERE Id='{Id}'";
 
-                SQLiteCommand command = new(update_record, cnn);
-                command.ExecuteNonQuery();
-                cnn.Close();
-            }
+            SqliteDataAccess.ExecCmd(update_record);
             return;
         }
 
         public List<Car> GetPlayerCars()
         {
-            return SqliteDataAccess.QueryByOwnerId<Car>("garage", Id);
+            return SqliteDataAccess.QueryMultipleByOwnerId<Car>("garage", Id);
         }
 
         public List<Loan> GetPlayerLoans()
         {
-            return SqliteDataAccess.QueryByOwnerId<Loan>("loans", Id);
+            return SqliteDataAccess.QueryMultipleByOwnerId<Loan>("loans", Id);
         }
 
         public List<Track> GetPlayerTracks()
         {
-            return SqliteDataAccess.QueryByOwnerId<Track>("tracks", Id);
+            return SqliteDataAccess.QueryMultipleByOwnerId<Track>("tracks", Id);
         }
 
 

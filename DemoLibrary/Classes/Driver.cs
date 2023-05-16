@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -28,35 +29,21 @@ namespace DBLink.Classes
         }
 
 
-        // Load player from DB given an Id
-        public static Driver LoadDriver(int Id)
-        {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                Player output = cnn.QuerySingleOrDefault<Player>($"SELECT * FROM drivers WHERE Id={Id}", new DynamicParameters());
-                return output;
-            }
-        }
+        
 
 
         protected void UpdateInDB()
         {
-            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-            {
-                cnn.Open();
-                string update_record = $"UPDATE drivers SET " +
-                    $"Races='{Races}', " +
-                    $"RaceWins='{RaceWins}', " +
-                    $"RacePodiums='{RacePodiums}', " +
-                    $"KmsDriven='{KmsDriven}', " +
-                    $"XP='{XP}', " +
-                    $"EquippedCarId='{EquippedCarId}' " +
-                    $"WHERE Id='{Id}'";
+            string update_record = $"UPDATE drivers SET " +
+                $"Races='{Races}', " +
+                $"RaceWins='{RaceWins}', " +
+                $"RacePodiums='{RacePodiums}', " +
+                $"KmsDriven='{KmsDriven}', " +
+                $"XP='{XP}', " +
+                $"EquippedCarId='{EquippedCarId}' " +
+                $"WHERE Id='{Id}'";
 
-                SQLiteCommand command = new(update_record, cnn);
-                command.ExecuteNonQuery();
-                cnn.Close();
-            }
+            SqliteDataAccess.ExecCmd(update_record);
             return;
         }
 

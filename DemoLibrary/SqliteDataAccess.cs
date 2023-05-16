@@ -6,6 +6,7 @@ using Dapper;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Xml.Linq;
+using DBLink.Classes;
 #pragma warning disable IDE0063 // Use simple 'using' statement
 
 namespace DBLink
@@ -17,7 +18,9 @@ namespace DBLink
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-
+        /// <summary>
+        /// Insert, update, delete operations only
+        /// </summary>
         public static int ExecCmd(string cmd)
         {
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
@@ -32,7 +35,24 @@ namespace DBLink
             }
         }
 
-        public static List<T> QueryByOwnerId<T>(string table, int OwnerId = 0)
+
+        // Load player from DB given an Id
+        public static T QuerySingleById<T>(int id, string table)
+        {
+            if (id == 0) throw new NullReferenceException($"No element in table {table} with id {id}");
+
+            using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
+            {
+                Trace.WriteLine(id);
+                T output = cnn.QuerySingleOrDefault<T>($"SELECT * FROM {table} WHERE Id={id}", new DynamicParameters());
+
+                if (output == null) throw new NullReferenceException($"No element in table {table} with id {id}");
+                
+                return output;
+            }
+        }
+
+        public static List<T> QueryMultipleByOwnerId<T>(string table, int OwnerId = 0)
         {
             // Select all in table
             string cmd = $"SELECT * FROM {table}";

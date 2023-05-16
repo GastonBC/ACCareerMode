@@ -64,18 +64,7 @@ namespace DBLink.Classes
 
         public Loan LoadLoan(int id)
         {
-            if (id != 0)
-            {
-                using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
-                {
-                    Loan output = cnn.QuerySingleOrDefault<Loan>($"SELECT * FROM loans WHERE Id={id}", new DynamicParameters());
-                    return output;
-                }
-            }
-            else
-            {
-                throw new Exception("No id provided");
-            }
+            return SqliteDataAccess.QuerySingleById<Loan>(id, "loans");
         }
 
 
