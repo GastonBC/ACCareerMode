@@ -8,7 +8,12 @@ namespace DBLink.Classes
 {
     public class AIDriver : Driver
     {
-        public int CarId { get; set; }
-
+        public AIDriver(string name) 
+        { 
+            Name = name;
+            KmsDriven = 0;
+            XP = 0;
+            IsAI = true;
+        }
     }
 }

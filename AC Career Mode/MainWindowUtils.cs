@@ -8,12 +8,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Utilities;
+using DBLink;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Numerics;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using DBLink.Classes;
+using DBLink.Services;
 
 #pragma warning disable CS8605 // Unboxing a possibly null value.
 
@@ -112,8 +114,15 @@ namespace AC_Career_Mode
 
             OwnedCars_lv.Cars = new ObservableCollection<Car>(profile.GetPlayerCars());
             OwnedCars_lv.Player = profile;
-            OwnedCars_lv.Drivers = new ObservableCollection<Driver?>(new Driver?[] { null, profile });
-            
+
+            List<Driver?> drivers = new List<Driver?>();
+            for (int i = 0; i < 10; i++)
+            {
+                drivers.Add(AIDriverData.GenAIDriver(i));
+            }
+
+            OwnedCars_lv.Drivers = new ObservableCollection<Driver?>(new Driver[] { null, profile }.Concat(drivers));
+
 
             // Update UI
             profile = Player.LoadPlayer(profile.Id);
