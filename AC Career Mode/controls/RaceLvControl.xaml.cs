@@ -122,10 +122,10 @@ namespace AC_Career_Mode.controls
             }
         }
 
-        void lv_RacesHeader_Click(object sender, RoutedEventArgs e)
-        {
-            Utils.HeaderClickedHandler(sender, e, lv_Races);
-        }
+        //void lv_RacesHeader_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Utils.HeaderClickedHandler(sender, e, lv_Races);
+        //}
 
     }
 }

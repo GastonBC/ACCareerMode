@@ -17,8 +17,23 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <ListView x:Name="lv_Races" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
-                  SelectionChanged="RaceLv_SelChanged" Grid.RowSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}"  >
+        <ListBox x:Name="lv_Races" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
+                  SelectionChanged="RaceLv_SelChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" Grid.RowSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}">
+            
+            <ListBox.Resources>
+                <DataTemplate x:Key="RaceTemplate" >
+                    <local:RaceItem  />
+                </DataTemplate>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <StaticResource ResourceKey="RaceTemplate" />
+            </ListBox.ItemTemplate>
+            
+            
+        </ListBox>
+
+        <!--<ListView x:Name="lv_Races" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
+                  SelectionChanged="RaceLv_SelChanged" Grid.RowSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}">
             <ListView.View>
                 <GridView>
 
@@ -60,7 +75,7 @@
 
                 </GridView>
             </ListView.View>
-        </ListView>
+        </ListView>-->
 
         <Image x:Name="img_track_bkg" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
         <Image x:Name="img_track_outline" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
