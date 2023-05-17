@@ -12,8 +12,8 @@
             <ColumnDefinition Width="120"/>
         </Grid.ColumnDefinitions>
         <Rectangle Stroke="Black" Fill="White" Grid.ColumnSpan="2"/>
-        <Label x:Name="lb_Car" d:Content="BMW E30 Touring Winter GT3" VerticalContentAlignment="Top" Margin="0,0,145,0" />
-        <Label x:Name="lb_Track" d:Content="Autodromo Victor Borrat Fabini" VerticalContentAlignment="Bottom" Margin="0,0,145,0" />
+        <Label x:Name="lb_Car" d:Content="BMW E30 Touring Winter GT3" VerticalContentAlignment="Top" FontSize="14"  />
+        <Label x:Name="lb_Track" d:Content="Autodromo Victor Borrat Fabini" VerticalContentAlignment="Bottom" FontSize="14"  />
 
         <Label x:Name="lb_Laps" d:Content="$50.000" VerticalContentAlignment="Top" HorizontalContentAlignment="Right" HorizontalAlignment="Right" />
         <Label x:Name="lb_Prize" d:Content="25 laps" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" HorizontalAlignment="Right" />

@@ -18,64 +18,22 @@
         </Grid.RowDefinitions>
 
         <ListBox x:Name="lv_Races" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
-                  SelectionChanged="RaceLv_SelChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" Grid.RowSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}">
-            
+                  SelectionChanged="RaceLv_SelChanged" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 HorizontalContentAlignment="Stretch" Grid.RowSpan="2" 
+                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}">
+
             <ListBox.Resources>
                 <DataTemplate x:Key="RaceTemplate" >
-                    <local:RaceItem  />
+                    <local:RaceItem race="{Binding}"  />
                 </DataTemplate>
             </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <StaticResource ResourceKey="RaceTemplate" />
             </ListBox.ItemTemplate>
-            
-            
+
+
         </ListBox>
-
-        <!--<ListView x:Name="lv_Races" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
-                  SelectionChanged="RaceLv_SelChanged" Grid.RowSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}">
-            <ListView.View>
-                <GridView>
-
-                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding Car.Name}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Car</GridViewColumnHeader>
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-
-                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Track.Name}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Track</GridViewColumnHeader>
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-
-                    <GridViewColumn Width="90" DisplayMemberBinding="{Binding Prize, StringFormat={}{0:##,#}}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Prize</GridViewColumnHeader>
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-
-                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Laps}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Laps</GridViewColumnHeader>
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-
-                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthKm, StringFormat=G4}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Race length (km)</GridViewColumnHeader>
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-
-                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding LengthMinutes, StringFormat=G4}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Click="lv_RacesHeader_Click">Race length (minutes)</GridViewColumnHeader>
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-
-                </GridView>
-            </ListView.View>
-        </ListView>-->
 
         <Image x:Name="img_track_bkg" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
         <Image x:Name="img_track_outline" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
