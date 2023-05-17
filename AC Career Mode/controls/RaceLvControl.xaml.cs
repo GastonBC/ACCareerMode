@@ -20,10 +20,6 @@ using Utilities;
 
 namespace AC_Career_Mode.controls
 {
-
-
-
-
     /// <summary>
     /// Interaction logic for RaceLvControl.xaml
     /// </summary>

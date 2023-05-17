@@ -16,12 +16,11 @@ using System.Windows.Shapes;
 namespace AC_Career_Mode.controls
 {
     /// <summary>
-    /// Interaction logic for OwnedTrackControl.xaml
+    /// Interaction logic for OwnedTrackItem.xaml
     /// </summary>
-    public partial class OwnedTrackControl : UserControl
+    public partial class OwnedTrackItem : UserControl
     {
-        public string name_display { get; set; }
-        public OwnedTrackControl()
+        public OwnedTrackItem()
         {
             InitializeComponent();
         }

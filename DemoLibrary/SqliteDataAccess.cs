@@ -43,7 +43,6 @@ namespace DBLink
 
             using (SQLiteConnection cnn = new(SqliteDataAccess.LoadConnectionString()))
             {
-                Trace.WriteLine(id);
                 T output = cnn.QuerySingleOrDefault<T>($"SELECT * FROM {table} WHERE Id={id}", new DynamicParameters());
 
                 if (output == null) throw new NullReferenceException($"No element in table {table} with id {id}");

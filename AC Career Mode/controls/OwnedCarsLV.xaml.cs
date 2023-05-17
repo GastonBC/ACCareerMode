@@ -34,16 +34,6 @@ namespace AC_Career_Mode.controls
                                                                                                             typeof(OwnedCarsLV),
                                                                                                             new PropertyMetadata());
 
-        public Player Player
-        {
-            get { return (Player)GetValue(PlayerProperty); }
-            set { SetValue(PlayerProperty, value); }
-        }
-
-        public static readonly DependencyProperty PlayerProperty = DependencyProperty.Register("Player", typeof(Player),
-                                                                                                            typeof(OwnedCarsLV),
-                                                                                                            new PropertyMetadata());
-
 
         public ObservableCollection<Driver?> Drivers
         {

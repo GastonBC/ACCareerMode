@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AC_Career_Mode.controls.OwnedCarsControl"
+﻿<UserControl x:Class="AC_Career_Mode.controls.OwnedTrackItem"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,13 +10,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="lb_Car" Content="{Binding CarName}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="592" />
-        <ComboBox x:Name="cb_Driver" Margin="0,3,3,3" HorizontalAlignment="Right" Width="200"
-                  ItemsSource="{Binding Drivers}"
-                  SelectedValue="{Binding SelectedDriver}"
-                  DisplayMemberPath="Name" />
-        <Button Content="Sell" Margin="0,3,273,3" HorizontalAlignment="Right" Width="60"/>
-        <Button Content="Button"  Margin="0,3,208,3" HorizontalAlignment="Right" Width="60"/>
+        <Label x:Name="lb_Track" Content="{Binding TrackName}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="592" />
+        <Button Content="Sell" Margin="0,3,75,3" HorizontalAlignment="Right" Width="60"/>
+        <Button Content="Upgrade" Margin="0,3,10,3" HorizontalAlignment="Right" Width="60"/>
 
     </Grid>
 </UserControl>

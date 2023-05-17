@@ -22,37 +22,46 @@ namespace AC_Career_Mode
 {
     public partial class MainWindow : Window
     {
-        
-        List<Track> TracksSource = new();
-        List<Car> CarsSource = new();
-        List<Race> RaceSource = new();
-        List<Loan> LoanSource = new();
 
-        List<Car> MarketCars = new();
-        List<Track> MarketTracks = new();
+        public List<Track> TracksSource { get; set; }
+        public List<Car> CarsSource { get; set; }
+        public List<Race> RaceSource { get; set; }
+        public List<Loan> LoanSource { get; set; }
 
-        Player CurrentUser;
+        public List<Car> MarketCars { get; set; }
+        public List<Track> MarketTracks { get; set; }
 
-        Random RandomDaily = new(Utils.TodaysSeed());
-        
+        public Player CurrentUser { get; set; }
+        public Random RandomDaily { get; set; }
+
 
         public MainWindow(Player profile)
         {
+            TracksSource = new List<Track>();
+            CarsSource = new List<Car>();
+            RaceSource = new List<Race>();
+            LoanSource = new List<Loan>();
+
+            MarketCars = new List<Car>();
+            MarketTracks = new List<Track>();
+
             CurrentUser = profile;
+            RandomDaily = new Random(Utils.TodaysSeed());
+
 
             InitializeComponent();
-            uc_RaceTab.GoRacing_Click += new RoutedEventHandler(uc_RaceTab_GoRacing_Click);
+            uc_RaceTab.GoRacing_Click += new RoutedEventHandler(GoRacing);
 
-            uc_AvailableLoans.Loan_DoubleClick += new RoutedEventHandler(uc_AvailableLoans_DoubleClick);
-            uc_PlayerLoans.Loan_DoubleClick += new RoutedEventHandler(uc_PlayerLoans_DoubleClick);
+            uc_AvailableLoans.Loan_DoubleClick += new RoutedEventHandler(TakeLoan);
+            uc_PlayerLoans.Loan_DoubleClick += new RoutedEventHandler(PayLoan);
 
-            uc_MarketCars.BuySell_Click += new RoutedEventHandler(b_BuyCar_Click);
-            uc_MarketTracks.BuySell_Click += new RoutedEventHandler(b_BuyTrack_Click);
+            uc_MarketCars.BuySell_Click += new RoutedEventHandler(BuyCar);
+            uc_MarketTracks.BuySell_Click += new RoutedEventHandler(BuyTrack);
 
-            uc_PlayerCars.BuySell_Click += new RoutedEventHandler(b_SellCar_Click);
-            uc_PlayerCars.ListItem_DoubleClick += new RoutedEventHandler(OwnedCars_DoubleClick);
+            uc_PlayerCars.BuySell_Click += new RoutedEventHandler(SellCar);
+            uc_PlayerCars.ListItem_DoubleClick += new RoutedEventHandler(PlayerEquipCar);
 
-            uc_PlayerTracks.Upgrade_Click += new RoutedEventHandler(b_Upgrade_Click);
+            uc_PlayerTracks.Upgrade_Click += new RoutedEventHandler(UpgradeTrack);
             uc_PlayerTracks.BuySell_Click += new RoutedEventHandler(SellTrack);
 
             GetAvailableCarsAndTracks();
@@ -65,7 +74,7 @@ namespace AC_Career_Mode
             
         }
 
-        void b_Upgrade_Click(object sender, RoutedEventArgs e)
+        void UpgradeTrack(object sender, RoutedEventArgs e)
         {
             Track track = (Track)sender;
             if (track.Tier < 5)
@@ -91,14 +100,14 @@ namespace AC_Career_Mode
             UpdateAndRefreshPlayer(CurrentUser);
         }
 
-        void OwnedCars_DoubleClick(object sender, RoutedEventArgs e)
+        void PlayerEquipCar(object sender, RoutedEventArgs e)
         {
             Car car = (Car)sender;
             CurrentUser.EquippedCarId = car.Id;
             UpdateAndRefreshPlayer(CurrentUser);
         }
 
-        void uc_RaceTab_GoRacing_Click(object sender, EventArgs e)
+        void GoRacing(object sender, EventArgs e)
         {
             Race race = sender as Race;
 
@@ -158,7 +167,7 @@ namespace AC_Career_Mode
 
         }
 
-        void uc_AvailableLoans_DoubleClick(object sender, EventArgs e)
+        void TakeLoan(object sender, EventArgs e)
         {
             Loan loan = (Loan)sender;
 
@@ -172,7 +181,7 @@ namespace AC_Career_Mode
             UpdateAndRefreshPlayer(CurrentUser);
         }
 
-        void uc_PlayerLoans_DoubleClick(object sender, EventArgs e)
+        void PayLoan(object sender, EventArgs e)
         {
                 Loan loan = (Loan)sender;
 
@@ -182,7 +191,7 @@ namespace AC_Career_Mode
                 UpdateAndRefreshPlayer(CurrentUser);
         }
 
-        void b_BuyCar_Click(object sender, RoutedEventArgs e)
+        void BuyCar(object sender, RoutedEventArgs e)
         {
             Car car = (Car)sender;
 
@@ -205,7 +214,7 @@ namespace AC_Career_Mode
 
         }
 
-        void b_BuyTrack_Click(object sender, RoutedEventArgs e)
+        void BuyTrack(object sender, RoutedEventArgs e)
         {
             Track track = (Track)sender;
 
@@ -226,7 +235,7 @@ namespace AC_Career_Mode
 
         }
 
-        void b_SellCar_Click(object sender, RoutedEventArgs e)
+        void SellCar(object sender, RoutedEventArgs e)
         {
             Car car = (Car)sender;
             CurrentUser.Money += car.Price;

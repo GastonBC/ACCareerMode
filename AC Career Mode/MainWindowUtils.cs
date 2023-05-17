@@ -113,7 +113,7 @@ namespace AC_Career_Mode
             profile.UpdateInDB();
 
             OwnedCars_lv.Cars = new ObservableCollection<Car>(profile.GetPlayerCars());
-            OwnedCars_lv.Player = profile;
+            
 
             List<Driver?> drivers = new List<Driver?>();
             for (int i = 0; i < 10; i++)

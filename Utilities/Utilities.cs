@@ -42,7 +42,7 @@ namespace Utilities
         /// <summary>
         /// Checks if a bin file exists for the current day. If it does, it returns elements
         /// from there. Else will create a bin file with the objects provided by the second parameter
-        /// and return that
+        /// and return that. Mostly used to save lists of objects like cars and tracks daily
         /// </summary>
         public static T ReadWriteBin<T>(string path, T objectToSave)
         {

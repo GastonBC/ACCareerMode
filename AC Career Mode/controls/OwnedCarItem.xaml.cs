@@ -13,7 +13,7 @@ namespace AC_Career_Mode.controls
     /// <summary>
     /// Interaction logic for OwnedCarsControl.xaml
     /// </summary>
-    public partial class OwnedCarsControl : UserControl
+    public partial class OwnedCarItem : UserControl
     {
         public ObservableCollection<Driver?> Drivers
         {
@@ -22,17 +22,8 @@ namespace AC_Career_Mode.controls
         }
 
         public static readonly DependencyProperty DriversProperty = DependencyProperty.Register("Drivers", typeof(ObservableCollection<Driver?>),
-                                                                                                            typeof(OwnedCarsControl),
+                                                                                                            typeof(OwnedCarItem),
                                                                                                             new PropertyMetadata());
-
-        public Driver? SelectedDriver
-        {
-            get { return (Driver?)GetValue(SelectedDriverProperty); }
-            set { SetValue(SelectedDriverProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedDriverProperty = DependencyProperty.Register(
-            "SelectedDriver", typeof(Driver), typeof(OwnedCarsControl), new PropertyMetadata(null));
 
         public string CarName
         {
@@ -40,10 +31,10 @@ namespace AC_Career_Mode.controls
             set { SetValue(CarNameProperty, value); }
         }
 
-        public static readonly DependencyProperty CarNameProperty = DependencyProperty.Register("CarName", typeof(string), typeof(OwnedCarsControl), new PropertyMetadata(""));
+        public static readonly DependencyProperty CarNameProperty = DependencyProperty.Register("CarName", typeof(string), typeof(OwnedCarItem), new PropertyMetadata(""));
 
 
-        public OwnedCarsControl()
+        public OwnedCarItem()
         {
             InitializeComponent();
 
