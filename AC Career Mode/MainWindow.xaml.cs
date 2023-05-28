@@ -50,16 +50,13 @@ namespace AC_Career_Mode
 
 
             InitializeComponent();
-            uc_RaceTab.GoRacing_Click += new RoutedEventHandler(GoRacing);
+
 
             uc_AvailableLoans.Loan_DoubleClick += new RoutedEventHandler(TakeLoan);
             uc_PlayerLoans.Loan_DoubleClick += new RoutedEventHandler(PayLoan);
 
             uc_MarketCars.BuySell_Click += new RoutedEventHandler(BuyCar);
             uc_MarketTracks.BuySell_Click += new RoutedEventHandler(BuyTrack);
-
-            uc_PlayerCars.BuySell_Click += new RoutedEventHandler(SellCar);
-            uc_PlayerCars.ListItem_DoubleClick += new RoutedEventHandler(PlayerEquipCar);
 
             uc_PlayerTracks.Upgrade_Click += new RoutedEventHandler(UpgradeTrack);
             uc_PlayerTracks.BuySell_Click += new RoutedEventHandler(SellTrack);

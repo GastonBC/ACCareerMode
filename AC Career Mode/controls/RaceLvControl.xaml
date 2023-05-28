@@ -9,7 +9,6 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -17,15 +16,19 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <ListBox x:Name="lv_Races" SelectionMode="Single" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" 
-                  SelectionChanged="RaceLv_SelChanged" 
+        <ListBox x:Name="lv_Races" 
+                 SelectionMode="Single" 
+                 Grid.Row="1" 
+                 Grid.RowSpan="2" 
+                 d:ItemsSource="{d:SampleData ItemCount=5}" 
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                 HorizontalContentAlignment="Stretch" Grid.RowSpan="2" 
-                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}">
+                 HorizontalContentAlignment="Stretch" 
+                 
+                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RaceList}" Margin="0,0,0,0">
 
             <ListBox.Resources>
                 <DataTemplate x:Key="RaceTemplate" >
-                    <local:RaceItem race="{Binding}"  />
+                    <local:RaceItem race="{Binding}"   />
                 </DataTemplate>
             </ListBox.Resources>
             <ListBox.ItemTemplate>
@@ -34,12 +37,7 @@
 
 
         </ListBox>
-
-        <Image x:Name="img_track_bkg" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
-        <Image x:Name="img_track_outline" Grid.Column="1"  Grid.Row="1" Margin="5,0,0,0" Height="130" VerticalAlignment="Top" />
-        <Image x:Name="img_car_preview" Grid.Column="1"  Grid.Row="1" Margin="5,130,0,0" Height="130" VerticalAlignment="Top" />
-        <Button x:Name="b_GoRacing" IsEnabled="False" Content="Race!" Grid.Row="2" Click="b_GoRacing_Click" Grid.Column="1" Margin="5,0,0,0" />
-        <CheckBox x:Name="chk_FilterRaces" Content="Show races I can take" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="chk_FilterRaces_Click"/>
+        <CheckBox x:Name="chk_FilterRaces" Content="Show races I can take" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Click="chk_FilterRaces_Click"/>
 
     </Grid>
 </UserControl>

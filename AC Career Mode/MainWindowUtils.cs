@@ -146,8 +146,6 @@ namespace AC_Career_Mode
             {
                 toplabel_EquippedCar.Content = "";
             }
-
-            uc_PlayerCars.CarList = CurrentUser.GetPlayerCars();
         }
         #endregion
 

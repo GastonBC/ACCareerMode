@@ -42,22 +42,31 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Market" >
+            <TabItem Header="Cars" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <uControl:CarsControl x:Name="uc_MarketCars" ButtonContent="Buy" Margin="0,10,0,5" />
-                    <uControl:TracksControl x:Name="uc_MarketTracks" ButtonContent="Buy" Margin="0,5,0,0" Grid.Row="1" />
+                    <uControl:OwnedCarsLV x:Name="OwnedCars_lv"/>
+                    <uControl:CarsControl x:Name="uc_MarketCars" ButtonContent="Buy" Grid.Row="1" />
+
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Team">
+            <TabItem Header="Tracks">
                 <Grid>
-                    <uControl:OwnedCarsLV x:Name="OwnedCars_lv"/>
-
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <uControl:TracksControl x:Name="uc_PlayerTracks" ButtonContent="Sell" />
+                    <uControl:TracksControl x:Name="uc_MarketTracks" ButtonContent="Buy" Grid.Row="1" />
                 </Grid>
+            </TabItem>
+
+            <TabItem Header="Drivers">
+
             </TabItem>
 
             <TabItem Header="Profile">
@@ -70,8 +79,7 @@
                         <RowDefinition Height="193*"/>
                         <RowDefinition Height="223*"/>
                     </Grid.RowDefinitions>
-                    <uControl:CarsControl x:Name="uc_PlayerCars" ButtonContent="Sell" Grid.Row="1" Margin="0,0,0,5"  />
-                    <uControl:TracksControl x:Name="uc_PlayerTracks" ButtonContent="Sell" Grid.Row="2" Margin="0,5,0,0" />
+
                 </Grid>
             </TabItem>
 

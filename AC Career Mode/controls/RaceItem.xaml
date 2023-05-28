@@ -9,18 +9,27 @@
     <Grid HorizontalAlignment="Stretch"  DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="229"/>
+            <ColumnDefinition Width="170"/>
         </Grid.ColumnDefinitions>
-        <Rectangle Stroke="Black" Fill="White" Grid.ColumnSpan="2"/>
+        <Rectangle Stroke="Black" Fill="White" Grid.ColumnSpan="3"/>
         <Label x:Name="lb_Car" d:Content="BMW E30 Touring Winter GT3" VerticalContentAlignment="Top" FontSize="14"  />
         <Label x:Name="lb_Track" d:Content="Autodromo Victor Borrat Fabini" VerticalContentAlignment="Bottom" FontSize="14"  />
 
         <Label x:Name="lb_Laps" d:Content="$50.000" VerticalContentAlignment="Top" HorizontalContentAlignment="Right" HorizontalAlignment="Right" />
         <Label x:Name="lb_Prize" d:Content="25 laps" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" HorizontalAlignment="Right" />
+
+
+
         <ComboBox x:Name="cb_Driver" Margin="3,3,3,0"
                   ItemsSource="{Binding Drivers}"
-                  DisplayMemberPath="Name" Grid.Column="1" Height="30" VerticalAlignment="Top" />
-        <Button Content="Race" Margin="3,37,3,0" Grid.Column="1" Height="30" VerticalAlignment="Top"/>
+                  DisplayMemberPath="Name" Grid.Column="2" Height="30" VerticalAlignment="Top" />
+        <Button Content="Race" Margin="3,37,3,0" Grid.Column="2" Height="30" VerticalAlignment="Top" Click="b_Race_Click"/>
+
+        <Image x:Name="img_TrackBackground" Grid.Column="1" HorizontalAlignment="Left" Width="110" Margin="3,3,3,3"/>
+        <Image x:Name="img_TrackLine"  Grid.Column="1" HorizontalAlignment="Left" Width="110" Margin="3,3,3,3"/>
+
+        <Image x:Name="img_CarPreview" Grid.Column="1" HorizontalAlignment="Right" Width="110" Margin="3,3,3,3"/>
 
 
     </Grid>

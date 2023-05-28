@@ -62,25 +62,31 @@ namespace DBLink.Classes
                 top_speed = 200;
             }
             car.TopSpeed = top_speed;
+            double PriceFactor = Utils.GetRandomNumber(0.9, 1.2, car.Path.Length);
 
             ManualCarData manual_values = ManualCarData.LoadCarValues().Find(c => c.Name == car.Name);
 
 
 
-            if (manual_values == null)
+
+
+            if (manual_values != null)
+            {
+                car.Price = Utils.RoundX(manual_values.Price * PriceFactor, 100);
+                car.Group = manual_values.Group;
+            }
+            else
             {
 #if !RELEASE
-                throw new Exception($"Car not manually inputted. {car.Name}");
+                Utils.Alert("", $"Car not manually inputted. {car.Name}");
 #endif
-
+                car.Price = 10000;
+                car.Group = CarGroup.GT;
             }
 
 
-            double PriceFactor = Utils.GetRandomNumber(0.9, 1.2, car.Path.Length);
 
-            car.Price = Utils.RoundX(manual_values.Price * PriceFactor, 100);
 
-            car.Group = manual_values.Group;
             car.Kms = 0;
             car.OwnerId = 0;
             car.ForSale = 1;

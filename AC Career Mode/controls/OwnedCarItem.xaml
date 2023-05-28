@@ -5,16 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AC_Career_Mode.controls"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="800" Width="Auto">
+             d:DesignWidth="800" Height="70">
+
     <Grid HorizontalAlignment="Stretch" DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
+            <ColumnDefinition Width="116"/>
+            <ColumnDefinition Width="170"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="lb_Car" Content="{Binding CarName}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="592" />
-        <ComboBox x:Name="cb_Driver" Margin="0,3,3,3" HorizontalAlignment="Right" Width="200"
+        <Label x:Name="lb_Car" Content="{Binding CarName}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="400" Grid.RowSpan="2" />
+
+        <Button x:Name="b_Button" Margin="3,3,3,3" Grid.Column="2" Grid.Row="1"/>
+
+        <ComboBox x:Name="cb_Driver" Margin="3,3,3,3"
                   ItemsSource="{Binding Drivers}"
-                  DisplayMemberPath="Name" />
-        <Button Content="Sell" Margin="0,3,208,3" HorizontalAlignment="Right" Width="60"/>
+                  DisplayMemberPath="Name" Grid.Column="2"  />
+
+        <Image x:Name="img_CarPreview" Grid.Column="1" Margin="3,3,3,3" Grid.RowSpan="2"  Width="110"/>
+
+
 
     </Grid>
 </UserControl>

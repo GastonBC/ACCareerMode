@@ -24,6 +24,9 @@ namespace AC_Career_Mode.controls
     public partial class OwnedCarsLV : UserControl
     {
 
+
+
+
         public ObservableCollection<Car> Cars
         {
             get { return (ObservableCollection<Car>)GetValue(CarsProperty); }

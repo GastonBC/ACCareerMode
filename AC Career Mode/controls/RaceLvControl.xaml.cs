@@ -66,33 +66,10 @@ namespace AC_Career_Mode.controls
 
         private void RaceLv_SelChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lv_Races.SelectedItem == null)
-            {
-                b_GoRacing.IsEnabled = false;
-                img_track_bkg.Source = null;
-                img_track_outline.Source = null;
-                img_car_preview.Source = null;
-                return;
-            }
-
-            b_GoRacing.IsEnabled = true;
             Race SelectedRace = lv_Races.SelectedItem as Race;
-
-            img_track_bkg.Source = Utils.RetriveImage(SelectedRace.Track.PreviewPath);
-            img_track_outline.Source = Utils.RetriveImage(SelectedRace.Track.OutlinePath);
-            img_car_preview.Source = Utils.RetriveImage(SelectedRace.Car.Preview);
         }
 
 
-        public event RoutedEventHandler GoRacing_Click;
-        public void b_GoRacing_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.GoRacing_Click != null)
-            {
-                Race race = lv_Races.SelectedItem as Race;
-                this.GoRacing_Click(race, e);
-            }
-        }
 
 
 
