@@ -78,7 +78,7 @@ namespace DBLink.Classes
             else
             {
 #if !RELEASE
-                Utils.Alert("", $"Car not manually inputted. {car.Name}");
+                //Utils.Alert("", $"Car not manually inputted. {car.Name}");
 #endif
                 car.Price = 10000;
                 car.Group = CarGroup.GT;

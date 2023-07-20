@@ -83,6 +83,63 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Test">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="109*"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="376*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Track" />
+                    <Label Content="Total Race Time" Grid.Row="1" />
+                    <Label Content="Average Lap Time" Grid.Row="2"  />
+                    <Label Content="Fuel Per Lap" Grid.Row="3"  />
+                    <Label Content="Tank Capacity" Grid.Row="4"  />
+                    <Label Content="Total laps" Grid.Row="5" FontWeight="Bold"  />
+                    <Label Content="Max stint length" Grid.Row="6" FontWeight="Bold"  />
+                    <Label Content="Total Fuel Needed" Grid.Row="7" FontWeight="Bold"  />
+
+                    <ComboBox Grid.Column="1" Grid.ColumnSpan="4" />
+                    <TextBox Grid.Column="1" VerticalContentAlignment="Center" Grid.Row="1" />
+                    <TextBox Grid.Column="1" VerticalContentAlignment="Center" Grid.Row="2" />
+                    <TextBox Grid.Column="1" VerticalContentAlignment="Center" Grid.Row="3" />
+                    <TextBox Grid.Column="1" VerticalContentAlignment="Center" Grid.Row="4" />
+                    <Label Content="23" Grid.Column="1" Grid.Row="5" FontWeight="Bold"  />
+                    <Label Content="100" Grid.Column="1" Grid.Row="6" FontWeight="Bold"  />
+                    <Label Content="477.91" Grid.Column="1" Grid.Row="7" FontWeight="Bold"  />
+
+                    <Label Content="h" Grid.Column="2" Grid.Row="1" />
+                    <Label Content="m" Grid.Column="2" Grid.Row="2" />
+                    <Label Content="liters" Grid.Column="2" Grid.Row="3" />
+                    <ComboBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="4" />
+                    <Label Content="laps" Grid.Column="2" Grid.Row="5" FontWeight="Bold"  />
+                    <Label Content="laps" Grid.Column="2" Grid.Row="6" FontWeight="Bold"  />
+                    <Label Content="liters" Grid.Column="2" Grid.Row="7" FontWeight="Bold"  />
+
+                    <TextBox Grid.Column="3" VerticalContentAlignment="Center" Grid.Row="1" />
+                    <TextBox Grid.Column="3" VerticalContentAlignment="Center" Grid.Row="2" />
+
+                    <Label Content="m" Grid.Column="4" Grid.Row="1" />
+                    <Label Content="s" Grid.Column="4" Grid.Row="2" />
+
+
+
+                </Grid>
+            </TabItem>
+
             <TabItem Header="History">
                 <uControl:HistoryTab x:Name="uc_Records"  />
             </TabItem>

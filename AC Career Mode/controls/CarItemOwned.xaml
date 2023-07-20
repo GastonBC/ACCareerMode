@@ -17,9 +17,9 @@
             <ColumnDefinition Width="116"/>
             <ColumnDefinition Width="170"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="lb_Car" Content="{Binding CarName}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="400" Grid.RowSpan="2" />
+        <Label x:Name="lb_Car" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="400" Grid.RowSpan="2" />
 
-        <Button x:Name="b_Button" Margin="3,3,3,3" Grid.Column="2" Grid.Row="1"/>
+        <Button x:Name="b_Button" Margin="3,3,3,3" Grid.Column="2" Grid.Row="1" Click="b_Button_Click"/>
 
         <ComboBox x:Name="cb_Driver" Margin="3,3,3,3"
                   ItemsSource="{Binding Drivers}"

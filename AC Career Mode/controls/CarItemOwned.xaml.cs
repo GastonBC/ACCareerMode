@@ -73,5 +73,11 @@ namespace AC_Career_Mode.controls
                 CarItem.img_CarPreview.Source = Utils.RetriveImage(newCar.Preview);
             }
         }
+
+        public event EventHandler ButtonClicked;
+        private void b_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClicked?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

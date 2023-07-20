@@ -18,7 +18,8 @@
                 <DataTemplate x:Key="CarTemplate" >
                     <local:OwnedCarItem Drivers="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Drivers}"
                                         car="{Binding}"
-                                        ButtonContent="Sell" />
+                                        ButtonContent="Sell"
+                                        ButtonClicked="Button_Click" />
                 </DataTemplate>
             </ListBox.Resources>
             <ListBox.ItemTemplate>

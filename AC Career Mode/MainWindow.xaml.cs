@@ -71,6 +71,7 @@ namespace AC_Career_Mode
             
         }
 
+
         void UpgradeTrack(object sender, RoutedEventArgs e)
         {
             Track track = (Track)sender;

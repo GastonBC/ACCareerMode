@@ -8,13 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AC_Career_Mode.controls
 {
@@ -51,7 +44,12 @@ namespace AC_Career_Mode.controls
         public OwnedCarsLV()
         {
             InitializeComponent();
-            
+
+        }
+
+        public void Button_Click()
+        {
+
         }
     }
 }
